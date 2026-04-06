@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login & Register</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: url("images/foodnest2.png") no-repeat center center fixed;
+  background-size: cover;   /* restored */
+  display: flex;
+  justify-content: space-between; /* left image + right box */
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding-left: 20px;  /* smaller gap on left side */
+  padding-right: 40px; /* keep right side gap as before */
+}
+img {
+      image-rendering: auto;          /* smooth rendering */
+      -webkit-optimize-contrast: 1;   /* improves clarity on WebKit browsers */
+      max-width: 100%;
+      height: auto;
+    }
+
+    .role-display img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100vh; /* ensures image never exceeds 80% of screen height */
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 3s ease-in-out; /* smoother fade */
+  display: none;
+}
+
+
+.role-display img {
+  width: auto;        /* prevent stretching full width */
+  max-width: 100%;    /* respect container size */
+  height: auto;       /* adjust naturally */
+  object-fit: contain;/* show full image, no cropping */
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  display: none;
+}
+
+/* Slight diagonal breathing animation */
+@keyframes breatheDiagonalSoft {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(25px, 10px) scale(1.02); /* gentle drift right + down */
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.breathing {
+  animation: breatheDiagonalSoft 6s ease-in-out infinite; /* slow, smooth cycle */
+}
+
+    .container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  width: 350px;
+  text-align: center;
+
+  /* Add these lines to control position */
+  position: absolute;   /* take it out of flexbox flow */
+  top: 270px;            /* distance from top edge */
+  right: 100px;          /* distance from right edge */
+}
+
+    .roles {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .roles div {
+      padding: 8px 14px;
+      border: 1px solid #0078d7;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .roles div:hover {
+      background: #e6f0ff;
+    }
+    .roles div.active {
+      background: #0078d7;
+      color: #fff;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #0078d7;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    .toggle {
+      margin-top: 15px;
+    }
+    .toggle a {
+      color: #0078d7;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Left-side image display -->
+  <div class="role-display">
+    <img id="role-img" src="" alt="">
+  </div>
+
+  <!-- Right-side login/register box -->
+  <div class="container">
+    <h3>Who are you?</h3>
+    <div class="roles">
+      <div id="cook" onclick="setRole(this)">Cook</div>
+      <div id="deliverer" onclick="setRole(this)">Deliverer</div>
+      <div id="hosteller" onclick="setRole(this)">Hosteller</div>
+    </div>
+
+    <h2 id="form-title">Sign In</h2>
+
+    <!-- Login form -->
+    <form id="login-form" action="login.php" method="post">
+      <input type="hidden" name="role" id="role-input" value="">
+      <input type="text" name="username" placeholder="Enter Username" required>
+      <input type="password" name="password" placeholder="Enter Password" required>
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- Register form -->
+    <form id="register-form" action="register.php" method="post" style="display:none;">
+      <input type="hidden" name="role" id="role-input-register" value="">
+      <input type="text" name="username" placeholder="Choose Username" required>
+      <input type="email" name="email" placeholder="Enter Email" required>
+      <input type="password" name="password" placeholder="Create Password" required>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="toggle">
+      <span id="toggle-text">Don't have an account? <a onclick="toggleForm()">Register</a></span>
+    </div>
+  </div>
+
+  <script>
+    function toggleForm() {
+      const loginForm = document.getElementById("login-form");
+      const registerForm = document.getElementById("register-form");
+      const formTitle = document.getElementById("form-title");
+      const toggleText = document.getElementById("toggle-text");
+
+      if (loginForm.style.display === "none") {
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+        formTitle.textContent = "Sign In";
+        toggleText.innerHTML = "Don't have an account? <a onclick='toggleForm()'>Register</a>";
+      } else {
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+        formTitle.textContent = "Register";
+        toggleText.innerHTML = "Already have an account? <a onclick='toggleForm()'>Sign In</a>";
+      }
+    }
+
+    function setRole(el) {
+  document.querySelectorAll(".roles div").forEach(div => div.classList.remove("active"));
+  el.classList.add("active");
+
+  document.getElementById("role-input").value = el.textContent;
+  document.getElementById("role-input-register").value = el.textContent;
+
+  const roleImg = document.getElementById("role-img");
+  let imgSrc = "";
+  if (el.id === "cook") {
+    imgSrc = "images/cook.png";
+  } else if (el.id === "deliverer") {
+    imgSrc = "images/deliverer.png";
+  } else if (el.id === "hosteller") {
+    imgSrc = "images/hostellers.png";
+  }
+
+  roleImg.style.opacity = 0;
+  roleImg.classList.remove("breathing"); // reset animation
+
+  setTimeout(() => {
+    roleImg.src = imgSrc;
+    roleImg.alt = el.textContent;
+    roleImg.style.display = "block";
+    roleImg.style.opacity = 1;
+    roleImg.classList.add("breathing"); // apply soft diagonal breathing
+  }, 600);
+}
+  </script>
+</body>
+</html>
+

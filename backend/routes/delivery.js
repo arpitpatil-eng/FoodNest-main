@@ -1,0 +1,166 @@
+const express = require("express");
+const oracledb = require("oracledb");
+const { getConnection } = require("../config/db");
+const { createId } = require("../utils/ids");
+const { requireAuth } = require("../middleware/auth");
+
+const router = express.Router();
+const allowedStatuses = ["Picked Up", "On the Way", "Delivered"];
+
+router.use(requireAuth);
+
+function ensureDeliveryPartner(req, res) {
+  const role = req.user.ROLE || req.user.role;
+  return role === "delivery";
+}
+
+router.get("/orders/delivery", async (req, res) => {
+  if (!ensureDeliveryPartner(req, res)) {
+    return res.status(403).json({ message: "Only delivery partners allowed." });
+  }
+
+  const deliveryPartnerId = req.user.ID || req.user.id;
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const result = await connection.execute(
+      `SELECT
+         o.id AS order_id,
+         o.status AS order_status,
+         o.total_nest_coins,
+         o.created_at,
+         da.delivery_status,
+         da.pickup_location,
+         da.drop_location,
+         da.estimated_time_mins,
+         da.distance_km,
+         da.assigned_at,
+         u.name AS student_name,
+         LISTAGG(mi.name || ' x' || oi.quantity, ', ')
+           WITHIN GROUP (ORDER BY mi.name) AS items_summary
+       FROM delivery_assignments da
+       JOIN orders o ON o.id = da.order_id
+       JOIN users u ON u.id = o.student_id
+       JOIN order_items oi ON oi.order_id = o.id
+       JOIN menu_items mi ON mi.id = oi.menu_item_id
+       WHERE da.delivery_partner_id = :delivery_partner_id
+       AND da.delivery_status <> 'Delivered'
+       GROUP BY
+         o.id, o.status, o.total_nest_coins, o.created_at,
+         da.delivery_status, da.pickup_location, da.drop_location,
+         da.estimated_time_mins, da.distance_km, da.assigned_at, u.name
+       ORDER BY da.assigned_at DESC`,
+      { delivery_partner_id: deliveryPartnerId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    res.json({
+      message: "Assigned delivery orders fetched.",
+      orders: result.rows
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch delivery orders.", error: error.message });
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+});
+
+router.put("/order/status", async (req, res, next) => {
+  if (!ensureDeliveryPartner(req, res)) {
+    return next();
+  }
+
+  const { orderId, status } = req.body;
+  const deliveryPartnerId = req.user.ID || req.user.id;
+
+  if (!orderId || !status) {
+    return res.status(400).json({ message: "orderId and status are required." });
+  }
+
+  if (!allowedStatuses.includes(status)) {
+    return res.status(400).json({
+      message: `Invalid status. Allowed: ${allowedStatuses.join(", ")}.`
+    });
+  }
+
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const assignment = await connection.execute(
+      `SELECT order_id
+       FROM delivery_assignments
+       WHERE order_id = :order_id
+       AND delivery_partner_id = :delivery_partner_id`,
+      {
+        order_id: orderId,
+        delivery_partner_id: deliveryPartnerId
+      },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    if (assignment.rows.length === 0) {
+      return res.status(404).json({
+        message: "Order assignment not found for this delivery partner."
+      });
+    }
+
+    let timestampColumnUpdate = "";
+    if (status === "Picked Up") {
+      timestampColumnUpdate = ", picked_up_at = CURRENT_TIMESTAMP";
+    } else if (status === "On the Way") {
+      timestampColumnUpdate = ", on_the_way_at = CURRENT_TIMESTAMP";
+    } else if (status === "Delivered") {
+      timestampColumnUpdate = ", delivered_at = CURRENT_TIMESTAMP";
+    }
+
+    await connection.execute(
+      `UPDATE delivery_assignments
+       SET delivery_status = :status
+       ${timestampColumnUpdate}
+       WHERE order_id = :order_id
+       AND delivery_partner_id = :delivery_partner_id`,
+      {
+        status,
+        order_id: orderId,
+        delivery_partner_id: deliveryPartnerId
+      }
+    );
+
+    await connection.execute(
+      `UPDATE orders
+       SET status = :status
+       WHERE id = :order_id`,
+      {
+        status,
+        order_id: orderId
+      }
+    );
+
+    await connection.execute(
+      `INSERT INTO order_status_history (id, order_id, stage, simulated)
+       VALUES (:id, :order_id, :stage, 0)`,
+      {
+        id: createId("osh"),
+        order_id: orderId,
+        stage: status
+      },
+      { autoCommit: true }
+    );
+
+    res.json({ message: "Delivery status updated.", orderId, status });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update delivery status.", error: error.message });
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+});
+
+module.exports = router;

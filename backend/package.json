@@ -1,0 +1,14 @@
+{
+  "name": "foodnest-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "oracledb": "^6.7.0",
+    "cors": "^2.8.5"
+  }
+}
