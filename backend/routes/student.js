@@ -48,16 +48,112 @@ router.get("/menu", async (_req, res) => {
     connection = await getConnection();
 
     const result = await connection.execute(
-      `SELECT id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available
-       FROM menu_items
+      `SELECT
+         mi.id,
+         mi.name,
+         mi.category,
+         mi.price_nest_coins,
+         mi.preparation_time_mins,
+         mi.image_url,
+         mi.description,
+         mi.available,
+         u.name AS cook_name
+       FROM menu_items mi
+       LEFT JOIN users u ON u.id = mi.cook_id
        WHERE available = 1`,
       {},
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
-    res.json({ items: result.rows });
+    res.json({
+      items: result.rows.map((row) => ({
+        id: row.ID,
+        name: row.NAME,
+        category: row.CATEGORY,
+        priceNestCoins: row.PRICE_NEST_COINS,
+        preparationTimeMins: row.PREPARATION_TIME_MINS,
+        imageUrl: row.IMAGE_URL,
+        description: row.DESCRIPTION,
+        available: row.AVAILABLE,
+        cookName: row.COOK_NAME || "FoodNest Kitchen"
+      }))
+    });
   } catch (error) {
     res.status(500).json({ message: "Menu fetch failed.", error: error.message });
+  } finally {
+    if (connection) await connection.close();
+  }
+});
+
+router.get("/orders", async (req, res) => {
+  const role = req.user.ROLE || req.user.role;
+  const studentId = req.user.ID || req.user.id;
+
+  if (role !== "student") {
+    return res.status(403).json({ message: "Only students allowed." });
+  }
+
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const result = await connection.execute(
+      `SELECT
+         o.id AS order_id,
+         o.total_nest_coins,
+         o.payment_method,
+         o.payment_status,
+         o.status AS order_status,
+         o.created_at,
+         c.name AS cook_name,
+         dp.name AS delivery_partner_name,
+         da.delivery_status,
+         da.pickup_location,
+         da.drop_location,
+         da.estimated_time_mins,
+         da.distance_km,
+         f.rating AS feedback_rating,
+         LISTAGG(mi.name || ' x' || oi.quantity, ', ')
+           WITHIN GROUP (ORDER BY mi.name) AS items_summary
+       FROM orders o
+       LEFT JOIN users c ON c.id = o.cook_id
+       LEFT JOIN delivery_assignments da ON da.order_id = o.id
+       LEFT JOIN users dp ON dp.id = da.delivery_partner_id
+       LEFT JOIN feedback f ON f.order_id = o.id
+       JOIN order_items oi ON oi.order_id = o.id
+       JOIN menu_items mi ON mi.id = oi.menu_item_id
+       WHERE o.student_id = :student_id
+       GROUP BY
+         o.id, o.total_nest_coins, o.payment_method, o.payment_status, o.status, o.created_at,
+         c.name, dp.name, da.delivery_status, da.pickup_location, da.drop_location,
+         da.estimated_time_mins, da.distance_km, f.rating
+       ORDER BY o.created_at DESC`,
+      { student_id: studentId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    res.json({
+      orders: result.rows.map((row) => ({
+        orderId: row.ORDER_ID,
+        totalNestCoins: row.TOTAL_NEST_COINS,
+        paymentMethod: row.PAYMENT_METHOD,
+        paymentStatus: row.PAYMENT_STATUS,
+        orderStatus: row.ORDER_STATUS,
+        createdAt: row.CREATED_AT,
+        cookName: row.COOK_NAME || "Awaiting cook assignment",
+        deliveryPartnerName: row.DELIVERY_PARTNER_NAME || "Awaiting delivery partner",
+        deliveryStatus: row.DELIVERY_STATUS || "Pending",
+        pickupLocation: row.PICKUP_LOCATION || "Home Cook Hub",
+        dropLocation: row.DROP_LOCATION || "Hosteller Address",
+        estimatedTimeMins: row.ESTIMATED_TIME_MINS || null,
+        distanceKm: row.DISTANCE_KM || null,
+        feedbackRating: row.FEEDBACK_RATING || null,
+        itemsSummary: row.ITEMS_SUMMARY
+      }))
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Orders fetch failed.", error: error.message });
   } finally {
     if (connection) await connection.close();
   }

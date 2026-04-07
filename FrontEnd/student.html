@@ -1,495 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FoodNest - Student Dashboard</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background-color: #1a0000;
-      color: white;
-      padding: 20px;
-    }
-
-    .container {
-      width: 95%;
-      margin: auto;
-    }
-
-    header {
-      background-color: #330000;
-      padding: 20px;
-      border-radius: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border: 1px solid #660000;
-    }
-
-    header h1 {
-      color: #ff4d4d;
-    }
-
-    header p {
-      color: #ffcccc;
-    }
-
-    .section {
-      background-color: #2b0000;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      border: 1px solid #660000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    .section h2 {
-      color: #ff6666;
-      margin-bottom: 15px;
-    }
-
-    .wallet-box {
-      background: linear-gradient(to right, #660000, #990000);
-      padding: 20px;
-      border-radius: 15px;
-      margin-top: 10px;
-    }
-
-    .wallet-box h3 {
-      font-size: 30px;
-      color: #fff;
-    }
-
-    .modules,
-    .chef-list,
-    .menu-list,
-    .history-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .card {
-      background-color: #3b0000;
-      padding: 20px;
-      border-radius: 15px;
-      flex: 1 1 250px;
-      min-width: 250px;
-      border: 1px solid #800000;
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      background-color: #4d0000;
-    }
-
-    .card h3 {
-      color: #ff8080;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      margin-bottom: 8px;
-      color: #ffe6e6;
-    }
-
-    button {
-      background-color: #cc0000;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #ff1a1a;
-    }
-
-    .cart-box,
-    .tracking-box,
-    .reward-box {
-      background-color: #400000;
-      padding: 20px;
-      border-radius: 15px;
-      border: 1px solid #800000;
-    }
-
-    textarea,
-    select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      margin-top: 8px;
-      margin-bottom: 15px;
-      background-color: #f5dede;
-      color: #330000;
-    }
-
-    ul {
-      margin-left: 20px;
-      margin-top: 10px;
-    }
-
-    ul li {
-      margin-bottom: 8px;
-      color: #ffe6e6;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #ffb3b3;
-      margin-top: 30px;
-    }
-
-    .highlight {
-      color: #ffcc66;
-      font-weight: bold;
-    }
-
-    .status {
-      color: #66ff99;
-      font-weight: bold;
-    }
-
-    .empty-cart {
-      color: #ffcccc;
-      font-style: italic;
-    }
-
-    .success-box {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      background-color: #5c0000;
-      border: 1px solid #aa0000;
-      color: #ffe6e6;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .small-btn {
-      padding: 6px 10px;
-      font-size: 12px;
-      margin-left: 10px;
-    }
-
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-      }
-
-      .modules,
-      .chef-list,
-      .menu-list,
-      .history-list {
-        flex-direction: column;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodNest - Hosteller Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <div class="toast" id="toast"></div>
 
-  <div class="container">
-
-    <header>
-      <div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-stack">
         <h1>FoodNest</h1>
-        <p>Student / Hosteller Dashboard</p>
+        <p>Hosteller Dashboard</p>
       </div>
+      <div class="top-actions">
+        <span class="pill" id="wallet-pill">NestCoins: 0</span>
+        <button class="ghost-btn" id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </header>
 
-      <div>
-        <p><strong>Welcome, Mithun R.</strong></p>
-        <p>Hosteller ID: HST1023</p>
-      </div>
-    </header>
-
-    <section class="section">
-      <h2>NestCoins Balance</h2>
-      <div class="wallet-box">
-        <h3><span id="walletBalance">320</span> 🪙</h3>
-        <p>Use NestCoins to place food orders from nearby cloud kitchens.</p>
-      </div>
+  <main class="page-shell">
+    <section class="hero">
+      <h2 id="hero-title">Fresh meals from nearby home cooks</h2>
+      <p>Browse the live menu from the backend, place NestCoin orders, and track every order from placement to delivery.</p>
     </section>
 
     <section class="section">
-      <h2>Today’s Recommended Meals</h2>
-      <div class="menu-list">
-
-        <div class="card">
-          <h3>Veg Thali</h3>
-          <p>Chef: Aarav</p>
-          <p>Includes rice, dal, sabzi, roti</p>
-          <p class="highlight">Price: 50 🪙</p>
-          <button class="add-to-cart" data-name="Veg Thali" data-price="50" data-chef="Aarav">Add to Cart</button>
-        </div>
-
-        <div class="card">
-          <h3>Paneer Roll</h3>
-          <p>Chef: Aarav</p>
-          <p>Fresh homemade paneer wrap</p>
-          <p class="highlight">Price: 35 🪙</p>
-          <button class="add-to-cart" data-name="Paneer Roll" data-price="35" data-chef="Aarav">Add to Cart</button>
-        </div>
-
-        <div class="card">
-          <h3>Idli Sambar</h3>
-          <p>Chef: Riya</p>
-          <p>4 idlis with homemade sambar</p>
-          <p class="highlight">Price: 40 🪙</p>
-          <button class="add-to-cart" data-name="Idli Sambar" data-price="40" data-chef="Riya">Add to Cart</button>
-        </div>
-
+      <div class="section-title">
+        <h2>Today's Menu</h2>
       </div>
-    </section>
-
-    <section class="section">
-      <h2>Your Cart</h2>
-      <div class="cart-box">
-        <div id="cartItems">
-          <p class="empty-cart">Your cart is empty.</p>
-        </div>
-        <p class="highlight">Total: <span id="cartTotal">0</span> 🪙</p>
-        <button id="placeOrderBtn">Place Order</button>
-        <div id="cartMessage" class="success-box hidden"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Track Your Order</h2>
-      <div class="tracking-box">
-        <p><strong>Order ID:</strong> <span id="trackOrderId">No active order</span></p>
-        <p><strong>Chef:</strong> <span id="trackChef">-</span></p>
-        <p><strong>Delivery Agent:</strong> <span id="trackDelivery">-</span></p>
-        <p><strong>Status:</strong> <span class="status" id="trackStatus">Waiting for order</span></p>
-        <p><strong>Estimated Delivery:</strong> <span id="trackTime">-</span></p>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Rate Your Order</h2>
-      <form id="reviewForm">
-        <label for="foodReview">Food Review:</label>
-        <textarea id="foodReview" rows="4" placeholder="Write your review here..."></textarea>
-
-        <label for="rating">Give Rating:</label>
-        <select id="rating">
-          <option value="">Select Rating</option>
-          <option value="1">1 Star</option>
-          <option value="2">2 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="5">5 Stars</option>
+      <div class="toolbar">
+        <input id="search-input" type="text" placeholder="Search meals or description">
+        <select id="cook-filter">
+          <option value="all">All Home Cooks</option>
         </select>
-
-        <button type="submit">Submit Review</button>
-        <div id="reviewMessage" class="success-box hidden"></div>
-      </form>
+      </div>
+      <div class="grid cards-3" id="menu-grid"></div>
     </section>
 
     <section class="section">
-      <h2>Order History</h2>
-      <div class="history-list" id="orderHistory"></div>
+      <div class="section-title">
+        <h2>Your Cart</h2>
+      </div>
+      <div class="box">
+        <div id="cart-lines" class="stack"></div>
+        <div class="row" style="justify-content: space-between; margin-top: 14px;">
+          <strong id="cart-total">Total: 0 NestCoins</strong>
+          <button class="primary-btn" id="place-order-btn">Place Order</button>
+        </div>
+        <p class="note">Orders are paid with NestCoins through the backend <code>POST /api/student/orders</code> route.</p>
+      </div>
     </section>
 
-    <footer>
-      <p>FoodNest © 2026 | Student Interface Prototype</p>
-    </footer>
+    <section class="section">
+      <div class="section-title">
+        <h2>Track & History</h2>
+      </div>
+      <div id="orders-list" class="order-list"></div>
+    </section>
 
-  </div>
+    <section class="section">
+      <div class="section-title">
+        <h2>Pending Reviews</h2>
+      </div>
+      <div id="reviews-list" class="order-list"></div>
+    </section>
+  </main>
 
+  <script src="./common.js"></script>
   <script>
-    let walletBalance = 320;
+    const toast = document.getElementById("toast");
+    const walletPill = document.getElementById("wallet-pill");
+    const heroTitle = document.getElementById("hero-title");
+    const menuGrid = document.getElementById("menu-grid");
+    const cookFilter = document.getElementById("cook-filter");
+    const searchInput = document.getElementById("search-input");
+    const cartLines = document.getElementById("cart-lines");
+    const cartTotal = document.getElementById("cart-total");
+    const ordersList = document.getElementById("orders-list");
+    const reviewsList = document.getElementById("reviews-list");
+
+    let menuItems = [];
+    let orders = [];
     let cart = [];
-    let currentOrder = null;
 
-    const deliveryAgents = ["Rohan", "Aman", "Soham"];
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
 
-    const walletBalanceEl = document.getElementById("walletBalance");
-    const cartItemsEl = document.getElementById("cartItems");
-    const cartTotalEl = document.getElementById("cartTotal");
-    const cartMessageEl = document.getElementById("cartMessage");
-    const placeOrderBtn = document.getElementById("placeOrderBtn");
+    function cartSummary() {
+      return cart.reduce((sum, item) => sum + item.priceNestCoins * item.quantity, 0);
+    }
 
-    const trackOrderId = document.getElementById("trackOrderId");
-    const trackChef = document.getElementById("trackChef");
-    const trackDelivery = document.getElementById("trackDelivery");
-    const trackStatus = document.getElementById("trackStatus");
-    const trackTime = document.getElementById("trackTime");
+    function renderMenu() {
+      const searchTerm = searchInput.value.trim().toLowerCase();
+      const selectedCook = cookFilter.value;
 
-    const reviewForm = document.getElementById("reviewForm");
-    const foodReview = document.getElementById("foodReview");
-    const rating = document.getElementById("rating");
-    const reviewMessage = document.getElementById("reviewMessage");
-    const orderHistory = document.getElementById("orderHistory");
-
-    const addToCartButtons = document.querySelectorAll(".add-to-cart");
-
-    addToCartButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        const item = {
-          name: button.dataset.name,
-          price: parseInt(button.dataset.price),
-          chef: button.dataset.chef
-        };
-
-        cart.push(item);
-        renderCart();
-        showCartMessage(item.name + " added to cart!");
+      const filtered = menuItems.filter((item) => {
+        const matchesSearch =
+          item.name.toLowerCase().includes(searchTerm) ||
+          (item.description || "").toLowerCase().includes(searchTerm);
+        const matchesCook = selectedCook === "all" || item.cookName === selectedCook;
+        return matchesSearch && matchesCook;
       });
-    });
+
+      if (filtered.length === 0) {
+        menuGrid.innerHTML = '<div class="empty-state">No meals matched your search.</div>';
+        return;
+      }
+
+      menuGrid.innerHTML = filtered.map((item) => {
+        const cartItem = cart.find((entry) => entry.id === item.id);
+        const quantity = cartItem ? cartItem.quantity : 0;
+        return `
+          <article class="card">
+            <img class="card-media" src="${item.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${item.name}">
+            <div class="card-body">
+              <span class="badge">${item.category}</span>
+              <h3>${item.name}</h3>
+              <p class="meta"><strong>Cook:</strong> ${item.cookName}</p>
+              <p class="meta">${item.description || "Fresh home-style meal."}</p>
+              <p class="meta"><strong>Prep:</strong> ${item.preparationTimeMins} mins</p>
+              <div class="price">${item.priceNestCoins} NestCoins</div>
+              <div class="row">
+                <button class="secondary-btn" onclick="changeQty('${item.id}', -1)">-</button>
+                <strong>${quantity}</strong>
+                <button class="secondary-btn" onclick="changeQty('${item.id}', 1)">+</button>
+                <button class="primary-btn" onclick="addToCart('${item.id}')">Add</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderCookFilter() {
+      const cooks = [...new Set(menuItems.map((item) => item.cookName).filter(Boolean))];
+      cookFilter.innerHTML = '<option value="all">All Home Cooks</option>' +
+        cooks.map((cook) => `<option value="${cook}">${cook}</option>`).join("");
+    }
 
     function renderCart() {
       if (cart.length === 0) {
-        cartItemsEl.innerHTML = `<p class="empty-cart">Your cart is empty.</p>`;
-        cartTotalEl.textContent = "0";
+        cartLines.innerHTML = '<div class="empty-state">Your cart is empty.</div>';
+        cartTotal.textContent = "Total: 0 NestCoins";
         return;
       }
 
-      let total = 0;
-      cartItemsEl.innerHTML = "";
+      cartLines.innerHTML = cart.map((item) => `
+        <div class="cart-line">
+          <div>
+            <strong>${item.name}</strong>
+            <div class="meta">${item.cookName} � ${item.quantity} x ${item.priceNestCoins}</div>
+          </div>
+          <div class="row">
+            <button class="secondary-btn" onclick="changeQty('${item.id}', -1)">-</button>
+            <span>${item.quantity}</span>
+            <button class="secondary-btn" onclick="changeQty('${item.id}', 1)">+</button>
+          </div>
+        </div>
+      `).join("");
 
-      cart.forEach((item, index) => {
-        total += item.price;
-
-        const p = document.createElement("p");
-        p.innerHTML = `${index + 1}. ${item.name} - ${item.price} 🪙 
-          <button class="small-btn" onclick="removeFromCart(${index})">Remove</button>`;
-        cartItemsEl.appendChild(p);
-      });
-
-      cartTotalEl.textContent = total;
+      cartTotal.textContent = `Total: ${cartSummary()} NestCoins`;
     }
 
-    function removeFromCart(index) {
-      cart.splice(index, 1);
+    function renderOrders() {
+      if (orders.length === 0) {
+        ordersList.innerHTML = '<div class="empty-state">No orders yet. Place one from the menu above.</div>';
+        return;
+      }
+
+      ordersList.innerHTML = orders.map((order) => `
+        <article class="order-item">
+          <div class="row" style="justify-content: space-between;">
+            <h3>Order ${order.orderId}</h3>
+            <span class="badge">${order.orderStatus}</span>
+          </div>
+          <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
+          <p class="meta"><strong>Cook:</strong> ${order.cookName}</p>
+          <p class="meta"><strong>Delivery:</strong> ${order.deliveryPartnerName} (${order.deliveryStatus})</p>
+          <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins ? `${order.estimatedTimeMins} mins` : "Pending"}</p>
+          <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+        </article>
+      `).join("");
+    }
+
+    function renderReviews() {
+      const reviewable = orders.filter((order) => order.orderStatus === "Delivered" && !order.feedbackRating);
+
+      if (reviewable.length === 0) {
+        reviewsList.innerHTML = '<div class="empty-state">No delivered orders waiting for feedback.</div>';
+        return;
+      }
+
+      reviewsList.innerHTML = reviewable.map((order) => `
+        <article class="order-item">
+          <h3>${order.orderId}</h3>
+          <p class="meta">${order.itemsSummary}</p>
+          <div class="row">
+            <select id="rating-${order.orderId}">
+              <option value="">Select rating</option>
+              <option value="1">1 Star</option>
+              <option value="2">2 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="5">5 Stars</option>
+            </select>
+            <button class="primary-btn" onclick="submitFeedback('${order.orderId}')">Submit Rating</button>
+          </div>
+          <p class="note">The backend currently stores the numeric rating only.</p>
+        </article>
+      `).join("");
+    }
+
+    function addToCart(id) {
+      changeQty(id, 1);
+    }
+
+    function changeQty(id, delta) {
+      const item = menuItems.find((entry) => entry.id === id);
+      if (!item) return;
+
+      const existing = cart.find((entry) => entry.id === id);
+      if (!existing && delta > 0) {
+        cart.push({ ...item, quantity: 1 });
+      } else if (existing) {
+        existing.quantity += delta;
+        if (existing.quantity <= 0) {
+          cart = cart.filter((entry) => entry.id !== id);
+        }
+      }
+
+      renderMenu();
       renderCart();
     }
 
-    function showCartMessage(message) {
-      cartMessageEl.textContent = message;
-      cartMessageEl.classList.remove("hidden");
+    async function loadData() {
+      const [meData, menuData, ordersData] = await Promise.all([
+        apiFetch("/auth/me"),
+        apiFetch("/student/menu"),
+        apiFetch("/student/orders")
+      ]);
 
-      setTimeout(() => {
-        cartMessageEl.classList.add("hidden");
-      }, 2000);
+      const user = meData.user;
+      menuItems = menuData.items;
+      orders = ordersData.orders;
+      walletPill.textContent = `NestCoins: ${user.nestCoins}`;
+      heroTitle.textContent = `Welcome ${user.name}, order from today's live kitchen menu`;
+
+      renderCookFilter();
+      renderMenu();
+      renderCart();
+      renderOrders();
+      renderReviews();
     }
 
-    placeOrderBtn.addEventListener("click", () => {
+    async function submitFeedback(orderId) {
+      const select = document.getElementById(`rating-${orderId}`);
+      if (!select.value) {
+        showToast("Select a rating first.");
+        return;
+      }
+
+      try {
+        await apiFetch(`/student/orders/${orderId}/feedback`, {
+          method: "POST",
+          body: JSON.stringify({ rating: Number(select.value) })
+        });
+        showToast("Rating submitted.");
+        await loadData();
+      } catch (error) {
+        showToast(error.message);
+      }
+    }
+
+    document.getElementById("place-order-btn").addEventListener("click", async () => {
       if (cart.length === 0) {
-        showCartMessage("Your cart is empty.");
+        showToast("Your cart is empty.");
         return;
       }
 
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
-
-      if (walletBalance < total) {
-        showCartMessage("Not enough NestCoins.");
-        return;
+      try {
+        await apiFetch("/student/orders", {
+          method: "POST",
+          body: JSON.stringify({
+            items: cart.map((item) => ({
+              menuItemId: item.id,
+              quantity: item.quantity
+            }))
+          })
+        });
+        cart = [];
+        showToast("Order placed successfully.");
+        await loadData();
+      } catch (error) {
+        showToast(error.message);
       }
-
-      walletBalance -= total;
-      walletBalanceEl.textContent = walletBalance;
-
-      const orderId = "FN" + Math.floor(100000 + Math.random() * 900000);
-      const chefName = cart[0].chef;
-      const deliveryAgent = deliveryAgents[Math.floor(Math.random() * deliveryAgents.length)];
-
-      currentOrder = {
-        orderId,
-        items: [...cart],
-        total,
-        chef: chefName,
-        deliveryAgent,
-        status: "Preparing",
-        rating: null
-      };
-
-      trackOrderId.textContent = orderId;
-      trackChef.textContent = chefName;
-      trackDelivery.textContent = deliveryAgent;
-      trackStatus.textContent = "Preparing";
-      trackTime.textContent = "20 mins";
-
-      cart = [];
-      renderCart();
-      showCartMessage("Order placed successfully!");
     });
 
-    reviewForm.addEventListener("submit", function(e) {
-      e.preventDefault();
+    searchInput.addEventListener("input", renderMenu);
+    cookFilter.addEventListener("change", renderMenu);
+    document.getElementById("logout-btn").addEventListener("click", logout);
 
-      if (!currentOrder) {
-        showReviewMessage("No order to review.");
-        return;
-      }
-
-      const selectedRating = parseInt(rating.value);
-
-      if (!selectedRating) {
-        showReviewMessage("Please select a rating.");
-        return;
-      }
-
-      currentOrder.rating = selectedRating;
-
-      if (selectedRating === 5) {
-        const reward = Math.floor(currentOrder.total / 3);
-        walletBalance += reward;
-        walletBalanceEl.textContent = walletBalance;
-        showReviewMessage("5-star review submitted! You earned " + reward + " NestCoins back.");
-      } else {
-        showReviewMessage("Review submitted successfully.");
-      }
-
-      const dishes = currentOrder.items.map(item => item.name).join(", ");
-
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <p><strong>Order ID:</strong> ${currentOrder.orderId}</p>
-        <p>Dish: ${dishes}</p>
-        <p>Chef: ${currentOrder.chef}</p>
-        <p>Delivery Agent: ${currentOrder.deliveryAgent}</p>
-        <p>Price: ${currentOrder.total} 🪙</p>
-        <p>Status: Delivered</p>
-        <p>Rating Given: ${selectedRating} ⭐</p>
-      `;
-      orderHistory.prepend(card);
-
-      currentOrder = null;
-      reviewForm.reset();
+    window.addEventListener("DOMContentLoaded", async () => {
+      const user = await requireRole("student");
+      if (!user) return;
+      await loadData();
     });
-
-    function showReviewMessage(message) {
-      reviewMessage.textContent = message;
-      reviewMessage.classList.remove("hidden");
-
-      setTimeout(() => {
-        reviewMessage.classList.add("hidden");
-      }, 3000);
-    }
-
-    renderCart();
   </script>
-
 </body>
 </html>

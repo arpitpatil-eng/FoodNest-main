@@ -31,6 +31,7 @@ router.get("/orders/delivery", async (req, res) => {
          o.status AS order_status,
          o.total_nest_coins,
          o.created_at,
+         c.name AS cook_name,
          da.delivery_status,
          da.pickup_location,
          da.drop_location,
@@ -43,13 +44,14 @@ router.get("/orders/delivery", async (req, res) => {
        FROM delivery_assignments da
        JOIN orders o ON o.id = da.order_id
        JOIN users u ON u.id = o.student_id
+       LEFT JOIN users c ON c.id = o.cook_id
        JOIN order_items oi ON oi.order_id = o.id
        JOIN menu_items mi ON mi.id = oi.menu_item_id
        WHERE da.delivery_partner_id = :delivery_partner_id
        AND da.delivery_status <> 'Delivered'
        GROUP BY
          o.id, o.status, o.total_nest_coins, o.created_at,
-         da.delivery_status, da.pickup_location, da.drop_location,
+         c.name, da.delivery_status, da.pickup_location, da.drop_location,
          da.estimated_time_mins, da.distance_km, da.assigned_at, u.name
        ORDER BY da.assigned_at DESC`,
       { delivery_partner_id: deliveryPartnerId },
@@ -58,10 +60,81 @@ router.get("/orders/delivery", async (req, res) => {
 
     res.json({
       message: "Assigned delivery orders fetched.",
-      orders: result.rows
+      orders: result.rows.map((row) => ({
+        orderId: row.ORDER_ID,
+        orderStatus: row.ORDER_STATUS,
+        totalNestCoins: row.TOTAL_NEST_COINS,
+        createdAt: row.CREATED_AT,
+        cookName: row.COOK_NAME || "Awaiting cook",
+        deliveryStatus: row.DELIVERY_STATUS,
+        pickupLocation: row.PICKUP_LOCATION,
+        dropLocation: row.DROP_LOCATION,
+        estimatedTimeMins: row.ESTIMATED_TIME_MINS,
+        distanceKm: row.DISTANCE_KM,
+        assignedAt: row.ASSIGNED_AT,
+        studentName: row.STUDENT_NAME,
+        itemsSummary: row.ITEMS_SUMMARY
+      }))
     });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch delivery orders.", error: error.message });
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+});
+
+router.get("/orders/delivery/history", async (req, res) => {
+  if (!ensureDeliveryPartner(req, res)) {
+    return res.status(403).json({ message: "Only delivery partners allowed." });
+  }
+
+  const deliveryPartnerId = req.user.ID || req.user.id;
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const result = await connection.execute(
+      `SELECT
+         o.id AS order_id,
+         o.status AS order_status,
+         o.total_nest_coins,
+         o.created_at,
+         u.name AS student_name,
+         da.delivery_status,
+         da.delivered_at,
+         LISTAGG(mi.name || ' x' || oi.quantity, ', ')
+           WITHIN GROUP (ORDER BY mi.name) AS items_summary
+       FROM delivery_assignments da
+       JOIN orders o ON o.id = da.order_id
+       JOIN users u ON u.id = o.student_id
+       JOIN order_items oi ON oi.order_id = o.id
+       JOIN menu_items mi ON mi.id = oi.menu_item_id
+       WHERE da.delivery_partner_id = :delivery_partner_id
+       GROUP BY
+         o.id, o.status, o.total_nest_coins, o.created_at, u.name,
+         da.delivery_status, da.delivered_at
+       ORDER BY o.created_at DESC`,
+      { delivery_partner_id: deliveryPartnerId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    res.json({
+      orders: result.rows.map((row) => ({
+        orderId: row.ORDER_ID,
+        orderStatus: row.ORDER_STATUS,
+        totalNestCoins: row.TOTAL_NEST_COINS,
+        createdAt: row.CREATED_AT,
+        studentName: row.STUDENT_NAME,
+        deliveryStatus: row.DELIVERY_STATUS,
+        deliveredAt: row.DELIVERED_AT,
+        itemsSummary: row.ITEMS_SUMMARY
+      }))
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Delivery history fetch failed.", error: error.message });
   } finally {
     if (connection) {
       await connection.close();

@@ -2,6 +2,7 @@ const express = require("express");
 const crypto = require("crypto");
 const oracledb = require("oracledb");
 const { getConnection } = require("../config/db");
+const { requireAuth } = require("../middleware/auth");
 const { createId } = require("../utils/ids");
 const { hashPassword, verifyPassword } = require("../utils/passwords");
 
@@ -123,6 +124,18 @@ router.post("/login", async (req, res) => {
       await connection.close();
     }
   }
+});
+
+router.get("/me", requireAuth, async (req, res) => {
+  res.json({
+    user: {
+      id: req.user.ID || req.user.id,
+      name: req.user.NAME || req.user.name,
+      username: req.user.USERNAME || req.user.username,
+      role: req.user.ROLE || req.user.role,
+      nestCoins: req.user.NEST_COINS ?? req.user.nest_coins ?? 0
+    }
+  });
 });
 
 module.exports = router;

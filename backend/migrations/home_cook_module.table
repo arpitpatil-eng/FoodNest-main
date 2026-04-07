@@ -1,0 +1,18 @@
+ALTER TABLE menu_items
+| change                  | details                            |
+|-------------------------|------------------------------------|
+| add column              | cook_id VARCHAR2(50)               |
+| add column              | preparation_time_mins NUMBER DEFAULT 20 NOT NULL |
+| add column              | image_url VARCHAR2(500)            |
+| add foreign key         | fk_menu_cook: cook_id -> users(id) |
+
+ALTER TABLE orders
+| change          | details                              |
+|-----------------|--------------------------------------|
+| add column      | cook_id VARCHAR2(50)                 |
+| add foreign key | fk_orders_cook: cook_id -> users(id) |
+
+UPDATE menu_items
+| column                 | value | condition                       |
+|------------------------|-------|---------------------------------|
+| preparation_time_mins  | 20    | where preparation_time_mins is null |

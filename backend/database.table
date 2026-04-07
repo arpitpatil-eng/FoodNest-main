@@ -1,0 +1,93 @@
+TABLE users
+| column        | type          | constraints                                              |
+|---------------|---------------|----------------------------------------------------------|
+| id            | VARCHAR2(50)  | PRIMARY KEY                                              |
+| name          | VARCHAR2(100) | NOT NULL                                                 |
+| username      | VARCHAR2(100) | UNIQUE, NOT NULL                                         |
+| password_hash | VARCHAR2(255) | NOT NULL                                                 |
+| role          | VARCHAR2(20)  | CHECK IN ('student', 'cook', 'delivery'), NOT NULL       |
+| nest_coins    | NUMBER        | DEFAULT 0, NOT NULL                                      |
+| created_at    | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP                                |
+
+TABLE user_sessions
+| column     | type          | constraints                              |
+|------------|---------------|------------------------------------------|
+| id         | VARCHAR2(50)  | PRIMARY KEY                              |
+| user_id    | VARCHAR2(50)  | NOT NULL, FOREIGN KEY -> users(id)       |
+| token      | VARCHAR2(100) | UNIQUE, NOT NULL                         |
+| created_at | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP                |
+
+TABLE menu_items
+| column                 | type          | constraints                              |
+|------------------------|---------------|------------------------------------------|
+| id                     | VARCHAR2(50)  | PRIMARY KEY                              |
+| cook_id                | VARCHAR2(50)  | FOREIGN KEY -> users(id)                 |
+| name                   | VARCHAR2(100) | NOT NULL                                 |
+| category               | VARCHAR2(30)  | NOT NULL                                 |
+| price_nest_coins       | NUMBER        | NOT NULL                                 |
+| preparation_time_mins  | NUMBER        | DEFAULT 20, NOT NULL                     |
+| image_url              | VARCHAR2(500) |                                          |
+| description            | VARCHAR2(255) |                                          |
+| available              | NUMBER(1)     | DEFAULT 1, CHECK IN (0,1)                |
+
+ROWS menu_items
+| id     | name              | category | price_nest_coins | preparation_time_mins | image_url                                                     | description                                | available |
+|--------|-------------------|----------|------------------|-----------------------|---------------------------------------------------------------|--------------------------------------------|-----------|
+| meal-1 | Home Veg Thali    | Veg      | 80               | 20                    | https://images.unsplash.com/photo-1546069901-ba9599a7e63c     | Rice, dal, sabzi, roti, and salad.         | 1         |
+| meal-2 | Paneer Lunch Box  | Veg      | 110              | 25                    | https://images.unsplash.com/photo-1606491956689-2ea866880c84  | Paneer curry with jeera rice and roti.     | 1         |
+| meal-3 | Chicken Combo     | Non-Veg  | 140              | 30                    | https://images.unsplash.com/photo-1604908176997-4314ed5d74f6  | Chicken curry with rice and salad.         | 1         |
+
+TABLE orders
+| column            | type         | constraints                              |
+|-------------------|--------------|------------------------------------------|
+| id                | VARCHAR2(50) | PRIMARY KEY                              |
+| student_id        | VARCHAR2(50) | NOT NULL, FOREIGN KEY -> users(id)       |
+| cook_id           | VARCHAR2(50) | FOREIGN KEY -> users(id)                 |
+| total_nest_coins  | NUMBER       | NOT NULL                                 |
+| payment_method    | VARCHAR2(30) | NOT NULL                                 |
+| payment_status    | VARCHAR2(30) | NOT NULL                                 |
+| status            | VARCHAR2(50) | NOT NULL                                 |
+| created_at        | TIMESTAMP    | DEFAULT CURRENT_TIMESTAMP                |
+
+TABLE delivery_assignments
+| column              | type          | constraints                                      |
+|---------------------|---------------|--------------------------------------------------|
+| id                  | VARCHAR2(50)  | PRIMARY KEY                                      |
+| order_id            | VARCHAR2(50)  | UNIQUE, NOT NULL, FOREIGN KEY -> orders(id)      |
+| delivery_partner_id | VARCHAR2(50)  | NOT NULL, FOREIGN KEY -> users(id)               |
+| delivery_status     | VARCHAR2(30)  | DEFAULT 'Assigned', NOT NULL                     |
+| pickup_location     | VARCHAR2(255) | DEFAULT 'Home Cook Hub', NOT NULL                |
+| drop_location       | VARCHAR2(255) | DEFAULT 'Hosteller Address', NOT NULL            |
+| estimated_time_mins | NUMBER        | DEFAULT 20, NOT NULL                             |
+| distance_km         | NUMBER(5,2)   | DEFAULT 3.50, NOT NULL                           |
+| assigned_at         | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP                        |
+| picked_up_at        | TIMESTAMP     |                                                  |
+| on_the_way_at       | TIMESTAMP     |                                                  |
+| delivered_at        | TIMESTAMP     |                                                  |
+
+TABLE order_items
+| column                | type         | constraints                                  |
+|-----------------------|--------------|----------------------------------------------|
+| id                    | VARCHAR2(50) | PRIMARY KEY                                  |
+| order_id              | VARCHAR2(50) | NOT NULL, FOREIGN KEY -> orders(id)          |
+| menu_item_id          | VARCHAR2(50) | NOT NULL, FOREIGN KEY -> menu_items(id)      |
+| quantity              | NUMBER       | NOT NULL                                     |
+| unit_price_nest_coins | NUMBER       | NOT NULL                                     |
+| line_total_nest_coins | NUMBER       | NOT NULL                                     |
+
+TABLE order_status_history
+| column     | type         | constraints                              |
+|------------|--------------|------------------------------------------|
+| id         | VARCHAR2(50) | PRIMARY KEY                              |
+| order_id   | VARCHAR2(50) | NOT NULL, FOREIGN KEY -> orders(id)      |
+| stage      | VARCHAR2(50) | NOT NULL                                 |
+| changed_at | TIMESTAMP    | DEFAULT CURRENT_TIMESTAMP                |
+| simulated  | NUMBER(1)    | DEFAULT 1, CHECK IN (0,1)                |
+
+TABLE feedback
+| column       | type         | constraints                              |
+|--------------|--------------|------------------------------------------|
+| id           | VARCHAR2(50) | PRIMARY KEY                              |
+| order_id     | VARCHAR2(50) | UNIQUE, NOT NULL, FOREIGN KEY -> orders(id) |
+| rating       | NUMBER       | NOT NULL, CHECK BETWEEN 1 AND 5          |
+| submitted_at | TIMESTAMP    | DEFAULT CURRENT_TIMESTAMP                |

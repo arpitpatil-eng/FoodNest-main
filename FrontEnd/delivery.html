@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodNest - Delivery Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-stack">
+        <h1>FoodNest</h1>
+        <p>Delivery Agent Dashboard</p>
+      </div>
+      <div class="top-actions">
+        <span class="pill" id="wallet-pill">NestCoins: 0</span>
+        <button class="ghost-btn" id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <h2 id="hero-title">Track assigned deliveries</h2>
+      <p>Your assigned orders come directly from the backend. Update them from pickup to delivered using the live delivery status route.</p>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Assigned Deliveries</h2>
+      </div>
+      <div id="deliveries-list" class="order-list"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Delivery History</h2>
+      </div>
+      <div id="history-list" class="order-list"></div>
+    </section>
+  </main>
+
+  <script src="./common.js"></script>
+  <script>
+    const toast = document.getElementById("toast");
+    const walletPill = document.getElementById("wallet-pill");
+    const heroTitle = document.getElementById("hero-title");
+    const deliveriesList = document.getElementById("deliveries-list");
+    const historyList = document.getElementById("history-list");
+
+    let deliveries = [];
+    let history = [];
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function nextDeliveryStatuses(current) {
+      if (current === "Assigned") return ["Picked Up", "On the Way"];
+      if (current === "Picked Up") return ["On the Way", "Delivered"];
+      if (current === "On the Way") return ["Delivered"];
+      return [];
+    }
+
+    function renderDeliveries() {
+      if (deliveries.length === 0) {
+        deliveriesList.innerHTML = '<div class="empty-state">No active deliveries assigned yet.</div>';
+        return;
+      }
+
+      deliveriesList.innerHTML = deliveries.map((order) => `
+        <article class="order-item">
+          <div class="row" style="justify-content: space-between;">
+            <h3>${order.orderId}</h3>
+            <span class="badge">${order.deliveryStatus}</span>
+          </div>
+          <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
+          <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
+          <p class="meta"><strong>Cook:</strong> ${order.cookName}</p>
+          <p class="meta"><strong>Pickup:</strong> ${order.pickupLocation}</p>
+          <p class="meta"><strong>Drop:</strong> ${order.dropLocation}</p>
+          <p class="meta"><strong>Distance:</strong> ${order.distanceKm} km</p>
+          <div class="row">
+            ${nextDeliveryStatuses(order.deliveryStatus).map((status) => `
+              <button class="primary-btn" onclick="updateDeliveryStatus('${order.orderId}', '${status}')">${status}</button>
+            `).join("")}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderHistory() {
+      if (history.length === 0) {
+        historyList.innerHTML = '<div class="empty-state">No delivery history yet.</div>';
+        return;
+      }
+
+      historyList.innerHTML = history.map((order) => `
+        <article class="order-item">
+          <div class="row" style="justify-content: space-between;">
+            <h3>${order.orderId}</h3>
+            <span class="badge">${order.deliveryStatus}</span>
+          </div>
+          <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
+          <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
+          <p class="meta"><strong>Delivered At:</strong> ${order.deliveredAt || "Not delivered yet"}</p>
+        </article>
+      `).join("");
+    }
+
+    async function loadData() {
+      const [meData, deliveriesData, historyData] = await Promise.all([
+        apiFetch("/auth/me"),
+        apiFetch("/orders/delivery"),
+        apiFetch("/orders/delivery/history")
+      ]);
+
+      const user = meData.user;
+      walletPill.textContent = `NestCoins: ${user.nestCoins}`;
+      heroTitle.textContent = `Welcome ${user.name}, manage your assigned deliveries`;
+      deliveries = deliveriesData.orders;
+      history = historyData.orders;
+
+      renderDeliveries();
+      renderHistory();
+    }
+
+    async function updateDeliveryStatus(orderId, status) {
+      try {
+        await apiFetch("/order/status", {
+          method: "PUT",
+          body: JSON.stringify({ orderId, status })
+        });
+        showToast(`Delivery moved to ${status}.`);
+        await loadData();
+      } catch (error) {
+        showToast(error.message);
+      }
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", logout);
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const user = await requireRole("delivery");
+      if (!user) return;
+      await loadData();
+    });
+  </script>
+</body>
+</html>

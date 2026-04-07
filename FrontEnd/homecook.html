@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodNest - Home Cook Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-stack">
+        <h1>FoodNest</h1>
+        <p>Home Cook Dashboard</p>
+      </div>
+      <div class="top-actions">
+        <span class="pill" id="wallet-pill">NestCoins: 0</span>
+        <button class="ghost-btn" id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <h2 id="hero-title">Manage meals and kitchen orders</h2>
+      <p>Create menu items, keep availability up to date, and move live orders through the preparation stages defined by the backend.</p>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Add Menu Item</h2>
+      </div>
+      <div class="box">
+        <form id="menu-form" class="form-grid">
+          <div class="field">
+            <label for="dish-name">Dish Name</label>
+            <input id="dish-name" type="text" required>
+          </div>
+          <div class="field">
+            <label for="dish-category">Category</label>
+            <select id="dish-category">
+              <option value="Veg">Veg</option>
+              <option value="Non-Veg">Non-Veg</option>
+              <option value="Snacks">Snacks</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="dish-price">Price in NestCoins</label>
+            <input id="dish-price" type="number" min="1" required>
+          </div>
+          <div class="field">
+            <label for="dish-time">Preparation Time (mins)</label>
+            <input id="dish-time" type="number" min="5" value="20">
+          </div>
+          <div class="field">
+            <label for="dish-image">Image URL</label>
+            <input id="dish-image" type="url" placeholder="Optional">
+          </div>
+          <div class="field">
+            <label for="dish-description">Description</label>
+            <textarea id="dish-description" rows="2"></textarea>
+          </div>
+          <div class="row">
+            <button class="primary-btn" type="submit">Create Item</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Your Menu</h2>
+      </div>
+      <div id="menu-list" class="grid cards-3"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Incoming Orders</h2>
+      </div>
+      <div id="orders-list" class="order-list"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Order History</h2>
+      </div>
+      <div id="history-list" class="order-list"></div>
+    </section>
+  </main>
+
+  <script src="./common.js"></script>
+  <script>
+    const toast = document.getElementById("toast");
+    const walletPill = document.getElementById("wallet-pill");
+    const heroTitle = document.getElementById("hero-title");
+    const menuList = document.getElementById("menu-list");
+    const ordersList = document.getElementById("orders-list");
+    const historyList = document.getElementById("history-list");
+
+    let menuItems = [];
+    let activeOrders = [];
+    let orderHistory = [];
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function nextCookStatus(current) {
+      if (current === "Order Placed") return "Accepted";
+      if (current === "Accepted") return "Preparing";
+      if (current === "Preparing") return "Ready for Pickup";
+      return null;
+    }
+
+    function renderMenu() {
+      if (menuItems.length === 0) {
+        menuList.innerHTML = '<div class="empty-state">No menu items yet. Add your first meal above.</div>';
+        return;
+      }
+
+      menuList.innerHTML = menuItems.map((item) => `
+        <article class="card">
+          <img class="card-media" src="${item.IMAGE_URL || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${item.NAME}">
+          <div class="card-body">
+            <span class="badge">${item.AVAILABLE ? "Available" : "Hidden"}</span>
+            <h3>${item.NAME}</h3>
+            <p class="meta">${item.DESCRIPTION || "No description yet."}</p>
+            <p class="meta">${item.CATEGORY} � ${item.PREPARATION_TIME_MINS} mins</p>
+            <div class="price">${item.PRICE_NEST_COINS} NestCoins</div>
+            <div class="row">
+              <button class="secondary-btn" onclick="toggleAvailability('${item.ID}', ${item.AVAILABLE ? 0 : 1})">
+                ${item.AVAILABLE ? "Hide Item" : "Make Available"}
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderOrders() {
+      if (activeOrders.length === 0) {
+        ordersList.innerHTML = '<div class="empty-state">No active cook orders right now.</div>';
+        return;
+      }
+
+      ordersList.innerHTML = activeOrders.map((order) => {
+        const nextStatus = nextCookStatus(order.orderStatus);
+        return `
+          <article class="order-item">
+            <div class="row" style="justify-content: space-between;">
+              <h3>${order.orderId}</h3>
+              <span class="badge">${order.orderStatus}</span>
+            </div>
+            <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
+            <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
+            <p class="meta"><strong>Drop:</strong> ${order.dropLocation || "Hosteller Address"}</p>
+            <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+            <div class="row">
+              ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${order.orderId}', '${nextStatus}')">${nextStatus}</button>` : ""}
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderHistory() {
+      if (orderHistory.length === 0) {
+        historyList.innerHTML = '<div class="empty-state">No cook order history yet.</div>';
+        return;
+      }
+
+      historyList.innerHTML = orderHistory.map((order) => `
+        <article class="order-item">
+          <div class="row" style="justify-content: space-between;">
+            <h3>${order.orderId}</h3>
+            <span class="badge">${order.orderStatus}</span>
+          </div>
+          <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
+          <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
+          <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+        </article>
+      `).join("");
+    }
+
+    async function loadData() {
+      const [meData, menuData, activeData, historyData] = await Promise.all([
+        apiFetch("/auth/me"),
+        apiFetch("/menu"),
+        apiFetch("/orders/cook"),
+        apiFetch("/orders/cook/history")
+      ]);
+
+      const user = meData.user;
+      walletPill.textContent = `NestCoins: ${user.nestCoins}`;
+      heroTitle.textContent = `Welcome ${user.name}, manage your kitchen live`;
+      menuItems = menuData.items;
+      activeOrders = activeData.orders;
+      orderHistory = historyData.orders;
+
+      renderMenu();
+      renderOrders();
+      renderHistory();
+    }
+
+    async function updateOrderStatus(orderId, status) {
+      try {
+        await apiFetch("/order/status", {
+          method: "PUT",
+          body: JSON.stringify({ orderId, status })
+        });
+        showToast(`Order moved to ${status}.`);
+        await loadData();
+      } catch (error) {
+        showToast(error.message);
+      }
+    }
+
+    async function toggleAvailability(id, available) {
+      try {
+        await apiFetch(`/menu/${id}`, {
+          method: "PUT",
+          body: JSON.stringify({ available: Boolean(available) })
+        });
+        showToast("Menu item updated.");
+        await loadData();
+      } catch (error) {
+        showToast(error.message);
+      }
+    }
+
+    document.getElementById("menu-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      try {
+        await apiFetch("/menu", {
+          method: "POST",
+          body: JSON.stringify({
+            name: document.getElementById("dish-name").value.trim(),
+            category: document.getElementById("dish-category").value,
+            priceNestCoins: Number(document.getElementById("dish-price").value),
+            preparationTimeMins: Number(document.getElementById("dish-time").value),
+            imageUrl: document.getElementById("dish-image").value.trim() || null,
+            description: document.getElementById("dish-description").value.trim() || null
+          })
+        });
+        event.target.reset();
+        document.getElementById("dish-time").value = 20;
+        showToast("Menu item created.");
+        await loadData();
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", logout);
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const user = await requireRole("cook");
+      if (!user) return;
+      await loadData();
+    });
+  </script>
+</body>
+</html>

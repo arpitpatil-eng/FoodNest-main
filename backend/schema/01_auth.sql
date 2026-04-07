@@ -1,0 +1,17 @@
+CREATE TABLE users (
+  id VARCHAR2(50) PRIMARY KEY,
+  name VARCHAR2(100) NOT NULL,
+  username VARCHAR2(100) UNIQUE NOT NULL,
+  password_hash VARCHAR2(255) NOT NULL,
+  role VARCHAR2(20) CHECK (role IN ('student', 'cook', 'delivery')) NOT NULL,
+  nest_coins NUMBER DEFAULT 0 NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_sessions (
+  id VARCHAR2(50) PRIMARY KEY,
+  user_id VARCHAR2(50) NOT NULL,
+  token VARCHAR2(100) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_sessions_user FOREIGN KEY (user_id) REFERENCES users(id)
+);

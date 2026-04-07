@@ -228,10 +228,68 @@ router.get("/orders/cook", async (req, res) => {
 
     res.json({
       message: "Cook orders fetched.",
-      orders: result.rows
+      orders: result.rows.map((row) => ({
+        orderId: row.ORDER_ID,
+        orderStatus: row.ORDER_STATUS,
+        totalNestCoins: row.TOTAL_NEST_COINS,
+        createdAt: row.CREATED_AT,
+        studentId: row.STUDENT_ID,
+        studentName: row.STUDENT_NAME,
+        dropLocation: row.DROP_LOCATION,
+        estimatedTimeMins: row.ESTIMATED_TIME_MINS,
+        itemsSummary: row.ITEMS_SUMMARY
+      }))
     });
   } catch (error) {
     res.status(500).json({ message: "Cook orders fetch failed.", error: error.message });
+  } finally {
+    if (connection) await connection.close();
+  }
+});
+
+router.get("/orders/cook/history", async (req, res) => {
+  if (!isCook(req)) {
+    return res.status(403).json({ message: "Only home cooks allowed." });
+  }
+
+  const cookId = req.user.ID || req.user.id;
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const result = await connection.execute(
+      `SELECT
+         o.id AS order_id,
+         o.status AS order_status,
+         o.total_nest_coins,
+         o.created_at,
+         u.name AS student_name,
+         LISTAGG(mi.name || ' x' || oi.quantity, ', ')
+           WITHIN GROUP (ORDER BY mi.name) AS items_summary
+       FROM orders o
+       JOIN users u ON u.id = o.student_id
+       JOIN order_items oi ON oi.order_id = o.id
+       JOIN menu_items mi ON mi.id = oi.menu_item_id
+       WHERE o.cook_id = :cook_id
+       GROUP BY o.id, o.status, o.total_nest_coins, o.created_at, u.name
+       ORDER BY o.created_at DESC`,
+      { cook_id: cookId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    res.json({
+      orders: result.rows.map((row) => ({
+        orderId: row.ORDER_ID,
+        orderStatus: row.ORDER_STATUS,
+        totalNestCoins: row.TOTAL_NEST_COINS,
+        createdAt: row.CREATED_AT,
+        studentName: row.STUDENT_NAME,
+        itemsSummary: row.ITEMS_SUMMARY
+      }))
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Cook history fetch failed.", error: error.message });
   } finally {
     if (connection) await connection.close();
   }
