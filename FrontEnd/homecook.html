@@ -28,7 +28,29 @@
   <main class="page-shell">
     <section class="hero">
       <h2 id="hero-title">Manage meals and kitchen orders</h2>
-      <p>Create menu items, keep availability up to date, and move live orders through the preparation stages defined by the backend.</p>
+      <p>Create menu items, handle kitchen flow, track earnings, and move orders from acceptance to pickup readiness.</p>
+    </section>
+
+    <section class="section">
+      <div class="stats-grid">
+        <div class="stat-card"><h3>Orders Today</h3><p id="stat-orders-today">0</p></div>
+        <div class="stat-card"><h3>Total Orders</h3><p id="stat-total-orders">0</p></div>
+        <div class="stat-card"><h3>Meals Completed</h3><p id="stat-meals-completed">0</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="split-grid">
+        <div class="box profile-box">
+          <div class="section-title"><h2>Your Profile</h2></div>
+          <div id="cook-profile" class="stack muted"></div>
+        </div>
+        <div class="box">
+          <div class="section-title"><h2>NestCoin Wallet</h2></div>
+          <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
+          <p class="note">Delivered orders and 5-star review rewards increase your wallet.</p>
+        </div>
+      </div>
     </section>
 
     <section class="section">
@@ -102,6 +124,7 @@
     const menuList = document.getElementById("menu-list");
     const ordersList = document.getElementById("orders-list");
     const historyList = document.getElementById("history-list");
+    const cookProfile = document.getElementById("cook-profile");
 
     let menuItems = [];
     let activeOrders = [];
@@ -129,16 +152,16 @@
 
       menuList.innerHTML = menuItems.map((item) => `
         <article class="card">
-          <img class="card-media" src="${item.IMAGE_URL || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${item.NAME}">
+          <img class="card-media" src="${item.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${item.name}">
           <div class="card-body">
-            <span class="badge">${item.AVAILABLE ? "Available" : "Hidden"}</span>
-            <h3>${item.NAME}</h3>
-            <p class="meta">${item.DESCRIPTION || "No description yet."}</p>
-            <p class="meta">${item.CATEGORY} ï¿½ ${item.PREPARATION_TIME_MINS} mins</p>
-            <div class="price">${item.PRICE_NEST_COINS} NestCoins</div>
+            <span class="badge">${item.available ? "Available" : "Hidden"}</span>
+            <h3>${item.name}</h3>
+            <p class="meta">${item.description || "No description yet."}</p>
+            <p class="meta">${item.category} • ${item.preparationTimeMins} mins</p>
+            <div class="price">${item.priceNestCoins} NestCoins</div>
             <div class="row">
-              <button class="secondary-btn" onclick="toggleAvailability('${item.ID}', ${item.AVAILABLE ? 0 : 1})">
-                ${item.AVAILABLE ? "Hide Item" : "Make Available"}
+              <button class="secondary-btn" onclick="toggleAvailability('${item.id}', ${item.available ? 0 : 1})">
+                ${item.available ? "Hide Item" : "Make Available"}
               </button>
             </div>
           </div>
@@ -164,6 +187,7 @@
             <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
             <p class="meta"><strong>Drop:</strong> ${order.dropLocation || "Hosteller Address"}</p>
             <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+            <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins || "Pending"} mins</p>
             <div class="row">
               ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${order.orderId}', '${nextStatus}')">${nextStatus}</button>` : ""}
             </div>
@@ -192,16 +216,27 @@
     }
 
     async function loadData() {
-      const [meData, menuData, activeData, historyData] = await Promise.all([
+      const [meData, menuData, activeData, historyData, dashboardData] = await Promise.all([
         apiFetch("/auth/me"),
         apiFetch("/menu"),
         apiFetch("/orders/cook"),
-        apiFetch("/orders/cook/history")
+        apiFetch("/orders/cook/history"),
+        apiFetch("/cook/dashboard")
       ]);
 
       const user = meData.user;
       walletPill.textContent = `NestCoins: ${user.nestCoins}`;
       heroTitle.textContent = `Welcome ${user.name}, manage your kitchen live`;
+      document.getElementById("wallet-big").textContent = `${user.nestCoins} NestCoins`;
+      document.getElementById("stat-orders-today").textContent = dashboardData.ordersToday;
+      document.getElementById("stat-total-orders").textContent = dashboardData.totalOrders;
+      document.getElementById("stat-meals-completed").textContent = dashboardData.mealsCompleted;
+      cookProfile.innerHTML = `
+        <div><strong>Phone:</strong> ${user.profile.phone || "-"}</div>
+        <div><strong>Cuisine:</strong> ${user.profile.cookCuisine || "-"}</div>
+        <div><strong>Experience:</strong> ${user.profile.cookExperienceYears || 0} years</div>
+        <div><strong>Availability:</strong> ${user.profile.cookAvailability || "-"}</div>
+      `;
       menuItems = menuData.items;
       activeOrders = activeData.orders;
       orderHistory = historyData.orders;

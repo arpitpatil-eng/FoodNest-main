@@ -1,8 +1,8 @@
 CREATE TABLE delivery_assignments (
   id VARCHAR2(50) PRIMARY KEY,
   order_id VARCHAR2(50) UNIQUE NOT NULL,
-  delivery_partner_id VARCHAR2(50) NOT NULL,
-  delivery_status VARCHAR2(30) DEFAULT 'Assigned' NOT NULL,
+  delivery_partner_id VARCHAR2(50),
+  delivery_status VARCHAR2(30) DEFAULT 'Pending Acceptance' NOT NULL,
   pickup_location VARCHAR2(255) DEFAULT 'Home Cook Hub' NOT NULL,
   drop_location VARCHAR2(255) DEFAULT 'Hosteller Address' NOT NULL,
   estimated_time_mins NUMBER DEFAULT 20 NOT NULL,

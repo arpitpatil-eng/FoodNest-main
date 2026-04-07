@@ -3,6 +3,7 @@ const oracledb = require("oracledb");
 const { getConnection } = require("../config/db");
 const { createId } = require("../utils/ids");
 const { requireAuth } = require("../middleware/auth");
+const { computeFiveStarReward } = require("../utils/coins");
 
 const router = express.Router();
 
@@ -21,8 +22,10 @@ router.get("/dashboard", async (req, res) => {
   try {
     connection = await getConnection();
 
-    const orders = await connection.execute(
-      `SELECT COUNT(*) AS TOTAL_ORDERS
+    const stats = await connection.execute(
+      `SELECT
+         COUNT(*) AS TOTAL_ORDERS,
+         SUM(CASE WHEN status <> 'Delivered' THEN 1 ELSE 0 END) AS ACTIVE_ORDERS
        FROM orders
        WHERE student_id = :student_id`,
       { student_id: studentId },
@@ -32,7 +35,8 @@ router.get("/dashboard", async (req, res) => {
     res.json({
       message: "Student dashboard loaded.",
       student: req.user,
-      totalOrders: orders.rows[0].TOTAL_ORDERS
+      totalOrders: stats.rows[0].TOTAL_ORDERS,
+      activeOrders: stats.rows[0].ACTIVE_ORDERS
     });
   } catch (error) {
     res.status(500).json({ message: "Dashboard error.", error: error.message });
@@ -114,6 +118,8 @@ router.get("/orders", async (req, res) => {
          da.estimated_time_mins,
          da.distance_km,
          f.rating AS feedback_rating,
+         f.review_text,
+         f.reward_distributed,
          LISTAGG(mi.name || ' x' || oi.quantity, ', ')
            WITHIN GROUP (ORDER BY mi.name) AS items_summary
        FROM orders o
@@ -127,7 +133,7 @@ router.get("/orders", async (req, res) => {
        GROUP BY
          o.id, o.total_nest_coins, o.payment_method, o.payment_status, o.status, o.created_at,
          c.name, dp.name, da.delivery_status, da.pickup_location, da.drop_location,
-         da.estimated_time_mins, da.distance_km, f.rating
+         da.estimated_time_mins, da.distance_km, f.rating, f.review_text, f.reward_distributed
        ORDER BY o.created_at DESC`,
       { student_id: studentId },
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -149,6 +155,8 @@ router.get("/orders", async (req, res) => {
         estimatedTimeMins: row.ESTIMATED_TIME_MINS || null,
         distanceKm: row.DISTANCE_KM || null,
         feedbackRating: row.FEEDBACK_RATING || null,
+        reviewText: row.REVIEW_TEXT || null,
+        rewardDistributed: row.REWARD_DISTRIBUTED || 0,
         itemsSummary: row.ITEMS_SUMMARY
       }))
     });
@@ -160,7 +168,7 @@ router.get("/orders", async (req, res) => {
 });
 
 router.post("/orders", async (req, res) => {
-  const { items } = req.body;
+  const { items, paymentMethod = "NestCoins" } = req.body;
   const role = req.user.ROLE || req.user.role;
   const studentId = req.user.ID || req.user.id;
 
@@ -241,12 +249,13 @@ router.post("/orders", async (req, res) => {
     await connection.execute(
       `INSERT INTO orders
        (id, student_id, cook_id, total_nest_coins, payment_method, payment_status, status)
-       VALUES (:id, :student_id, :cook_id, :total, 'NestCoins', 'Paid', 'Order Placed')`,
+       VALUES (:id, :student_id, :cook_id, :total, :payment_method, 'Paid', 'Order Placed')`,
       {
         id: orderId,
         student_id: studentId,
         cook_id: cookId,
-        total
+        total,
+        payment_method: paymentMethod
       }
     );
 
@@ -266,38 +275,22 @@ router.post("/orders", async (req, res) => {
       );
     }
 
-    const deliveryPartnerResult = await connection.execute(
-      `SELECT id
-       FROM (
-         SELECT id
-         FROM users
-         WHERE role = 'delivery'
-         ORDER BY created_at
-       )
-       WHERE ROWNUM = 1`,
-      {},
-      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    const estimatedTimeMins = maxPreparationTime + (15 + Math.floor(Math.random() * 16));
+    const distanceKm = Number((2 + Math.random() * 5).toFixed(1));
+
+    await connection.execute(
+      `INSERT INTO delivery_assignments
+       (id, order_id, delivery_partner_id, delivery_status, pickup_location, drop_location, estimated_time_mins, distance_km)
+       VALUES
+       (:id, :order_id, :delivery_partner_id, 'Pending Acceptance', 'Home Cook Hub', 'Hosteller Address', :estimated_time_mins, :distance_km)`,
+      {
+        id: createId("da"),
+        order_id: orderId,
+        delivery_partner_id: null,
+        estimated_time_mins: estimatedTimeMins,
+        distance_km: distanceKm
+      }
     );
-
-    if (deliveryPartnerResult.rows.length > 0) {
-      const deliveryPartnerId = deliveryPartnerResult.rows[0].ID;
-      const estimatedTimeMins = maxPreparationTime + (15 + Math.floor(Math.random() * 16));
-      const distanceKm = Number((2 + Math.random() * 5).toFixed(1));
-
-      await connection.execute(
-        `INSERT INTO delivery_assignments
-         (id, order_id, delivery_partner_id, delivery_status, pickup_location, drop_location, estimated_time_mins, distance_km)
-         VALUES
-         (:id, :order_id, :delivery_partner_id, 'Assigned', 'Home Cook Hub', 'Hosteller Address', :estimated_time_mins, :distance_km)`,
-        {
-          id: createId("da"),
-          order_id: orderId,
-          delivery_partner_id: deliveryPartnerId,
-          estimated_time_mins: estimatedTimeMins,
-          distance_km: distanceKm
-        }
-      );
-    }
 
     await connection.execute(
       `INSERT INTO order_status_history (id, order_id, stage, simulated)
@@ -322,7 +315,7 @@ router.post("/orders", async (req, res) => {
 });
 
 router.post("/orders/:orderId/feedback", async (req, res) => {
-  const { rating } = req.body;
+  const { rating, reviewText = null } = req.body;
   const { orderId } = req.params;
   const role = req.user.ROLE || req.user.role;
 
@@ -339,18 +332,63 @@ router.post("/orders/:orderId/feedback", async (req, res) => {
   try {
     connection = await getConnection();
 
+    const orderResult = await connection.execute(
+      `SELECT o.id, o.total_nest_coins, o.student_id, o.cook_id, da.delivery_partner_id
+       FROM orders o
+       LEFT JOIN delivery_assignments da ON da.order_id = o.id
+       WHERE o.id = :order_id`,
+      { order_id: orderId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    if (orderResult.rows.length === 0) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    const order = orderResult.rows[0];
+
     await connection.execute(
-      `INSERT INTO feedback (id, order_id, rating)
-       VALUES (:id, :order_id, :rating)`,
+      `INSERT INTO feedback (id, order_id, rating, review_text, reward_distributed)
+       VALUES (:id, :order_id, :rating, :review_text, :reward_distributed)`,
       {
         id: createId("fb"),
         order_id: orderId,
-        rating
-      },
-      { autoCommit: true }
+        rating,
+        review_text: reviewText,
+        reward_distributed: rating === 5 ? 1 : 0
+      }
     );
 
-    res.json({ message: "Feedback submitted successfully." });
+    let reward = null;
+    if (Number(rating) === 5) {
+      reward = computeFiveStarReward(order.TOTAL_NEST_COINS);
+
+      await connection.execute(
+        `UPDATE users SET nest_coins = nest_coins + :reward WHERE id = :id`,
+        { reward: reward.studentShare, id: order.STUDENT_ID }
+      );
+
+      if (order.COOK_ID) {
+        await connection.execute(
+          `UPDATE users SET nest_coins = nest_coins + :reward WHERE id = :id`,
+          { reward: reward.cookShare, id: order.COOK_ID }
+        );
+      }
+
+      if (order.DELIVERY_PARTNER_ID) {
+        await connection.execute(
+          `UPDATE users SET nest_coins = nest_coins + :reward WHERE id = :id`,
+          { reward: reward.deliveryShare, id: order.DELIVERY_PARTNER_ID }
+        );
+      }
+    }
+
+    await connection.commit();
+
+    res.json({
+      message: "Feedback submitted successfully.",
+      reward
+    });
   } catch (error) {
     res.status(500).json({ message: "Feedback failed.", error: error.message });
   } finally {

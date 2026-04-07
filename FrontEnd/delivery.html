@@ -27,8 +27,37 @@
 
   <main class="page-shell">
     <section class="hero">
-      <h2 id="hero-title">Track assigned deliveries</h2>
-      <p>Your assigned orders come directly from the backend. Update them from pickup to delivered using the live delivery status route.</p>
+      <h2 id="hero-title">Deliver meals. Earn NestCoins.</h2>
+      <p>Accept open delivery jobs, update active deliveries from pickup to delivered, and track your growing delivery wallet.</p>
+    </section>
+
+    <section class="section">
+      <div class="stats-grid">
+        <div class="stat-card"><h3>Today's Deliveries</h3><p id="stat-today">0</p></div>
+        <div class="stat-card"><h3>Total Assigned</h3><p id="stat-assigned">0</p></div>
+        <div class="stat-card"><h3>Completed</h3><p id="stat-completed">0</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="split-grid">
+        <div class="box profile-box">
+          <div class="section-title"><h2>Your Profile</h2></div>
+          <div id="delivery-profile" class="stack muted"></div>
+        </div>
+        <div class="box">
+          <div class="section-title"><h2>NestCoin Wallet</h2></div>
+          <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
+          <p class="note">Delivery payouts and 5-star bonuses collect here.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Available Deliveries</h2>
+      </div>
+      <div id="open-deliveries-list" class="order-list"></div>
     </section>
 
     <section class="section">
@@ -51,9 +80,12 @@
     const toast = document.getElementById("toast");
     const walletPill = document.getElementById("wallet-pill");
     const heroTitle = document.getElementById("hero-title");
+    const openDeliveriesList = document.getElementById("open-deliveries-list");
     const deliveriesList = document.getElementById("deliveries-list");
     const historyList = document.getElementById("history-list");
+    const deliveryProfile = document.getElementById("delivery-profile");
 
+    let openDeliveries = [];
     let deliveries = [];
     let history = [];
 
@@ -69,6 +101,31 @@
       if (current === "Picked Up") return ["On the Way", "Delivered"];
       if (current === "On the Way") return ["Delivered"];
       return [];
+    }
+
+    function renderOpenDeliveries() {
+      if (openDeliveries.length === 0) {
+        openDeliveriesList.innerHTML = '<div class="empty-state">No open deliveries available right now.</div>';
+        return;
+      }
+
+      openDeliveriesList.innerHTML = openDeliveries.map((order) => `
+        <article class="order-item">
+          <div class="row" style="justify-content: space-between;">
+            <h3>${order.orderId}</h3>
+            <span class="badge">${order.deliveryStatus}</span>
+          </div>
+          <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
+          <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
+          <p class="meta"><strong>Cook:</strong> ${order.cookName}</p>
+          <p class="meta"><strong>Pickup:</strong> ${order.pickupLocation}</p>
+          <p class="meta"><strong>Drop:</strong> ${order.dropLocation}</p>
+          <p class="meta"><strong>Distance:</strong> ${order.distanceKm} km</p>
+          <div class="row">
+            <button class="primary-btn" onclick="acceptDelivery('${order.orderId}')">Accept Delivery</button>
+          </div>
+        </article>
+      `).join("");
     }
 
     function renderDeliveries() {
@@ -118,20 +175,46 @@
     }
 
     async function loadData() {
-      const [meData, deliveriesData, historyData] = await Promise.all([
+      const [meData, openData, deliveriesData, historyData, dashboardData] = await Promise.all([
         apiFetch("/auth/me"),
+        apiFetch("/deliveries/open"),
         apiFetch("/orders/delivery"),
-        apiFetch("/orders/delivery/history")
+        apiFetch("/orders/delivery/history"),
+        apiFetch("/delivery/dashboard")
       ]);
 
       const user = meData.user;
       walletPill.textContent = `NestCoins: ${user.nestCoins}`;
-      heroTitle.textContent = `Welcome ${user.name}, manage your assigned deliveries`;
+      heroTitle.textContent = `Welcome ${user.name}, manage your delivery shift live`;
+      document.getElementById("wallet-big").textContent = `${user.nestCoins} NestCoins`;
+      document.getElementById("stat-today").textContent = dashboardData.todayDeliveries;
+      document.getElementById("stat-assigned").textContent = dashboardData.totalAssigned;
+      document.getElementById("stat-completed").textContent = dashboardData.completed;
+      deliveryProfile.innerHTML = `
+        <div><strong>Phone:</strong> ${user.profile.phone || "-"}</div>
+        <div><strong>Contact Number:</strong> ${user.profile.deliveryContactPhone || user.profile.phone || "-"}</div>
+        <div><strong>Vehicle:</strong> ${user.profile.deliveryVehicle || "-"}</div>
+        <div><strong>Shift:</strong> ${user.profile.deliveryShift || "-"}</div>
+      `;
+      openDeliveries = openData.orders;
       deliveries = deliveriesData.orders;
       history = historyData.orders;
 
+      renderOpenDeliveries();
       renderDeliveries();
       renderHistory();
+    }
+
+    async function acceptDelivery(orderId) {
+      try {
+        await apiFetch(`/deliveries/${orderId}/accept`, {
+          method: "POST"
+        });
+        showToast("Delivery accepted.");
+        await loadData();
+      } catch (error) {
+        showToast(error.message);
+      }
     }
 
     async function updateDeliveryStatus(orderId, status) {

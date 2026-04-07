@@ -92,6 +92,7 @@ button, input, select, textarea { font: inherit; }
 .section-title h2 { color: var(--berry); font-size: 30px; }
 .grid { display: grid; gap: 18px; }
 .grid.cards-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid.cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .card, .box {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -194,6 +195,22 @@ button, input, select, textarea { font: inherit; }
   border: 1px solid rgba(255, 255, 255, 0.14);
 }
 .auth-main { padding: 36px; }
+.role-extra { display: none; margin-top: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: #fcf7fa; }
+.role-extra.active { display: block; }
+.quick-role { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 18px; }
+.quick-role button { border-radius: 999px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.stat-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--soft); padding: 20px; }
+.stat-card h3 { color: var(--berry); font-size: 18px; margin-bottom: 10px; }
+.stat-card p { font-size: 30px; color: var(--velvet); font-weight: 800; }
+.split-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+.payment-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.pay-card { border: 1px solid var(--line); border-radius: 18px; padding: 18px; background: #fbf7f9; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; }
+.pay-card.active, .pay-card:hover { border-color: rgba(133,57,83,0.5); transform: translateY(-1px); }
+.timeline { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.timeline span { padding: 8px 12px; border-radius: 999px; background: rgba(97,45,83,0.08); font-size: 13px; color: var(--berry); font-weight: 700; }
+.profile-box { background: linear-gradient(135deg, rgba(97,45,83,0.08), rgba(133,57,83,0.06)); }
+.muted { color: #665a64; }
 .tabs {
   display: inline-flex;
   gap: 8px;

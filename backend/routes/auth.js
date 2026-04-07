@@ -9,15 +9,66 @@ const { hashPassword, verifyPassword } = require("../utils/passwords");
 const router = express.Router();
 const allowedRoles = ["student", "cook", "delivery"];
 
-router.post("/signup", async (req, res) => {
-  const { name, username, password, role } = req.body;
+function buildUserResponse(row) {
+  return {
+    id: row.ID,
+    name: row.NAME,
+    username: row.USERNAME,
+    role: row.ROLE,
+    nestCoins: row.NEST_COINS,
+    profile: {
+      age: row.AGE,
+      phone: row.PHONE,
+      collegeName: row.COLLEGE_NAME,
+      hostelAddress: row.HOSTEL_ADDRESS,
+      cookExperienceYears: row.COOK_EXPERIENCE_YEARS,
+      cookCuisine: row.COOK_CUISINE,
+      cookAvailability: row.COOK_AVAILABILITY,
+      deliveryContactPhone: row.DELIVERY_CONTACT_PHONE,
+      deliveryVehicle: row.DELIVERY_VEHICLE,
+      deliveryHours: row.DELIVERY_HOURS,
+      deliveryShift: row.DELIVERY_SHIFT
+    }
+  };
+}
 
-  if (!name || !username || !password || !role) {
+router.post("/signup", async (req, res) => {
+  const {
+    name,
+    username,
+    password,
+    role,
+    age = null,
+    phone = null,
+    college = null,
+    address = null,
+    cookExperience = null,
+    cookCuisine = null,
+    cookAvailability = null,
+    deliveryPhoneConfirm = null,
+    deliveryVehicle = null,
+    deliveryHours = null,
+    deliveryShift = null
+  } = req.body;
+
+  if (!name || !username || !password || !role || !phone) {
     return res.status(400).json({ message: "All fields required." });
   }
 
   if (!allowedRoles.includes(role)) {
     return res.status(400).json({ message: "Invalid role." });
+  }
+
+  if (role === "student" && (!age || !college || !address)) {
+    return res.status(400).json({ message: "Hosteller details are required." });
+  }
+
+  if (role === "cook" && (!cookExperience || !cookCuisine || !cookAvailability)) {
+    return res.status(400).json({ message: "Home cook details are required." });
+  }
+
+  if (role === "delivery" && (!deliveryVehicle || !deliveryHours || !deliveryShift)) {
+    return res.status(400).json({ message: "Delivery details are required." });
   }
 
   let connection;
@@ -26,8 +77,11 @@ router.post("/signup", async (req, res) => {
     connection = await getConnection();
 
     const existing = await connection.execute(
-      `SELECT id FROM users WHERE username = :username`,
-      { username },
+      `SELECT u.id
+       FROM users u
+       LEFT JOIN user_profiles p ON p.user_id = u.id
+       WHERE u.username = :username OR p.phone = :phone`,
+      { username, phone },
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
@@ -49,13 +103,55 @@ router.post("/signup", async (req, res) => {
         password_hash: passwordHash,
         role,
         nest_coins: nestCoins
+      }
+    );
+
+    await connection.execute(
+      `INSERT INTO user_profiles
+       (user_id, age, phone, college_name, hostel_address, cook_experience_years, cook_cuisine,
+        cook_availability, delivery_contact_phone, delivery_vehicle, delivery_hours, delivery_shift)
+       VALUES
+       (:user_id, :age, :phone, :college_name, :hostel_address, :cook_experience_years, :cook_cuisine,
+        :cook_availability, :delivery_contact_phone, :delivery_vehicle, :delivery_hours, :delivery_shift)`,
+      {
+        user_id: userId,
+        age: age ? Number(age) : null,
+        phone,
+        college_name: college,
+        hostel_address: address,
+        cook_experience_years: cookExperience ? Number(cookExperience) : null,
+        cook_cuisine: cookCuisine,
+        cook_availability: cookAvailability,
+        delivery_contact_phone: deliveryPhoneConfirm || phone,
+        delivery_vehicle: deliveryVehicle,
+        delivery_hours: deliveryHours,
+        delivery_shift: deliveryShift
       },
       { autoCommit: true }
     );
 
     res.status(201).json({
       message: "User registered successfully.",
-      user: { id: userId, name, username, role, nestCoins }
+      user: {
+        id: userId,
+        name,
+        username,
+        role,
+        nestCoins,
+        profile: {
+          age: age ? Number(age) : null,
+          phone,
+          collegeName: college,
+          hostelAddress: address,
+          cookExperienceYears: cookExperience ? Number(cookExperience) : null,
+          cookCuisine,
+          cookAvailability,
+          deliveryContactPhone: deliveryPhoneConfirm || phone,
+          deliveryVehicle,
+          deliveryHours,
+          deliveryShift
+        }
+      }
     });
   } catch (error) {
     res.status(500).json({ message: "Signup failed.", error: error.message });
@@ -67,7 +163,8 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, identifier, password } = req.body;
+  const loginValue = (identifier || username || "").trim();
 
   let connection;
 
@@ -75,10 +172,15 @@ router.post("/login", async (req, res) => {
     connection = await getConnection();
 
     const result = await connection.execute(
-      `SELECT id, name, username, password_hash, role, nest_coins
-       FROM users
-       WHERE username = :username`,
-      { username },
+      `SELECT
+         u.id, u.name, u.username, u.password_hash, u.role, u.nest_coins,
+         p.age, p.phone, p.college_name, p.hostel_address, p.cook_experience_years,
+         p.cook_cuisine, p.cook_availability, p.delivery_contact_phone,
+         p.delivery_vehicle, p.delivery_hours, p.delivery_shift
+       FROM users u
+       LEFT JOIN user_profiles p ON p.user_id = u.id
+       WHERE u.username = :login_value OR p.phone = :login_value`,
+      { login_value: loginValue },
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
@@ -109,13 +211,7 @@ router.post("/login", async (req, res) => {
     res.json({
       message: "Login successful.",
       token,
-      user: {
-        id: user.ID,
-        name: user.NAME,
-        username: user.USERNAME,
-        role: user.ROLE,
-        nestCoins: user.NEST_COINS
-      }
+      user: buildUserResponse(user)
     });
   } catch (error) {
     res.status(500).json({ message: "Login failed.", error: error.message });
@@ -127,15 +223,32 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/me", requireAuth, async (req, res) => {
-  res.json({
-    user: {
-      id: req.user.ID || req.user.id,
-      name: req.user.NAME || req.user.name,
-      username: req.user.USERNAME || req.user.username,
-      role: req.user.ROLE || req.user.role,
-      nestCoins: req.user.NEST_COINS ?? req.user.nest_coins ?? 0
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const result = await connection.execute(
+      `SELECT
+         u.id, u.name, u.username, u.role, u.nest_coins,
+         p.age, p.phone, p.college_name, p.hostel_address, p.cook_experience_years,
+         p.cook_cuisine, p.cook_availability, p.delivery_contact_phone,
+         p.delivery_vehicle, p.delivery_hours, p.delivery_shift
+       FROM users u
+       LEFT JOIN user_profiles p ON p.user_id = u.id
+       WHERE u.id = :id`,
+      { id: req.user.ID || req.user.id },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    res.json({ user: buildUserResponse(result.rows[0]) });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to load profile.", error: error.message });
+  } finally {
+    if (connection) {
+      await connection.close();
     }
-  });
+  }
 });
 
 module.exports = router;

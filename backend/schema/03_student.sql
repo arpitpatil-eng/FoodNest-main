@@ -6,6 +6,7 @@ CREATE TABLE orders (
   payment_method VARCHAR2(30) NOT NULL,
   payment_status VARCHAR2(30) NOT NULL,
   status VARCHAR2(50) NOT NULL,
+  payout_distributed NUMBER(1) DEFAULT 0 NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_orders_student FOREIGN KEY (student_id) REFERENCES users(id),
   CONSTRAINT fk_orders_cook FOREIGN KEY (cook_id) REFERENCES users(id)
@@ -26,6 +27,8 @@ CREATE TABLE feedback (
   id VARCHAR2(50) PRIMARY KEY,
   order_id VARCHAR2(50) UNIQUE NOT NULL,
   rating NUMBER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  review_text VARCHAR2(500),
+  reward_distributed NUMBER(1) DEFAULT 0 NOT NULL,
   submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_feedback_order FOREIGN KEY (order_id) REFERENCES orders(id)
 );

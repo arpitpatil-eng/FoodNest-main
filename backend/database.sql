@@ -16,6 +16,22 @@ CREATE TABLE user_sessions (
   CONSTRAINT fk_sessions_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE user_profiles (
+  user_id VARCHAR2(50) PRIMARY KEY,
+  age NUMBER,
+  phone VARCHAR2(30) UNIQUE NOT NULL,
+  college_name VARCHAR2(150),
+  hostel_address VARCHAR2(255),
+  cook_experience_years NUMBER,
+  cook_cuisine VARCHAR2(150),
+  cook_availability VARCHAR2(100),
+  delivery_contact_phone VARCHAR2(30),
+  delivery_vehicle VARCHAR2(50),
+  delivery_hours VARCHAR2(100),
+  delivery_shift VARCHAR2(50),
+  CONSTRAINT fk_user_profiles_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 CREATE TABLE menu_items (
   id VARCHAR2(50) PRIMARY KEY,
   cook_id VARCHAR2(50),
@@ -37,6 +53,7 @@ CREATE TABLE orders (
   payment_method VARCHAR2(30) NOT NULL,
   payment_status VARCHAR2(30) NOT NULL,
   status VARCHAR2(50) NOT NULL,
+  payout_distributed NUMBER(1) DEFAULT 0 NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_orders_student FOREIGN KEY (student_id) REFERENCES users(id),
   CONSTRAINT fk_orders_cook FOREIGN KEY (cook_id) REFERENCES users(id)
@@ -45,8 +62,8 @@ CREATE TABLE orders (
 CREATE TABLE delivery_assignments (
   id VARCHAR2(50) PRIMARY KEY,
   order_id VARCHAR2(50) UNIQUE NOT NULL,
-  delivery_partner_id VARCHAR2(50) NOT NULL,
-  delivery_status VARCHAR2(30) DEFAULT 'Assigned' NOT NULL,
+  delivery_partner_id VARCHAR2(50),
+  delivery_status VARCHAR2(30) DEFAULT 'Pending Acceptance' NOT NULL,
   pickup_location VARCHAR2(255) DEFAULT 'Home Cook Hub' NOT NULL,
   drop_location VARCHAR2(255) DEFAULT 'Hosteller Address' NOT NULL,
   estimated_time_mins NUMBER DEFAULT 20 NOT NULL,
@@ -83,6 +100,8 @@ CREATE TABLE feedback (
   id VARCHAR2(50) PRIMARY KEY,
   order_id VARCHAR2(50) UNIQUE NOT NULL,
   rating NUMBER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  review_text VARCHAR2(500),
+  reward_distributed NUMBER(1) DEFAULT 0 NOT NULL,
   submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_feedback_order FOREIGN KEY (order_id) REFERENCES orders(id)
 );

@@ -43,7 +43,13 @@
         <div class="section-title">
           <h2>Welcome Back</h2>
         </div>
-        <p class="note">Use the backend credentials stored in the Oracle database. The role must match the account.</p>
+        <p class="note">Login works with username or phone, and the chosen role must match the account.</p>
+
+        <div class="quick-role">
+          <button class="secondary-btn" type="button" onclick="document.getElementById('login-role').value='student'">Hosteller</button>
+          <button class="secondary-btn" type="button" onclick="document.getElementById('login-role').value='cook'">Home Cook</button>
+          <button class="secondary-btn" type="button" onclick="document.getElementById('login-role').value='delivery'">Delivery Agent</button>
+        </div>
 
         <form id="login-form" class="stack">
           <div class="field">
@@ -57,8 +63,8 @@
           </div>
 
           <div class="field">
-            <label for="login-username">Username</label>
-            <input id="login-username" type="text" placeholder="Enter username" required>
+            <label for="login-identifier">Username or Phone</label>
+            <input id="login-identifier" type="text" placeholder="Enter username or phone" required>
           </div>
 
           <div class="field">
@@ -74,37 +80,123 @@
         <div class="section-title">
           <h2>Create Account</h2>
         </div>
-        <p class="note">This form saves only the fields currently supported by the backend: name, username, password, and role.</p>
+        <p class="note">This version stores the richer profile details from the reference flow directly in the backend.</p>
 
         <form id="signup-form" class="stack">
-          <div class="field">
-            <label for="signup-name">Full Name</label>
-            <input id="signup-name" type="text" placeholder="Enter full name" required>
+          <div class="form-grid">
+            <div class="field">
+              <label for="signup-name">Full Name</label>
+              <input id="signup-name" type="text" placeholder="Enter full name" required>
+            </div>
+
+            <div class="field">
+              <label for="signup-age">Age</label>
+              <input id="signup-age" type="number" min="16" placeholder="Enter age">
+            </div>
+
+            <div class="field">
+              <label for="signup-username">Username</label>
+              <input id="signup-username" type="text" placeholder="Choose a username" required>
+            </div>
+
+            <div class="field">
+              <label for="signup-phone">Phone Number</label>
+              <input id="signup-phone" type="text" placeholder="Enter phone number" required>
+            </div>
+
+            <div class="field">
+              <label for="signup-college">College Name</label>
+              <input id="signup-college" type="text" placeholder="Enter college name">
+            </div>
+
+            <div class="field">
+              <label for="signup-role">Register As</label>
+              <select id="signup-role" required>
+                <option value="">Select role</option>
+                <option value="student">Hosteller</option>
+                <option value="cook">Home Cook</option>
+                <option value="delivery">Delivery Agent</option>
+              </select>
+            </div>
+
+            <div class="field" style="grid-column: 1 / -1;">
+              <label for="signup-address">Hostel / Address</label>
+              <textarea id="signup-address" rows="2" placeholder="Enter hostel address"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="signup-password">Password</label>
+              <input id="signup-password" type="password" placeholder="Create password" required>
+            </div>
+
+            <div class="field">
+              <label for="signup-confirm-password">Confirm Password</label>
+              <input id="signup-confirm-password" type="password" placeholder="Confirm password" required>
+            </div>
           </div>
 
-          <div class="field">
-            <label for="signup-username">Username</label>
-            <input id="signup-username" type="text" placeholder="Choose a username" required>
+          <div class="role-extra" id="cook-extra">
+            <h3>Home Cook Details</h3>
+            <div class="form-grid">
+              <div class="field">
+                <label for="cook-experience">Cooking Experience (Years)</label>
+                <input id="cook-experience" type="number" min="0" placeholder="Example: 3">
+              </div>
+              <div class="field">
+                <label for="cook-cuisine">Specialty Cuisine</label>
+                <input id="cook-cuisine" type="text" placeholder="Example: South Indian">
+              </div>
+              <div class="field">
+                <label for="cook-availability">Can you cook daily?</label>
+                <select id="cook-availability">
+                  <option value="">Select option</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Only Weekdays">Only Weekdays</option>
+                  <option value="Only Weekends">Only Weekends</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <div class="field">
-            <label for="signup-role">Register As</label>
-            <select id="signup-role" required>
-              <option value="">Select role</option>
-              <option value="student">Hosteller</option>
-              <option value="cook">Home Cook</option>
-              <option value="delivery">Delivery Agent</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="signup-password">Password</label>
-            <input id="signup-password" type="password" placeholder="Create password" required>
-          </div>
-
-          <div class="field">
-            <label for="signup-confirm-password">Confirm Password</label>
-            <input id="signup-confirm-password" type="password" placeholder="Confirm password" required>
+          <div class="role-extra" id="delivery-extra">
+            <h3>Delivery Agent Details</h3>
+            <div class="form-grid">
+              <div class="field">
+                <label for="delivery-phone-confirm">Delivery Contact Number</label>
+                <input id="delivery-phone-confirm" type="text" placeholder="Enter delivery contact number">
+              </div>
+              <div class="field">
+                <label for="delivery-vehicle">Vehicle Type</label>
+                <select id="delivery-vehicle">
+                  <option value="">Select vehicle</option>
+                  <option value="Bike">Bike</option>
+                  <option value="Scooter">Scooter</option>
+                  <option value="Cycle">Cycle</option>
+                  <option value="On Foot">On Foot</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="delivery-hours">Can you drive during specific hours?</label>
+                <select id="delivery-hours">
+                  <option value="">Select option</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Only Certain Slots">Only Certain Slots</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="delivery-shift">Available Shift</label>
+                <select id="delivery-shift">
+                  <option value="">Select shift</option>
+                  <option value="Morning">Morning</option>
+                  <option value="Afternoon">Afternoon</option>
+                  <option value="Evening">Evening</option>
+                  <option value="Night">Night</option>
+                  <option value="Flexible">Flexible</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           <button class="primary-btn" type="submit">Create Account</button>
@@ -139,27 +231,78 @@
       button.addEventListener("click", () => switchTab(button.dataset.tab));
     });
 
+    function toggleRoleFields(role) {
+      document.getElementById("cook-extra").classList.toggle("active", role === "cook");
+      document.getElementById("delivery-extra").classList.toggle("active", role === "delivery");
+    }
+
+    document.getElementById("signup-role").addEventListener("change", (event) => {
+      toggleRoleFields(event.target.value);
+    });
+
     document.getElementById("signup-form").addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const name = document.getElementById("signup-name").value.trim();
+      const age = document.getElementById("signup-age").value;
       const username = document.getElementById("signup-username").value.trim();
+      const phone = document.getElementById("signup-phone").value.trim();
+      const college = document.getElementById("signup-college").value.trim();
+      const address = document.getElementById("signup-address").value.trim();
       const role = document.getElementById("signup-role").value;
       const password = document.getElementById("signup-password").value;
       const confirmPassword = document.getElementById("signup-confirm-password").value;
+      const cookExperience = document.getElementById("cook-experience").value;
+      const cookCuisine = document.getElementById("cook-cuisine").value.trim();
+      const cookAvailability = document.getElementById("cook-availability").value;
+      const deliveryPhoneConfirm = document.getElementById("delivery-phone-confirm").value.trim();
+      const deliveryVehicle = document.getElementById("delivery-vehicle").value;
+      const deliveryHours = document.getElementById("delivery-hours").value;
+      const deliveryShift = document.getElementById("delivery-shift").value;
 
       if (password !== confirmPassword) {
         showToast("Passwords do not match.");
         return;
       }
 
+      if (role === "student" && (!age || !college || !address)) {
+        showToast("Hosteller age, college, and address are required.");
+        return;
+      }
+
+      if (role === "cook" && (!cookExperience || !cookCuisine || !cookAvailability)) {
+        showToast("Complete all home cook details.");
+        return;
+      }
+
+      if (role === "delivery" && (!deliveryVehicle || !deliveryHours || !deliveryShift)) {
+        showToast("Complete all delivery details.");
+        return;
+      }
+
       try {
         await apiFetch("/auth/signup", {
           method: "POST",
-          body: JSON.stringify({ name, username, password, role })
+          body: JSON.stringify({
+            name,
+            age,
+            username,
+            phone,
+            college,
+            address,
+            role,
+            password,
+            cookExperience,
+            cookCuisine,
+            cookAvailability,
+            deliveryPhoneConfirm,
+            deliveryVehicle,
+            deliveryHours,
+            deliveryShift
+          })
         });
         showToast("Account created. Please log in.");
-        document.getElementById("login-username").value = username;
+        document.getElementById("login-identifier").value = phone || username;
         document.getElementById("login-role").value = role;
         switchTab("login");
       } catch (error) {
@@ -170,14 +313,14 @@
     document.getElementById("login-form").addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const username = document.getElementById("login-username").value.trim();
+      const identifier = document.getElementById("login-identifier").value.trim();
       const password = document.getElementById("login-password").value;
       const expectedRole = document.getElementById("login-role").value;
 
       try {
         const data = await apiFetch("/auth/login", {
           method: "POST",
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify({ identifier, password })
         });
 
         if (expectedRole && data.user.role !== expectedRole) {
@@ -200,4 +343,3 @@
   </script>
 </body>
 </html>
-

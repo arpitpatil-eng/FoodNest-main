@@ -34,9 +34,61 @@ router.get("/menu", async (req, res) => {
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
-    res.json({ items: result.rows });
+    res.json({
+      items: result.rows.map((row) => ({
+        id: row.ID,
+        name: row.NAME,
+        category: row.CATEGORY,
+        priceNestCoins: row.PRICE_NEST_COINS,
+        preparationTimeMins: row.PREPARATION_TIME_MINS,
+        imageUrl: row.IMAGE_URL,
+        description: row.DESCRIPTION,
+        available: row.AVAILABLE
+      }))
+    });
   } catch (error) {
     res.status(500).json({ message: "Menu fetch failed.", error: error.message });
+  } finally {
+    if (connection) await connection.close();
+  }
+});
+
+router.get("/cook/dashboard", async (req, res) => {
+  if (!isCook(req)) {
+    return res.status(403).json({ message: "Only home cooks allowed." });
+  }
+
+  const cookId = req.user.ID || req.user.id;
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const userResult = await connection.execute(
+      `SELECT nest_coins FROM users WHERE id = :id`,
+      { id: cookId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    const statsResult = await connection.execute(
+      `SELECT
+         COUNT(*) AS TOTAL_ORDERS,
+         SUM(CASE WHEN status = 'Delivered' THEN 1 ELSE 0 END) AS MEALS_COMPLETED,
+         SUM(CASE WHEN TRUNC(created_at) = TRUNC(SYSDATE) THEN 1 ELSE 0 END) AS ORDERS_TODAY
+       FROM orders
+       WHERE cook_id = :cook_id`,
+      { cook_id: cookId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    res.json({
+      wallet: userResult.rows[0].NEST_COINS,
+      totalOrders: statsResult.rows[0].TOTAL_ORDERS || 0,
+      mealsCompleted: statsResult.rows[0].MEALS_COMPLETED || 0,
+      ordersToday: statsResult.rows[0].ORDERS_TODAY || 0
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Cook dashboard failed.", error: error.message });
   } finally {
     if (connection) await connection.close();
   }
@@ -356,6 +408,19 @@ router.put("/order/status", async (req, res, next) => {
       },
       { autoCommit: true }
     );
+
+    if (status === "Ready for Pickup") {
+      await connection.execute(
+        `UPDATE delivery_assignments
+         SET delivery_status = CASE
+           WHEN delivery_partner_id IS NULL THEN 'Ready for Pickup'
+           ELSE delivery_status
+         END
+         WHERE order_id = :order_id`,
+        { order_id: orderId },
+        { autoCommit: true }
+      );
+    }
 
     res.json({ message: "Cook order status updated.", orderId, status });
   } catch (error) {

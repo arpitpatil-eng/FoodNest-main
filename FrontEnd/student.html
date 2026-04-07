@@ -32,6 +32,14 @@
     </section>
 
     <section class="section">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><h3>Total Orders</h3><p id="stat-total-orders">0</p></div>
+        <div class="stat-card"><h3>Active Orders</h3><p id="stat-active-orders">0</p></div>
+        <div class="stat-card"><h3>Available Meals</h3><p id="stat-available-meals">0</p></div>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="section-title">
         <h2>Today's Menu</h2>
       </div>
@@ -50,6 +58,20 @@
       </div>
       <div class="box">
         <div id="cart-lines" class="stack"></div>
+        <div class="payment-options" id="payment-options" style="margin-top: 16px;">
+          <div class="pay-card active" data-method="NestCoins Wallet">
+            <h3>NestCoins Wallet</h3>
+            <p class="meta">Pay directly with your available NestCoins.</p>
+          </div>
+          <div class="pay-card" data-method="Reward Credits">
+            <h3>Reward Credits</h3>
+            <p class="meta">Track orders as a reward-based payment choice.</p>
+          </div>
+          <div class="pay-card" data-method="Split Wallet">
+            <h3>Split Wallet</h3>
+            <p class="meta">Store the order with a split-wallet payment label.</p>
+          </div>
+        </div>
         <div class="row" style="justify-content: space-between; margin-top: 14px;">
           <strong id="cart-total">Total: 0 NestCoins</strong>
           <button class="primary-btn" id="place-order-btn">Place Order</button>
@@ -69,6 +91,9 @@
       <div class="section-title">
         <h2>Pending Reviews</h2>
       </div>
+      <div class="box" style="margin-bottom: 16px;">
+        <p class="note">A 5-star review now gives an equal NestCoin reward share to the hosteller, home cook, and delivery agent.</p>
+      </div>
       <div id="reviews-list" class="order-list"></div>
     </section>
   </main>
@@ -85,10 +110,12 @@
     const cartTotal = document.getElementById("cart-total");
     const ordersList = document.getElementById("orders-list");
     const reviewsList = document.getElementById("reviews-list");
+    const paymentCards = document.querySelectorAll(".pay-card");
 
     let menuItems = [];
     let orders = [];
     let cart = [];
+    let selectedPaymentMethod = "NestCoins Wallet";
 
     function showToast(message) {
       toast.textContent = message;
@@ -188,8 +215,15 @@
           <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
           <p class="meta"><strong>Cook:</strong> ${order.cookName}</p>
           <p class="meta"><strong>Delivery:</strong> ${order.deliveryPartnerName} (${order.deliveryStatus})</p>
+          <p class="meta"><strong>Payment:</strong> ${order.paymentMethod}</p>
           <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins ? `${order.estimatedTimeMins} mins` : "Pending"}</p>
           <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+          <div class="timeline">
+            <span>Order Placed</span>
+            <span>${order.cookName !== "Awaiting cook assignment" ? "Cook Assigned" : "Waiting for Cook"}</span>
+            <span>${order.deliveryPartnerName !== "Awaiting delivery partner" ? "Delivery Accepted" : "Waiting for Delivery"}</span>
+            <span>${order.orderStatus}</span>
+          </div>
         </article>
       `).join("");
     }
@@ -206,6 +240,9 @@
         <article class="order-item">
           <h3>${order.orderId}</h3>
           <p class="meta">${order.itemsSummary}</p>
+          <div class="row">
+            <textarea id="review-${order.orderId}" rows="3" placeholder="Share your food experience..."></textarea>
+          </div>
           <div class="row">
             <select id="rating-${order.orderId}">
               <option value="">Select rating</option>
@@ -245,10 +282,11 @@
     }
 
     async function loadData() {
-      const [meData, menuData, ordersData] = await Promise.all([
+      const [meData, menuData, ordersData, dashboardData] = await Promise.all([
         apiFetch("/auth/me"),
         apiFetch("/student/menu"),
-        apiFetch("/student/orders")
+        apiFetch("/student/orders"),
+        apiFetch("/student/dashboard")
       ]);
 
       const user = meData.user;
@@ -256,6 +294,9 @@
       orders = ordersData.orders;
       walletPill.textContent = `NestCoins: ${user.nestCoins}`;
       heroTitle.textContent = `Welcome ${user.name}, order from today's live kitchen menu`;
+      document.getElementById("stat-total-orders").textContent = dashboardData.totalOrders;
+      document.getElementById("stat-active-orders").textContent = dashboardData.activeOrders;
+      document.getElementById("stat-available-meals").textContent = menuItems.length;
 
       renderCookFilter();
       renderMenu();
@@ -266,6 +307,7 @@
 
     async function submitFeedback(orderId) {
       const select = document.getElementById(`rating-${orderId}`);
+      const reviewText = document.getElementById(`review-${orderId}`).value.trim();
       if (!select.value) {
         showToast("Select a rating first.");
         return;
@@ -274,9 +316,12 @@
       try {
         await apiFetch(`/student/orders/${orderId}/feedback`, {
           method: "POST",
-          body: JSON.stringify({ rating: Number(select.value) })
+          body: JSON.stringify({
+            rating: Number(select.value),
+            reviewText
+          })
         });
-        showToast("Rating submitted.");
+        showToast(Number(select.value) === 5 ? "5-star reward shared successfully." : "Rating submitted.");
         await loadData();
       } catch (error) {
         showToast(error.message);
@@ -293,6 +338,7 @@
         await apiFetch("/student/orders", {
           method: "POST",
           body: JSON.stringify({
+            paymentMethod: selectedPaymentMethod,
             items: cart.map((item) => ({
               menuItemId: item.id,
               quantity: item.quantity
@@ -309,6 +355,13 @@
 
     searchInput.addEventListener("input", renderMenu);
     cookFilter.addEventListener("change", renderMenu);
+    paymentCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        paymentCards.forEach((entry) => entry.classList.remove("active"));
+        card.classList.add("active");
+        selectedPaymentMethod = card.dataset.method;
+      });
+    });
     document.getElementById("logout-btn").addEventListener("click", logout);
 
     window.addEventListener("DOMContentLoaded", async () => {

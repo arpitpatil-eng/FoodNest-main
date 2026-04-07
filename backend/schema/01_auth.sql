@@ -15,3 +15,19 @@ CREATE TABLE user_sessions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_sessions_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE user_profiles (
+  user_id VARCHAR2(50) PRIMARY KEY,
+  age NUMBER,
+  phone VARCHAR2(30) UNIQUE NOT NULL,
+  college_name VARCHAR2(150),
+  hostel_address VARCHAR2(255),
+  cook_experience_years NUMBER,
+  cook_cuisine VARCHAR2(150),
+  cook_availability VARCHAR2(100),
+  delivery_contact_phone VARCHAR2(30),
+  delivery_vehicle VARCHAR2(50),
+  delivery_hours VARCHAR2(100),
+  delivery_shift VARCHAR2(50),
+  CONSTRAINT fk_user_profiles_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
