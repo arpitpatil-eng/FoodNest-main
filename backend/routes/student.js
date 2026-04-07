@@ -268,10 +268,13 @@ router.post("/orders", async (req, res) => {
 
     const deliveryPartnerResult = await connection.execute(
       `SELECT id
-       FROM users
-       WHERE role = 'delivery'
-       ORDER BY created_at
-       FETCH FIRST 1 ROWS ONLY`,
+       FROM (
+         SELECT id
+         FROM users
+         WHERE role = 'delivery'
+         ORDER BY created_at
+       )
+       WHERE ROWNUM = 1`,
       {},
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
