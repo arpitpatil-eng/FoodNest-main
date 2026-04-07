@@ -11,69 +11,97 @@
 </head>
 <body>
   <div class="toast" id="toast"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand-stack">
-        <h1>FoodNest</h1>
-        <p>Delivery Agent Dashboard</p>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <div>
+          <h2>FoodNest</h2>
+          <p class="sidebar-sub">Delivery Agent Dashboard</p>
+        </div>
+        <button class="sidebar-close" id="sidebar-close" type="button">Close</button>
       </div>
-      <div class="top-actions">
-        <span class="pill" id="wallet-pill">NestCoins: 0</span>
-        <button class="ghost-btn" id="logout-btn">Logout</button>
-      </div>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="#hero-section">Dashboard</a>
+        <a class="sidebar-link" href="#open-section">Available Deliveries</a>
+        <a class="sidebar-link" href="#assigned-section">Active Delivery</a>
+        <a class="sidebar-link" href="#history-section">Delivery History</a>
+      </nav>
+    </aside>
+
+    <div class="content-shell">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="row">
+            <button class="sidebar-toggle" id="sidebar-toggle" type="button">Menu</button>
+            <div class="brand-stack">
+              <h1>FoodNest</h1>
+              <p>Delivery Agent Dashboard</p>
+            </div>
+          </div>
+          <div class="top-actions">
+            <span class="pill" id="wallet-pill">NestCoins: 0</span>
+            <button class="ghost-btn" id="logout-btn">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-shell">
+        <section class="hero dashboard-section" id="hero-section">
+          <h2 id="hero-title">Deliver meals. Earn NestCoins.</h2>
+          <p>Accept open delivery jobs, update active deliveries from pickup to delivered, and track your growing delivery wallet with real backend data.</p>
+          <div class="hero-cta">
+            <span class="pill" id="hero-open-pill">Open Jobs: 0</span>
+            <span class="pill" id="hero-assigned-pill">Assigned: 0</span>
+          </div>
+        </section>
+
+        <section class="section dashboard-section">
+          <div class="stats-grid">
+            <div class="stat-card"><h3>Today's Deliveries</h3><p id="stat-today">0</p></div>
+            <div class="stat-card"><h3>Total Assigned</h3><p id="stat-assigned">0</p></div>
+            <div class="stat-card"><h3>Completed</h3><p id="stat-completed">0</p></div>
+          </div>
+        </section>
+
+        <section class="section dashboard-section">
+          <div class="split-grid">
+            <div class="box profile-box">
+              <div class="section-title"><h2>Your Profile</h2></div>
+              <div id="delivery-profile" class="stack muted"></div>
+            </div>
+            <div class="box">
+              <div class="section-title"><h2>NestCoin Wallet</h2></div>
+              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
+              <p class="note">Delivery payouts and 5-star bonuses collect here.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section dashboard-section" id="open-section">
+          <div class="section-title">
+            <h2>Available Deliveries</h2>
+          </div>
+          <div id="open-deliveries-list" class="order-list"></div>
+        </section>
+
+        <section class="section dashboard-section" id="assigned-section">
+          <div class="section-title">
+            <h2>Assigned Deliveries</h2>
+          </div>
+          <div id="deliveries-list" class="order-list"></div>
+        </section>
+
+        <section class="section dashboard-section" id="history-section">
+          <div class="section-title">
+            <h2>Delivery History</h2>
+          </div>
+          <div id="history-list" class="order-list"></div>
+        </section>
+      </main>
     </div>
-  </header>
-
-  <main class="page-shell">
-    <section class="hero">
-      <h2 id="hero-title">Deliver meals. Earn NestCoins.</h2>
-      <p>Accept open delivery jobs, update active deliveries from pickup to delivered, and track your growing delivery wallet.</p>
-    </section>
-
-    <section class="section">
-      <div class="stats-grid">
-        <div class="stat-card"><h3>Today's Deliveries</h3><p id="stat-today">0</p></div>
-        <div class="stat-card"><h3>Total Assigned</h3><p id="stat-assigned">0</p></div>
-        <div class="stat-card"><h3>Completed</h3><p id="stat-completed">0</p></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="split-grid">
-        <div class="box profile-box">
-          <div class="section-title"><h2>Your Profile</h2></div>
-          <div id="delivery-profile" class="stack muted"></div>
-        </div>
-        <div class="box">
-          <div class="section-title"><h2>NestCoin Wallet</h2></div>
-          <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
-          <p class="note">Delivery payouts and 5-star bonuses collect here.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-title">
-        <h2>Available Deliveries</h2>
-      </div>
-      <div id="open-deliveries-list" class="order-list"></div>
-    </section>
-
-    <section class="section">
-      <div class="section-title">
-        <h2>Assigned Deliveries</h2>
-      </div>
-      <div id="deliveries-list" class="order-list"></div>
-    </section>
-
-    <section class="section">
-      <div class="section-title">
-        <h2>Delivery History</h2>
-      </div>
-      <div id="history-list" class="order-list"></div>
-    </section>
-  </main>
+  </div>
 
   <script src="./common.js"></script>
   <script>
@@ -84,6 +112,8 @@
     const deliveriesList = document.getElementById("deliveries-list");
     const historyList = document.getElementById("history-list");
     const deliveryProfile = document.getElementById("delivery-profile");
+    const sidebar = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
 
     let openDeliveries = [];
     let deliveries = [];
@@ -94,6 +124,12 @@
       toast.classList.add("show");
       clearTimeout(showToast.timer);
       showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function toggleSidebar(forceOpen) {
+      const shouldOpen = typeof forceOpen === "boolean" ? forceOpen : !sidebar.classList.contains("active");
+      sidebar.classList.toggle("active", shouldOpen);
+      sidebarOverlay.classList.toggle("active", shouldOpen);
     }
 
     function nextDeliveryStatuses(current) {
@@ -190,6 +226,8 @@
       document.getElementById("stat-today").textContent = dashboardData.todayDeliveries;
       document.getElementById("stat-assigned").textContent = dashboardData.totalAssigned;
       document.getElementById("stat-completed").textContent = dashboardData.completed;
+      document.getElementById("hero-open-pill").textContent = `Open Jobs: ${openData.orders.length}`;
+      document.getElementById("hero-assigned-pill").textContent = `Assigned: ${dashboardData.totalAssigned}`;
       deliveryProfile.innerHTML = `
         <div><strong>Phone:</strong> ${user.profile.phone || "-"}</div>
         <div><strong>Contact Number:</strong> ${user.profile.deliveryContactPhone || user.profile.phone || "-"}</div>
@@ -230,6 +268,9 @@
       }
     }
 
+    document.getElementById("sidebar-toggle").addEventListener("click", () => toggleSidebar(true));
+    document.getElementById("sidebar-close").addEventListener("click", () => toggleSidebar(false));
+    sidebarOverlay.addEventListener("click", () => toggleSidebar(false));
     document.getElementById("logout-btn").addEventListener("click", logout);
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -240,3 +281,4 @@
   </script>
 </body>
 </html>
+

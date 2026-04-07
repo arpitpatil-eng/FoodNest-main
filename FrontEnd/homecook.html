@@ -11,110 +11,139 @@
 </head>
 <body>
   <div class="toast" id="toast"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand-stack">
-        <h1>FoodNest</h1>
-        <p>Home Cook Dashboard</p>
-      </div>
-      <div class="top-actions">
-        <span class="pill" id="wallet-pill">NestCoins: 0</span>
-        <button class="ghost-btn" id="logout-btn">Logout</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="page-shell">
-    <section class="hero">
-      <h2 id="hero-title">Manage meals and kitchen orders</h2>
-      <p>Create menu items, handle kitchen flow, track earnings, and move orders from acceptance to pickup readiness.</p>
-    </section>
-
-    <section class="section">
-      <div class="stats-grid">
-        <div class="stat-card"><h3>Orders Today</h3><p id="stat-orders-today">0</p></div>
-        <div class="stat-card"><h3>Total Orders</h3><p id="stat-total-orders">0</p></div>
-        <div class="stat-card"><h3>Meals Completed</h3><p id="stat-meals-completed">0</p></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="split-grid">
-        <div class="box profile-box">
-          <div class="section-title"><h2>Your Profile</h2></div>
-          <div id="cook-profile" class="stack muted"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <div>
+          <h2>FoodNest</h2>
+          <p class="sidebar-sub">Home Cook Dashboard</p>
         </div>
-        <div class="box">
-          <div class="section-title"><h2>NestCoin Wallet</h2></div>
-          <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
-          <p class="note">Delivered orders and 5-star review rewards increase your wallet.</p>
-        </div>
+        <button class="sidebar-close" id="sidebar-close" type="button">Close</button>
       </div>
-    </section>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="#hero-section">Dashboard</a>
+        <a class="sidebar-link" href="#menu-form-section">Add Menu Item</a>
+        <a class="sidebar-link" href="#menu-list-section">Your Menu</a>
+        <a class="sidebar-link" href="#orders-section">Incoming Orders</a>
+        <a class="sidebar-link" href="#history-section">Order History</a>
+      </nav>
+    </aside>
 
-    <section class="section">
-      <div class="section-title">
-        <h2>Add Menu Item</h2>
-      </div>
-      <div class="box">
-        <form id="menu-form" class="form-grid">
-          <div class="field">
-            <label for="dish-name">Dish Name</label>
-            <input id="dish-name" type="text" required>
-          </div>
-          <div class="field">
-            <label for="dish-category">Category</label>
-            <select id="dish-category">
-              <option value="Veg">Veg</option>
-              <option value="Non-Veg">Non-Veg</option>
-              <option value="Snacks">Snacks</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="dish-price">Price in NestCoins</label>
-            <input id="dish-price" type="number" min="1" required>
-          </div>
-          <div class="field">
-            <label for="dish-time">Preparation Time (mins)</label>
-            <input id="dish-time" type="number" min="5" value="20">
-          </div>
-          <div class="field">
-            <label for="dish-image">Image URL</label>
-            <input id="dish-image" type="url" placeholder="Optional">
-          </div>
-          <div class="field">
-            <label for="dish-description">Description</label>
-            <textarea id="dish-description" rows="2"></textarea>
-          </div>
+    <div class="content-shell">
+      <header class="topbar">
+        <div class="topbar-inner">
           <div class="row">
-            <button class="primary-btn" type="submit">Create Item</button>
+            <button class="sidebar-toggle" id="sidebar-toggle" type="button">Menu</button>
+            <div class="brand-stack">
+              <h1>FoodNest</h1>
+              <p>Home Cook Dashboard</p>
+            </div>
           </div>
-        </form>
-      </div>
-    </section>
+          <div class="top-actions">
+            <span class="pill" id="wallet-pill">NestCoins: 0</span>
+            <button class="ghost-btn" id="logout-btn">Logout</button>
+          </div>
+        </div>
+      </header>
 
-    <section class="section">
-      <div class="section-title">
-        <h2>Your Menu</h2>
-      </div>
-      <div id="menu-list" class="grid cards-3"></div>
-    </section>
+      <main class="page-shell">
+        <section class="hero dashboard-section" id="hero-section">
+          <h2 id="hero-title">Cook fresh. Serve hostellers. Earn NestCoins.</h2>
+          <p>Manage your live menu, handle incoming kitchen orders, move them through preparation, and build earnings from completed meals and rewards.</p>
+          <div class="hero-cta">
+            <span class="pill" id="hero-orders-pill">Orders Today: 0</span>
+            <span class="pill" id="hero-completed-pill">Meals Completed: 0</span>
+          </div>
+        </section>
 
-    <section class="section">
-      <div class="section-title">
-        <h2>Incoming Orders</h2>
-      </div>
-      <div id="orders-list" class="order-list"></div>
-    </section>
+        <section class="section dashboard-section">
+          <div class="stats-grid">
+            <div class="stat-card"><h3>Orders Today</h3><p id="stat-orders-today">0</p></div>
+            <div class="stat-card"><h3>Total Orders</h3><p id="stat-total-orders">0</p></div>
+            <div class="stat-card"><h3>Meals Completed</h3><p id="stat-meals-completed">0</p></div>
+          </div>
+        </section>
 
-    <section class="section">
-      <div class="section-title">
-        <h2>Order History</h2>
-      </div>
-      <div id="history-list" class="order-list"></div>
-    </section>
-  </main>
+        <section class="section dashboard-section">
+          <div class="split-grid">
+            <div class="box profile-box">
+              <div class="section-title"><h2>Your Profile</h2></div>
+              <div id="cook-profile" class="stack muted"></div>
+            </div>
+            <div class="box">
+              <div class="section-title"><h2>NestCoin Wallet</h2></div>
+              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
+              <p class="note">Completed deliveries and 5-star review rewards increase your wallet.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section dashboard-section" id="menu-form-section">
+          <div class="section-title">
+            <h2>Add Menu Item</h2>
+          </div>
+          <div class="box">
+            <form id="menu-form" class="form-grid">
+              <div class="field">
+                <label for="dish-name">Dish Name</label>
+                <input id="dish-name" type="text" required>
+              </div>
+              <div class="field">
+                <label for="dish-category">Category</label>
+                <select id="dish-category">
+                  <option value="Veg">Veg</option>
+                  <option value="Non-Veg">Non-Veg</option>
+                  <option value="Snacks">Snacks</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="dish-price">Price in NestCoins</label>
+                <input id="dish-price" type="number" min="1" required>
+              </div>
+              <div class="field">
+                <label for="dish-time">Preparation Time (mins)</label>
+                <input id="dish-time" type="number" min="5" value="20">
+              </div>
+              <div class="field">
+                <label for="dish-image">Image URL</label>
+                <input id="dish-image" type="url" placeholder="Optional">
+              </div>
+              <div class="field">
+                <label for="dish-description">Description</label>
+                <textarea id="dish-description" rows="2"></textarea>
+              </div>
+              <div class="row">
+                <button class="primary-btn" type="submit">Create Item</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="section dashboard-section" id="menu-list-section">
+          <div class="section-title">
+            <h2>Your Menu</h2>
+          </div>
+          <div id="menu-list" class="grid cards-3"></div>
+        </section>
+
+        <section class="section dashboard-section" id="orders-section">
+          <div class="section-title">
+            <h2>Incoming Orders</h2>
+          </div>
+          <div id="orders-list" class="order-list"></div>
+        </section>
+
+        <section class="section dashboard-section" id="history-section">
+          <div class="section-title">
+            <h2>Order History</h2>
+          </div>
+          <div id="history-list" class="order-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
 
   <script src="./common.js"></script>
   <script>
@@ -125,6 +154,8 @@
     const ordersList = document.getElementById("orders-list");
     const historyList = document.getElementById("history-list");
     const cookProfile = document.getElementById("cook-profile");
+    const sidebar = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
 
     let menuItems = [];
     let activeOrders = [];
@@ -135,6 +166,12 @@
       toast.classList.add("show");
       clearTimeout(showToast.timer);
       showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function toggleSidebar(forceOpen) {
+      const shouldOpen = typeof forceOpen === "boolean" ? forceOpen : !sidebar.classList.contains("active");
+      sidebar.classList.toggle("active", shouldOpen);
+      sidebarOverlay.classList.toggle("active", shouldOpen);
     }
 
     function nextCookStatus(current) {
@@ -231,6 +268,8 @@
       document.getElementById("stat-orders-today").textContent = dashboardData.ordersToday;
       document.getElementById("stat-total-orders").textContent = dashboardData.totalOrders;
       document.getElementById("stat-meals-completed").textContent = dashboardData.mealsCompleted;
+      document.getElementById("hero-orders-pill").textContent = `Orders Today: ${dashboardData.ordersToday}`;
+      document.getElementById("hero-completed-pill").textContent = `Meals Completed: ${dashboardData.mealsCompleted}`;
       cookProfile.innerHTML = `
         <div><strong>Phone:</strong> ${user.profile.phone || "-"}</div>
         <div><strong>Cuisine:</strong> ${user.profile.cookCuisine || "-"}</div>
@@ -296,6 +335,9 @@
       }
     });
 
+    document.getElementById("sidebar-toggle").addEventListener("click", () => toggleSidebar(true));
+    document.getElementById("sidebar-close").addEventListener("click", () => toggleSidebar(false));
+    sidebarOverlay.addEventListener("click", () => toggleSidebar(false));
     document.getElementById("logout-btn").addEventListener("click", logout);
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -306,3 +348,4 @@
   </script>
 </body>
 </html>
+
