@@ -72,7 +72,9 @@ router.get("/menu", async (_req, res) => {
          JOIN order_items oi ON oi.order_id = o.id
          GROUP BY oi.menu_item_id
        ) r ON r.menu_item_id = mi.id
-       WHERE available = 1`,
+       WHERE mi.available = 1
+       AND mi.id LIKE 'hostel-meal-%'
+       ORDER BY mi.id`,
       {},
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );

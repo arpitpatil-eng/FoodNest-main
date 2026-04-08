@@ -1,10 +1,64 @@
-INSERT INTO menu_items (id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
-VALUES ('meal-1', 'Home Veg Thali', 'Veg', 80, 20, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c', 'Rice, dal, sabzi, roti, and salad.', 1);
+INSERT INTO users (id, name, username, password_hash, role, nest_coins)
+VALUES ('seed-cook-aarav', 'Aarav', 'seed_aarav', 'seed', 'cook', 0);
 
-INSERT INTO menu_items (id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
-VALUES ('meal-2', 'Paneer Lunch Box', 'Veg', 110, 25, 'https://images.unsplash.com/photo-1606491956689-2ea866880c84', 'Paneer curry with jeera rice and roti.', 1);
+INSERT INTO users (id, name, username, password_hash, role, nest_coins)
+VALUES ('seed-cook-riya', 'Riya', 'seed_riya', 'seed', 'cook', 0);
 
-INSERT INTO menu_items (id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
-VALUES ('meal-3', 'Chicken Combo', 'Non-Veg', 140, 30, 'https://images.unsplash.com/photo-1604908176997-4314ed5d74f6', 'Chicken curry with rice and salad.', 1);
+INSERT INTO users (id, name, username, password_hash, role, nest_coins)
+VALUES ('seed-cook-kabir', 'Kabir', 'seed_kabir', 'seed', 'cook', 0);
+
+INSERT INTO users (id, name, username, password_hash, role, nest_coins)
+VALUES ('seed-cook-anaya', 'Anaya', 'seed_anaya', 'seed', 'cook', 0);
+
+INSERT INTO users (id, name, username, password_hash, role, nest_coins)
+VALUES ('seed-cook-dev', 'Dev', 'seed_dev', 'seed', 'cook', 0);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-01', 'seed-cook-aarav', 'Maggie Masala Bowl', 'Fresh', 50, 20, 'https://i.ibb.co/LdRbXZbv/food-1.jpg', 'Rice, dal, sabzi and soft rotis.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-02', 'seed-cook-aarav', 'Curd Rice', 'Veg', 35, 20, 'https://i.ibb.co/c7MPFkf/food-2.jpg', 'Soft wrap stuffed with spiced paneer.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-03', 'seed-cook-riya', 'Poha', 'Fresh', 40, 20, 'https://i.ibb.co/v40TYSJS/food-3.jpg', 'Fluffy idlis with hot homemade sambar.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-04', 'seed-cook-riya', 'Chole Bhature', 'Veg', 45, 25, 'https://i.ibb.co/Z64Mj69g/food-4.jpg', 'Tangy lemon rice with chutney and papad.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-05', 'seed-cook-kabir', 'Veg Fried Rice', 'Fresh', 65, 25, 'https://i.ibb.co/BJpQ05W/food-5.jpg', 'Grilled chicken with seasoned rice.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-06', 'seed-cook-kabir', 'Egg Curry Meal', 'Organic', 55, 25, 'https://i.ibb.co/HLycpjG7/food-6.jpg', 'Balanced meal with veggies and curry.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-07', 'seed-cook-riya', 'Aloo Paratha', 'Fresh', 48, 20, 'https://i.ibb.co/zVtwgyH8/food-7.jpg', 'Crispy dosa with masala filling.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-08', 'seed-cook-anaya', 'Rajma Chawal', 'Veg', 52, 25, 'https://i.ibb.co/KzccQY4F/food-8.jpg', 'Comfort food with rich rajma curry.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-09', 'seed-cook-anaya', 'Masala Dosa', 'Fresh', 38, 20, 'https://i.ibb.co/cXSYd7Xs/food-9.jpg', 'Stuffed paratha served with curd.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-10', 'seed-cook-dev', 'Healthy Veg Bowl', 'Fresh', 58, 20, 'https://i.ibb.co/B2WKYk9L/food-10.jpg', 'Egg curry with rice and salad.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-11', 'seed-cook-dev', 'Chicken Rice Bowl', 'Veg', 46, 20, 'https://i.ibb.co/KcRjxfxX/food-11.jpg', 'Wok tossed rice with fresh vegetables.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-12', 'seed-cook-aarav', 'Lemon Rice Combo', 'Fresh', 54, 20, 'https://i.ibb.co/R4CvzqjQ/food-12.jpg', 'Punjabi style chole with fluffy bhature.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-13', 'seed-cook-anaya', 'Mini Tiffin Combo', 'Organic', 30, 15, 'https://i.ibb.co/HDJNRKC7/food-13.jpg', 'Light and filling poha breakfast meal.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-14', 'seed-cook-riya', 'Paneer Roll', 'Fresh', 34, 20, 'https://i.ibb.co/Jw5kTh8c/food-14.jpg', 'Simple and soothing curd rice meal.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-15', 'seed-cook-kabir', 'Idli Sambar', 'Fresh', 28, 15, 'https://i.ibb.co/mCJsHCYF/food-15.jpg', 'Hostel style masala noodles bowl.', 1);
+
+INSERT INTO menu_items (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+VALUES ('hostel-meal-16', 'seed-cook-dev', 'Veg Thali', 'Veg', 42, 20, 'https://i.ibb.co/GQgWYnKP/food-16.jpg', 'Rice, sabzi, chapati and sweet bite.', 1);
 
 COMMIT;
