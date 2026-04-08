@@ -2,5 +2,11 @@ TABLE: USER_SESSIONS
 
 | id                | user_id           | token                                            | created_at          |
 |-------------------|-------------------|--------------------------------------------------|---------------------|
+| sess_fe6bc84e4ad7 | user_6e75b6513b9a | 52ffa3ef4a665c61b94c1f191d43ada5126c4c6cefb4b0d0 | 2026-04-09 03:27:56 |
+| sess_7197fd961ed9 | user_46237765080f | a84eda7946249565756e1b28b209e3b4d14a2431605fc578 | 2026-04-09 03:26:26 |
+| sess_ab27e8673284 | user_3ad64e5a627c | 4d04d5c4099ab35dce228f1b2333320fbb824da7eba85130 | 2026-04-09 03:25:36 |
+| sess_97e4cde3f39b | user_3ad64e5a627c | 097069a305793c148fff135212b4e5ca9fad57c33368508c | 2026-04-09 03:25:31 |
+| sess_7c9f51611f8f | user_3ad64e5a627c | 7e1a125da5fa0b31d404daefd08bc41160afef1f43142ca1 | 2026-04-09 03:25:26 |
+| sess_1da6a2407ce9 | user_3ad64e5a627c | 0fccc0642174ee751e44d10d7c64817fdefc5d8dfcb904f4 | 2026-04-09 03:05:15 |
 | sess_75406084d25d | user_6e75b6513b9a | 957bd338c54ba060f4f17bf8708aa1b9299b4ec21e0d5614 | 2026-04-09 01:06:39 |
 | sess_12c2fc777e81 | user_6e75b6513b9a | 78677d97efa51acd63a88c49d48d8c802d28120e43ebb6f5 | 2026-04-09 00:49:48 |

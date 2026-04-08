@@ -3,4 +3,4 @@ TABLE: HOSTELLER
 | id                | name         | username  | coins | age | phone      | college     | hostel_address                                      | hostel_name        | room_number |
 |-------------------|--------------|-----------|-------|-----|------------|-------------|-----------------------------------------------------|--------------------|-------------|
 | user_526343789daa | Sachin T     | Sachin100 | 1000  | 18  | 5555544444 | ABD College | ABD College Hostel, Kandivali W,Mumbai.             | ABD College Hostel | A-106       |
-| user_6e75b6513b9a | Rohit Sharma | Rohit27   | 855   | 18  | 1122334455 | ABC College | ABC College Hostel, S.V Road, Boriwali (W), Mumbai. | ABC College Hostel | A-105       |
+| user_6e75b6513b9a | Rohit Sharma | Rohit27   | 813   | 18  | 1122334455 | ABC College | ABC College Hostel, S.V Road, Boriwali (W), Mumbai. | ABC College Hostel | A-105       |

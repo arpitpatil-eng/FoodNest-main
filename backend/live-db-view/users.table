@@ -5,6 +5,6 @@ TABLE: USERS
 | user_1751378baf6b | K Iyer       | KIyer30   | delivery | 0          | 2026-04-09 01:50:07 |
 | user_526343789daa | Sachin T     | Sachin100 | student  | 1000       | 2026-04-09 01:42:05 |
 | user_1c77f8f1cbb0 | T Varma      | TVarma20  | cook     | 0          | 2026-04-09 01:20:47 |
-| user_3ad64e5a627c | Mohan K      | MohanK90  | delivery | 14         | 2026-04-09 01:08:16 |
-| user_46237765080f | K Kumar      | KKumar10  | cook     | 34         | 2026-04-09 00:48:50 |
-| user_6e75b6513b9a | Rohit Sharma | Rohit27   | student  | 855        | 2026-04-09 00:41:14 |
+| user_3ad64e5a627c | Mohan K      | MohanK90  | delivery | 27         | 2026-04-09 01:08:16 |
+| user_46237765080f | K Kumar      | KKumar10  | cook     | 63         | 2026-04-09 00:48:50 |
+| user_6e75b6513b9a | Rohit Sharma | Rohit27   | student  | 813        | 2026-04-09 00:41:14 |

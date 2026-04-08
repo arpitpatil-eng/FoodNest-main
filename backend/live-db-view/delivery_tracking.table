@@ -2,6 +2,7 @@ TABLE: DELIVERY_TRACKING
 
 | order_id           | order_status | delivery_status    | delivery_partner | pickup_location | drop_location     |
 |--------------------|--------------|--------------------|------------------|-----------------|-------------------|
+| order_e772ca172c17 | Delivered    | Delivered          | Mohan K          | Home Cook Hub   | Hosteller Address |
 | order_4e18c9b6fc43 | Order Placed | Pending Acceptance | -                | Home Cook Hub   | Hosteller Address |
 | order_b896d27cc5ca | Delivered    | Delivered          | Mohan K          | Home Cook Hub   | Hosteller Address |
 | order_1e83815bd8d3 | Order Placed | Pending Acceptance | -                | Home Cook Hub   | Hosteller Address |

@@ -3,4 +3,4 @@ TABLE: HOMECOOK
 | id                | name    | username | coins | age | phone      | experience_years | cuisine      | availability |
 |-------------------|---------|----------|-------|-----|------------|------------------|--------------|--------------|
 | user_1c77f8f1cbb0 | T Varma | TVarma20 | 0     | 30  | 1111122222 | 4                | South India  | Dinner       |
-| user_46237765080f | K Kumar | KKumar10 | 34    | 28  | 1112223334 | 3                | North Indian | All Day      |
+| user_46237765080f | K Kumar | KKumar10 | 63    | 28  | 1112223334 | 3                | North Indian | All Day      |
