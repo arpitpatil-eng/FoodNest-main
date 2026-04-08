@@ -1,0 +1,19 @@
+TABLE: USER_PROFILES
+
+| user_id           | age | phone      | college_name | hostel_name  | room_number | cook_cuisine | cook_availability | delivery_contact_phone | delivery_alt_phone | delivery_vehicle | delivery_hours      | delivery_shift |
+|-------------------|-----|------------|--------------|--------------|-------------|--------------|-------------------|------------------------|-------------------|------------------|---------------------|----------------|
+| user_d2c474168bbe | -   | temp-rohit264 | -         | -            | -           | -            | -                 | -                      | -                 | -                | -                   | -              |
+| user_d1eb58d8a824 | 19  | 9000211527 | Test College | -            | -           | -            | -                 | 9000211527             | -                 | -                | -                   | -              |
+| user_b0f08721e372 | 19  | 9300211554 | Test         | -            | -           | -            | -                 | 9300211554             | -                 | -                | -                   | -              |
+| user_09cedd89f83f | 19  | 9000212159 | Test College | Alpha Hostel | 101         | -            | -                 | 9000212159             | -                 | -                | -                   | -              |
+| user_5156d483070a | 19  | 9000212239 | Test College | Alpha Hostel | 101         | -            | -                 | 9000212239             | -                 | -                | -                   | -              |
+| user_bd88d9827dc9 | 19  | 9000212307 | Test College | Alpha Hostel | 101         | -            | -                 | 9000212307             | -                 | -                | -                   | -              |
+| user_3e15d0dacece | 25  | 9100211527 | -            | -            | -           | North Indian | All Day           | 9100211527             | -                 | -                | -                   | -              |
+| user_7099b560abe6 | 25  | 9100212159 | -            | -            | -           | North Indian | All Day           | 9100212159             | -                 | -                | -                   | -              |
+| user_db00b7119f9b | 25  | 9100212239 | -            | -            | -           | North Indian | All Day           | 9100212239             | -                 | -                | -                   | -              |
+| user_43a2207c8128 | 25  | 9100212307 | -            | -            | -           | North Indian | All Day           | 9100212307             | -                 | -                | -                   | -              |
+| user_9967701f7965 | 24  | 9200211527 | -            | -            | -           | -            | -                 | 9200211527             | -                 | Bike             | 4:00 PM to 10:00 PM | Night          |
+| user_894ab85da13e | 24  | 9200212159 | -            | -            | -           | -            | -                 | 9200212159             | -                 | Bike             | 4:00 PM to 10:00 PM | Night          |
+| user_9cb09d27e575 | 24  | 9200212239 | -            | -            | -           | -            | -                 | 9200212239             | -                 | Bike             | 4:00 PM to 10:00 PM | Night          |
+| user_59d313459245 | 24  | 9200212307 | -            | -            | -           | -            | -                 | 9200212307             | -                 | Bike             | 4:00 PM to 10:00 PM | Night          |
+| user_9c164c362d21 | 18  | 9999999999 | -            | -            | -           | -            | -                 | 1234512345             | -                 | Bike             | 12pm to 4pm         | Afternoon      |

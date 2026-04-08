@@ -1,0 +1,20 @@
+TABLE: ORDER_STATUS_HISTORY
+
+| id               | order_id           | stage                   | changed_at                | simulated |
+|------------------|--------------------|-------------------------|---------------------------|-----------|
+| osh_dc42146f5ed5 | order_2b3b9b157be7 | Order Placed            | 2026-04-07T21:22:48.626Z  | 1         |
+| osh_d3125ad21c98 | order_4979e60f2175 | Order Placed            | 2026-04-07T21:47:46.045Z  | 1         |
+| osh_550c4e40c4d0 | order_e62fd149f610 | Order Placed            | 2026-04-08T10:02:50.215Z  | 1         |
+| osh_0a40df2e39a0 | order_9524344f63c6 | Order Placed            | 2026-04-08T15:52:02.325Z  | 1         |
+| osh_559811fa38a1 | order_9524344f63c6 | Preparing               | 2026-04-08T15:52:02.518Z  | 0         |
+| osh_3bb8bf82fd54 | order_9524344f63c6 | Prepared                | 2026-04-08T15:52:02.681Z  | 0         |
+| osh_83f86d164652 | order_9524344f63c6 | Delivery Agent Assigned | 2026-04-08T15:52:02.908Z  | 0         |
+| osh_7c75ff0a96f8 | order_9524344f63c6 | Out for Delivery        | 2026-04-08T15:52:03.140Z  | 0         |
+| osh_6925af71a30e | order_9524344f63c6 | Delivered               | 2026-04-08T15:52:03.371Z  | 0         |
+| osh_4d25500feb77 | order_7fa5ce9afd66 | Order Placed            | 2026-04-08T15:52:41.653Z  | 1         |
+| osh_1c93a45ee7ce | order_42ae17b22351 | Order Placed            | 2026-04-08T15:53:08.845Z  | 1         |
+| osh_950a94a4815a | order_42ae17b22351 | Preparing               | 2026-04-08T15:53:08.969Z  | 0         |
+| osh_c72fef4cf6bc | order_42ae17b22351 | Prepared                | 2026-04-08T15:53:09.079Z  | 0         |
+| osh_1f22b03cda7a | order_42ae17b22351 | Delivery Agent Assigned | 2026-04-08T15:53:09.251Z  | 0         |
+| osh_c14a24fe431a | order_42ae17b22351 | Out for Delivery        | 2026-04-08T15:53:09.424Z  | 0         |
+| osh_af08d094eb4e | order_42ae17b22351 | Delivered               | 2026-04-08T15:53:09.560Z  | 0         |

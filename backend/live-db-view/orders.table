@@ -1,0 +1,10 @@
+TABLE: ORDERS
+
+| id                | student_id         | cook_id            | total | payment_method   | payment_status | status       | payout_distributed | created_at                |
+|-------------------|--------------------|--------------------|-------|------------------|----------------|--------------|--------------------|---------------------------|
+| order_2b3b9b157be7| user_d2c474168bbe  | -                  | 80    | NestCoins Wallet | Paid           | Order Placed | 0                  | 2026-04-07T21:22:48.608Z |
+| order_4979e60f2175| user_d2c474168bbe  | -                  | 80    | NestCoins Wallet | Paid           | Order Placed | 0                  | 2026-04-07T21:47:46.035Z |
+| order_e62fd149f610| user_d2c474168bbe  | -                  | 160   | NestCoins Wallet | Paid           | Order Placed | 0                  | 2026-04-08T10:02:50.205Z |
+| order_9524344f63c6| user_09cedd89f83f  | user_7099b560abe6  | 1000  | Wallet           | Paid           | Delivered    | 1                  | 2026-04-08T15:52:02.316Z |
+| order_7fa5ce9afd66| user_5156d483070a  | user_7099b560abe6  | 1000  | Wallet           | Paid           | Order Placed | 0                  | 2026-04-08T15:52:41.647Z |
+| order_42ae17b22351| user_bd88d9827dc9  | user_43a2207c8128  | 1000  | Wallet           | Paid           | Delivered    | 1                  | 2026-04-08T15:53:08.841Z |

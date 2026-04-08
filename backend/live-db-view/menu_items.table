@@ -1,0 +1,11 @@
+TABLE: MENU_ITEMS
+
+| id              | name              | category | price | available | cook_id           | prep_mins | image_url |
+|-----------------|-------------------|----------|-------|-----------|-------------------|-----------|-----------|
+| meal-1          | Home Veg Thali    | Veg      | 80    | 1         | -                 | 20        | -         |
+| meal-2          | Paneer Lunch Box  | Veg      | 110   | 1         | -                 | 20        | -         |
+| meal-3          | Chicken Combo     | Non-Veg  | 140   | 1         | -                 | 20        | -         |
+| meal_698910933e57 | Flow Test Meal  | Veg      | 100   | 1         | user_3e15d0dacece | 20        | -         |
+| meal_49e55999ae4e | Flow Test Meal  | Veg      | 100   | 1         | user_7099b560abe6 | 20        | -         |
+| meal_ee1bdaf5e6f9 | Flow Test Meal  | Veg      | 100   | 1         | user_db00b7119f9b | 20        | -         |
+| meal_65591eb78843 | Flow Test Meal 212307 | Veg | 100   | 1         | user_43a2207c8128 | 20        | -         |

@@ -1,0 +1,10 @@
+TABLE: ORDER_ITEMS
+
+| id               | order_id           | menu_item_id        | quantity | unit_price | line_total |
+|------------------|--------------------|---------------------|----------|------------|------------|
+| oi_8578f2cbf144  | order_2b3b9b157be7 | meal-1              | 1        | 80         | 80         |
+| oi_fd71a0ec4649  | order_4979e60f2175 | meal-1              | 1        | 80         | 80         |
+| oi_29308fd71226  | order_e62fd149f610 | meal-1              | 2        | 80         | 160        |
+| oi_0053b6ba6752  | order_9524344f63c6 | meal_49e55999ae4e   | 10       | 100        | 1000       |
+| oi_741986de5782  | order_7fa5ce9afd66 | meal_49e55999ae4e   | 10       | 100        | 1000       |
+| oi_7a69df306cdc  | order_42ae17b22351 | meal_65591eb78843   | 10       | 100        | 1000       |
