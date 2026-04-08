@@ -183,7 +183,7 @@
             <div class="card-body">
               <span class="badge">${item.category}</span>
               <h3>${item.name}</h3>
-              <p class="meta"><strong>Homecook:</strong> ${item.cookName}</p>
+              ${item.cookName ? `<p class="meta"><strong>Homecook:</strong> ${item.cookName}</p>` : ""}
               <p class="meta">${item.description || "Fresh home-style meal."}</p>
               ${item.averageRating > 0 ? `<p class="meta"><strong>Rating:</strong> ${starsMarkup(item.averageRating)}</p>` : ""}
               <div class="price">${coinMarkup(item.priceNestCoins)}</div>
@@ -219,7 +219,7 @@
         <div class="cart-line">
           <div>
             <strong>${item.name}</strong>
-            <div class="meta">Homecook: ${item.cookName}</div>
+            ${item.cookName ? `<div class="meta">Homecook: ${item.cookName}</div>` : ""}
             <div class="meta">${item.quantity} x ${coinMarkup(item.priceNestCoins)}</div>
           </div>
           <div class="row">

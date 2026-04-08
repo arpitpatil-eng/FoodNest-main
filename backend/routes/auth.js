@@ -5,7 +5,7 @@ const { getConnection } = require("../config/db");
 const { requireAuth } = require("../middleware/auth");
 const { createId } = require("../utils/ids");
 const { hashPassword, verifyPassword } = require("../utils/passwords");
-const { getStarterMenusForCuisine } = require("../utils/starterMenus");
+const { getStarterMenuIdsForCuisine } = require("../utils/starterMenus");
 
 const router = express.Router();
 const allowedRoles = ["student", "cook", "delivery"];
@@ -144,25 +144,20 @@ router.post("/signup", async (req, res) => {
     );
 
     if (role === "cook") {
-      const starterMenus = getStarterMenusForCuisine(cookCuisine);
-      for (const item of starterMenus) {
-        await connection.execute(
-          `INSERT INTO menu_items
-           (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
-           VALUES
-           (:id, :cook_id, :name, :category, :price_nest_coins, :preparation_time_mins, :image_url, :description, 1)`,
-          {
-            id: createId("meal"),
-            cook_id: userId,
-            name: item.name,
-            category: item.category,
-            price_nest_coins: item.priceNestCoins,
-            preparation_time_mins: item.preparationTimeMins,
-            image_url: item.imageUrl,
-            description: item.description
-          }
-        );
-      }
+      const starterMenuIds = getStarterMenuIdsForCuisine(cookCuisine);
+      await connection.execute(
+        `UPDATE menu_items
+         SET cook_id = :cook_id
+         WHERE id IN (${starterMenuIds.map((_, index) => `:menu_id_${index}`).join(", ")})
+         AND cook_id IS NULL`,
+        starterMenuIds.reduce(
+          (params, id, index) => {
+            params[`menu_id_${index}`] = id;
+            return params;
+          },
+          { cook_id: userId }
+        )
+      );
     }
 
     await connection.commit();
