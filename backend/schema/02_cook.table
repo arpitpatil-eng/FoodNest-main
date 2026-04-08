@@ -1,0 +1,14 @@
+FILE: 02_cook.sql
+
+TABLE: menu_items
+| column                | type          | notes                           |
+|-----------------------|---------------|---------------------------------|
+| id                    | VARCHAR2(50)  | primary key                     |
+| cook_id               | VARCHAR2(50)  | foreign key -> users.id         |
+| name                  | VARCHAR2(100) | not null                        |
+| category              | VARCHAR2(30)  | not null                        |
+| price_nest_coins      | NUMBER        | not null                        |
+| preparation_time_mins | NUMBER        | default 20, not null            |
+| image_url             | VARCHAR2(500) |                                 |
+| description           | VARCHAR2(255) |                                 |
+| available             | NUMBER(1)     | 0 or 1                          |

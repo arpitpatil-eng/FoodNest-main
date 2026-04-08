@@ -1,0 +1,39 @@
+FILE: 01_auth.sql
+
+TABLE: users
+| column        | type          | notes                                    |
+|---------------|---------------|------------------------------------------|
+| id            | VARCHAR2(50)  | primary key                              |
+| name          | VARCHAR2(100) | not null                                 |
+| username      | VARCHAR2(100) | unique, not null                         |
+| password_hash | VARCHAR2(255) | not null                                 |
+| role          | VARCHAR2(20)  | student / cook / delivery                |
+| nest_coins    | NUMBER        | default 0, not null                      |
+| created_at    | TIMESTAMP     | default current timestamp                |
+
+TABLE: user_sessions
+| column     | type          | notes                                    |
+|------------|---------------|------------------------------------------|
+| id         | VARCHAR2(50)  | primary key                              |
+| user_id    | VARCHAR2(50)  | foreign key -> users.id                  |
+| token      | VARCHAR2(100) | unique, not null                         |
+| created_at | TIMESTAMP     | default current timestamp                |
+
+TABLE: user_profiles
+| column                 | type           | notes                           |
+|------------------------|----------------|---------------------------------|
+| user_id                | VARCHAR2(50)   | primary key, foreign key        |
+| age                    | NUMBER         |                                 |
+| phone                  | VARCHAR2(30)   | unique, not null                |
+| college_name           | VARCHAR2(150)  | student detail                  |
+| hostel_address         | VARCHAR2(255)  | student detail                  |
+| hostel_name            | VARCHAR2(150)  | student detail                  |
+| room_number            | VARCHAR2(30)   | student detail                  |
+| cook_experience_years  | NUMBER         | cook detail                     |
+| cook_cuisine           | VARCHAR2(150)  | cook detail                     |
+| cook_availability      | VARCHAR2(100)  | cook detail                     |
+| delivery_contact_phone | VARCHAR2(30)   | delivery detail                 |
+| delivery_alt_phone     | VARCHAR2(30)   | delivery alternate phone        |
+| delivery_vehicle       | VARCHAR2(50)   | delivery detail                 |
+| delivery_hours         | VARCHAR2(100)  | delivery detail                 |
+| delivery_shift         | VARCHAR2(50)   | delivery detail                 |

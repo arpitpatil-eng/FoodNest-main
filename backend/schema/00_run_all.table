@@ -1,0 +1,11 @@
+FILE: 00_run_all.sql
+
+RUN ORDER
+1. 01_auth.sql
+2. 02_cook.sql
+3. 03_student.sql
+4. 04_delivery.sql
+5. 05_seed_menu_items.sql
+
+PURPOSE
+- Runs all modular schema files in sequence.

@@ -1,0 +1,34 @@
+FILE: 03_student.sql
+
+TABLE: orders
+| column           | type          | notes                           |
+|------------------|---------------|---------------------------------|
+| id               | VARCHAR2(50)  | primary key                     |
+| student_id       | VARCHAR2(50)  | foreign key -> users.id         |
+| cook_id          | VARCHAR2(50)  | foreign key -> users.id         |
+| total_nest_coins | NUMBER        | not null                        |
+| payment_method   | VARCHAR2(30)  | not null                        |
+| payment_status   | VARCHAR2(30)  | not null                        |
+| status           | VARCHAR2(50)  | not null                        |
+| payout_distributed | NUMBER(1)   | default 0                       |
+| created_at       | TIMESTAMP     | default current timestamp       |
+
+TABLE: order_items
+| column                 | type         | notes                           |
+|------------------------|--------------|---------------------------------|
+| id                     | VARCHAR2(50) | primary key                     |
+| order_id               | VARCHAR2(50) | foreign key -> orders.id        |
+| menu_item_id           | VARCHAR2(50) | foreign key -> menu_items.id    |
+| quantity               | NUMBER       | not null                        |
+| unit_price_nest_coins  | NUMBER       | not null                        |
+| line_total_nest_coins  | NUMBER       | not null                        |
+
+TABLE: feedback
+| column             | type          | notes                           |
+|--------------------|---------------|---------------------------------|
+| id                 | VARCHAR2(50)  | primary key                     |
+| order_id           | VARCHAR2(50)  | unique, foreign key             |
+| rating             | NUMBER        | 1 to 5                          |
+| review_text        | VARCHAR2(500) |                                 |
+| reward_distributed | NUMBER(1)     | default 0                       |
+| submitted_at       | TIMESTAMP     | default current timestamp       |

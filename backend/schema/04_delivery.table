@@ -1,0 +1,26 @@
+FILE: 04_delivery.sql
+
+TABLE: delivery_assignments
+| column              | type          | notes                           |
+|---------------------|---------------|---------------------------------|
+| id                  | VARCHAR2(50)  | primary key                     |
+| order_id            | VARCHAR2(50)  | unique, foreign key             |
+| delivery_partner_id | VARCHAR2(50)  | foreign key -> users.id         |
+| delivery_status     | VARCHAR2(30)  | default Pending Acceptance      |
+| pickup_location     | VARCHAR2(255) | default Home Cook Hub           |
+| drop_location       | VARCHAR2(255) | default Hosteller Address       |
+| estimated_time_mins | NUMBER        | default 20                      |
+| distance_km         | NUMBER(5,2)   | default 3.50                    |
+| assigned_at         | TIMESTAMP     | default current timestamp       |
+| picked_up_at        | TIMESTAMP     |                                 |
+| on_the_way_at       | TIMESTAMP     |                                 |
+| delivered_at        | TIMESTAMP     |                                 |
+
+TABLE: order_status_history
+| column     | type          | notes                           |
+|------------|---------------|---------------------------------|
+| id         | VARCHAR2(50)  | primary key                     |
+| order_id   | VARCHAR2(50)  | foreign key -> orders.id        |
+| stage      | VARCHAR2(50)  | not null                        |
+| changed_at | TIMESTAMP     | default current timestamp       |
+| simulated  | NUMBER(1)     | 0 or 1                          |

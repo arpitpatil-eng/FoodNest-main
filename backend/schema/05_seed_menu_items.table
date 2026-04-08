@@ -1,0 +1,30 @@
+FILE: 05_seed_menu_items.sql
+
+SEED USERS
+| id               | name  | username    | role | nest_coins |
+|------------------|-------|-------------|------|------------|
+| seed-cook-aarav  | Aarav | seed_aarav  | cook | 0          |
+| seed-cook-riya   | Riya  | seed_riya   | cook | 0          |
+| seed-cook-kabir  | Kabir | seed_kabir  | cook | 0          |
+| seed-cook-anaya  | Anaya | seed_anaya  | cook | 0          |
+| seed-cook-dev    | Dev   | seed_dev    | cook | 0          |
+
+SEED MENU_ITEMS
+| id             | cook          | name               | category | price | image                              |
+|----------------|---------------|--------------------|----------|-------|------------------------------------|
+| hostel-meal-01 | Aarav         | Maggie Masala Bowl | Fresh    | 50    | https://i.ibb.co/LdRbXZbv/food-1.jpg  |
+| hostel-meal-02 | Aarav         | Curd Rice          | Veg      | 35    | https://i.ibb.co/c7MPFkf/food-2.jpg   |
+| hostel-meal-03 | Riya          | Poha               | Fresh    | 40    | https://i.ibb.co/v40TYSJS/food-3.jpg  |
+| hostel-meal-04 | Riya          | Chole Bhature      | Veg      | 45    | https://i.ibb.co/Z64Mj69g/food-4.jpg  |
+| hostel-meal-05 | Kabir         | Veg Fried Rice     | Fresh    | 65    | https://i.ibb.co/BJpQ05W/food-5.jpg   |
+| hostel-meal-06 | Kabir         | Egg Curry Meal     | Organic  | 55    | https://i.ibb.co/HLycpjG7/food-6.jpg  |
+| hostel-meal-07 | Riya          | Aloo Paratha       | Fresh    | 48    | https://i.ibb.co/zVtwgyH8/food-7.jpg  |
+| hostel-meal-08 | Anaya         | Rajma Chawal       | Veg      | 52    | https://i.ibb.co/KzccQY4F/food-8.jpg  |
+| hostel-meal-09 | Anaya         | Masala Dosa        | Fresh    | 38    | https://i.ibb.co/cXSYd7Xs/food-9.jpg  |
+| hostel-meal-10 | Dev           | Healthy Veg Bowl   | Fresh    | 58    | https://i.ibb.co/B2WKYk9L/food-10.jpg |
+| hostel-meal-11 | Dev           | Chicken Rice Bowl  | Veg      | 46    | https://i.ibb.co/KcRjxfxX/food-11.jpg |
+| hostel-meal-12 | Aarav         | Lemon Rice Combo   | Fresh    | 54    | https://i.ibb.co/R4CvzqjQ/food-12.jpg |
+| hostel-meal-13 | Anaya         | Mini Tiffin Combo  | Organic  | 30    | https://i.ibb.co/HDJNRKC7/food-13.jpg |
+| hostel-meal-14 | Riya          | Paneer Roll        | Fresh    | 34    | https://i.ibb.co/Jw5kTh8c/food-14.jpg |
+| hostel-meal-15 | Kabir         | Idli Sambar        | Fresh    | 28    | https://i.ibb.co/mCJsHCYF/food-15.jpg |
+| hostel-meal-16 | Dev           | Veg Thali          | Veg      | 42    | https://i.ibb.co/GQgWYnKP/food-16.jpg |
