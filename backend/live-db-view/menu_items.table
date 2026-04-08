@@ -1,11 +1,20 @@
 TABLE: MENU_ITEMS
 
-| id              | name              | category | price | available | cook_id           | prep_mins | image_url |
-|-----------------|-------------------|----------|-------|-----------|-------------------|-----------|-----------|
-| meal-1          | Home Veg Thali    | Veg      | 80    | 1         | -                 | 20        | -         |
-| meal-2          | Paneer Lunch Box  | Veg      | 110   | 1         | -                 | 20        | -         |
-| meal-3          | Chicken Combo     | Non-Veg  | 140   | 1         | -                 | 20        | -         |
-| meal_698910933e57 | Flow Test Meal  | Veg      | 100   | 1         | user_3e15d0dacece | 20        | -         |
-| meal_49e55999ae4e | Flow Test Meal  | Veg      | 100   | 1         | user_7099b560abe6 | 20        | -         |
-| meal_ee1bdaf5e6f9 | Flow Test Meal  | Veg      | 100   | 1         | user_db00b7119f9b | 20        | -         |
-| meal_65591eb78843 | Flow Test Meal 212307 | Veg | 100   | 1         | user_43a2207c8128 | 20        | -         |
+| id             | name               | category | price | available | cook_id | prep_mins | image_url                             |
+|----------------|--------------------|----------|-------|-----------|---------|-----------|---------------------------------------|
+| hostel-meal-01 | Maggie Masala Bowl | Fresh    | 50    | 1         | -       | 20        | https://i.ibb.co/LdRbXZbv/food-1.jpg  |
+| hostel-meal-02 | Curd Rice          | Veg      | 35    | 1         | -       | 20        | https://i.ibb.co/c7MPFkf/food-2.jpg   |
+| hostel-meal-03 | Poha               | Fresh    | 40    | 1         | -       | 20        | https://i.ibb.co/v40TYSJS/food-3.jpg  |
+| hostel-meal-04 | Chole Bhature      | Veg      | 45    | 1         | -       | 25        | https://i.ibb.co/Z64Mj69g/food-4.jpg  |
+| hostel-meal-05 | Veg Fried Rice     | Fresh    | 65    | 1         | -       | 25        | https://i.ibb.co/BJpQ05W/food-5.jpg   |
+| hostel-meal-06 | Egg Curry Meal     | Organic  | 55    | 1         | -       | 25        | https://i.ibb.co/HLycpjG7/food-6.jpg  |
+| hostel-meal-07 | Aloo Paratha       | Fresh    | 48    | 1         | -       | 20        | https://i.ibb.co/zVtwgyH8/food-7.jpg  |
+| hostel-meal-08 | Rajma Chawal       | Veg      | 52    | 1         | -       | 25        | https://i.ibb.co/KzccQY4F/food-8.jpg  |
+| hostel-meal-09 | Masala Dosa        | Fresh    | 38    | 1         | -       | 20        | https://i.ibb.co/cXSYd7Xs/food-9.jpg  |
+| hostel-meal-10 | Healthy Veg Bowl   | Fresh    | 58    | 1         | -       | 20        | https://i.ibb.co/B2WKYk9L/food-10.jpg |
+| hostel-meal-11 | Chicken Rice Bowl  | Veg      | 46    | 1         | -       | 20        | https://i.ibb.co/KcRjxfxX/food-11.jpg |
+| hostel-meal-12 | Lemon Rice Combo   | Fresh    | 54    | 1         | -       | 20        | https://i.ibb.co/R4CvzqjQ/food-12.jpg |
+| hostel-meal-13 | Mini Tiffin Combo  | Organic  | 30    | 1         | -       | 15        | https://i.ibb.co/HDJNRKC7/food-13.jpg |
+| hostel-meal-14 | Paneer Roll        | Fresh    | 34    | 1         | -       | 20        | https://i.ibb.co/Jw5kTh8c/food-14.jpg |
+| hostel-meal-15 | Idli Sambar        | Fresh    | 28    | 1         | -       | 15        | https://i.ibb.co/mCJsHCYF/food-15.jpg |
+| hostel-meal-16 | Veg Thali          | Veg      | 42    | 1         | -       | 20        | https://i.ibb.co/GQgWYnKP/food-16.jpg |
