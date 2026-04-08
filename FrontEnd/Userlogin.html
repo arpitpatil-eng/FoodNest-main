@@ -105,16 +105,6 @@
             </div>
 
             <div class="field">
-              <label for="signup-college">College Name</label>
-              <input id="signup-college" type="text" placeholder="Enter college name">
-            </div>
-
-            <div class="field">
-              <label for="signup-hostel-name">Hostel Name</label>
-              <input id="signup-hostel-name" type="text" placeholder="Enter hostel name">
-            </div>
-
-            <div class="field">
               <label for="signup-role">Register As</label>
               <select id="signup-role" required>
                 <option value="">Select role</option>
@@ -123,17 +113,6 @@
                 <option value="delivery">Delivery Agent</option>
               </select>
             </div>
-
-            <div class="field" style="grid-column: 1 / -1;">
-              <label for="signup-address">Hostel / Address</label>
-              <textarea id="signup-address" rows="2" placeholder="Enter hostel address"></textarea>
-            </div>
-
-            <div class="field">
-              <label for="signup-room-number">Room Number</label>
-              <input id="signup-room-number" type="text" placeholder="Enter room number">
-            </div>
-
             <div class="field">
               <label for="signup-password">Password</label>
               <input id="signup-password" type="password" placeholder="Create password" required>
@@ -142,6 +121,28 @@
             <div class="field">
               <label for="signup-confirm-password">Confirm Password</label>
               <input id="signup-confirm-password" type="password" placeholder="Confirm password" required>
+            </div>
+          </div>
+
+          <div class="role-extra" id="student-extra">
+            <h3>Hosteller Details</h3>
+            <div class="form-grid">
+              <div class="field">
+                <label for="signup-college">College Name</label>
+                <input id="signup-college" type="text" placeholder="Enter college name">
+              </div>
+              <div class="field">
+                <label for="signup-hostel-name">Hostel Name</label>
+                <input id="signup-hostel-name" type="text" placeholder="Enter hostel name">
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="signup-address">Hostel Address</label>
+                <textarea id="signup-address" rows="2" placeholder="Enter hostel address"></textarea>
+              </div>
+              <div class="field">
+                <label for="signup-room-number">Room Number</label>
+                <input id="signup-room-number" type="text" placeholder="Enter room number">
+              </div>
             </div>
           </div>
 
@@ -234,6 +235,7 @@
     });
 
     function toggleRoleFields(role) {
+      document.getElementById("student-extra").classList.toggle("active", role === "student");
       document.getElementById("cook-extra").classList.toggle("active", role === "cook");
       document.getElementById("delivery-extra").classList.toggle("active", role === "delivery");
     }

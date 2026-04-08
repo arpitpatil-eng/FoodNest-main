@@ -43,6 +43,17 @@ function coinMarkup(value, options = {}) {
   return `<span class="coin-value${compact}"><img class="coin-icon" src="/nestcoin.svg" alt="NestCoin">${safeValue}${labelMarkup}</span>`;
 }
 
+function starsMarkup(rating) {
+  const safeRating = Math.max(0, Math.min(5, Math.round(Number(rating || 0))));
+  if (!safeRating) {
+    return '<span class="stars empty">No ratings yet</span>';
+  }
+
+  const filled = "★".repeat(safeRating);
+  const empty = "☆".repeat(5 - safeRating);
+  return `<span class="stars" aria-label="${safeRating} star rating">${filled}${empty}</span>`;
+}
+
 async function apiFetch(path, options = {}) {
   const headers = {
     "Content-Type": "application/json",

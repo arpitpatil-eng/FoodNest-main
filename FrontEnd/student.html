@@ -59,10 +59,16 @@
         </section>
 
         <section class="section dashboard-section">
-          <div class="stats-grid">
-            <div class="stat-card"><h3>Total Orders</h3><p id="stat-total-orders">0</p></div>
-            <div class="stat-card"><h3>Active Orders</h3><p id="stat-active-orders">0</p></div>
-            <div class="stat-card"><h3>Available Meals</h3><p id="stat-available-meals">0</p></div>
+          <div class="split-grid">
+            <div class="box profile-box">
+              <div class="section-title"><h2>Hosteller Profile</h2></div>
+              <div id="student-profile" class="profile-list muted"></div>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-card"><h3>Total Orders</h3><p id="stat-total-orders">0</p></div>
+              <div class="stat-card"><h3>Active Orders</h3><p id="stat-active-orders">0</p></div>
+              <div class="stat-card"><h3>Available Meals</h3><p id="stat-available-meals">0</p></div>
+            </div>
           </div>
         </section>
 
@@ -133,6 +139,7 @@
     const reviewsList = document.getElementById("reviews-list");
     const paymentCards = document.querySelectorAll(".pay-card");
     const cartCountChip = document.getElementById("cart-count-chip");
+    const studentProfile = document.getElementById("student-profile");
     const sidebar = document.getElementById("sidebar");
     const sidebarOverlay = document.getElementById("sidebar-overlay");
 
@@ -186,7 +193,7 @@
               <h3>${item.name}</h3>
               <p class="meta"><strong>Cook:</strong> ${item.cookName}</p>
               <p class="meta">${item.description || "Fresh home-style meal."}</p>
-              <p class="meta"><strong>Rating:</strong> ${item.averageRating > 0 ? `${item.averageRating} / 5` : "No ratings yet"}</p>
+              <p class="meta"><strong>Rating:</strong> ${starsMarkup(item.averageRating)}</p>
               <p class="meta"><strong>Prep:</strong> ${item.preparationTimeMins} mins</p>
               <div class="price">${coinMarkup(item.priceNestCoins)}</div>
               <div class="row">
@@ -336,6 +343,13 @@
       orders = ordersData.orders;
       walletPill.innerHTML = coinMarkup(user.nestCoins, { label: "Wallet", compact: true });
       heroTitle.textContent = `Welcome ${user.name}, order from today's live kitchen menu`;
+      studentProfile.innerHTML = `
+        <div><strong>Name:</strong> ${user.name}</div>
+        <div><strong>College:</strong> ${user.profile.collegeName || "-"}</div>
+        <div><strong>Hostel:</strong> ${user.profile.hostelName || "-"}</div>
+        <div><strong>Room Number:</strong> ${user.profile.roomNumber || "-"}</div>
+        <div><strong>Address:</strong> ${user.profile.hostelAddress || "-"}</div>
+      `;
       document.getElementById("stat-total-orders").textContent = dashboardData.totalOrders;
       document.getElementById("stat-active-orders").textContent = dashboardData.activeOrders;
       document.getElementById("stat-available-meals").textContent = menuItems.length;
