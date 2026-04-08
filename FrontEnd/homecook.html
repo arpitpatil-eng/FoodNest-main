@@ -24,9 +24,8 @@
       </div>
       <nav class="sidebar-nav">
         <a class="sidebar-link" href="#hero-section">Dashboard</a>
-        <a class="sidebar-link" href="#menu-form-section">Add Menu Item</a>
-        <a class="sidebar-link" href="#menu-list-section">Your Menu</a>
         <a class="sidebar-link" href="#orders-section">Incoming Orders</a>
+        <a class="sidebar-link" href="#active-section">Active Preparation</a>
         <a class="sidebar-link" href="#history-section">Order History</a>
       </nav>
     </aside>
@@ -51,7 +50,7 @@
       <main class="page-shell">
         <section class="hero dashboard-section" id="hero-section">
           <h2 id="hero-title">Cook fresh. Serve hostellers. Earn more.</h2>
-          <p>Manage your live menu, handle incoming kitchen orders, move them through preparation, and build earnings from completed meals and rewards.</p>
+          <p>Incoming orders appear here only after a hosteller places one. Accept the order, start preparing it, and then mark it ready for pickup.</p>
           <div class="hero-cta">
             <span class="pill" id="hero-orders-pill">Orders Today: 0</span>
             <span class="pill" id="hero-completed-pill">Meals Completed: 0</span>
@@ -67,65 +66,11 @@
         </section>
 
         <section class="section dashboard-section">
-          <div class="split-grid">
-            <div class="box profile-box">
-              <div class="section-title"><h2>Your Profile</h2></div>
-              <div id="cook-profile" class="profile-list muted"></div>
-            </div>
-            <div class="box">
-              <div class="section-title"><h2>Wallet</h2></div>
-              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big"></p>
-              <p class="note">Completed deliveries and 5-star review rewards increase your wallet.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="section dashboard-section" id="menu-form-section">
-          <div class="section-title">
-            <h2>Add Menu Item</h2>
-          </div>
           <div class="box">
-            <form id="menu-form" class="form-grid">
-              <div class="field">
-                <label for="dish-name">Dish Name</label>
-                <input id="dish-name" type="text" required>
-              </div>
-              <div class="field">
-                <label for="dish-category">Category</label>
-                <select id="dish-category">
-                  <option value="Veg">Veg</option>
-                  <option value="Non-Veg">Non-Veg</option>
-                  <option value="Snacks">Snacks</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="dish-price">Price</label>
-                <input id="dish-price" type="number" min="1" required>
-              </div>
-              <div class="field">
-                <label for="dish-time">Preparation Time (mins)</label>
-                <input id="dish-time" type="number" min="5" value="20">
-              </div>
-              <div class="field">
-                <label for="dish-image">Image URL</label>
-                <input id="dish-image" type="url" placeholder="Optional">
-              </div>
-              <div class="field">
-                <label for="dish-description">Description</label>
-                <textarea id="dish-description" rows="2"></textarea>
-              </div>
-              <div class="row">
-                <button class="primary-btn" type="submit">Create Item</button>
-              </div>
-            </form>
+            <div class="section-title"><h2>Wallet</h2></div>
+            <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big"></p>
+            <p class="note">Home cook earnings start at zero and increase only after successful deliveries and reward sharing.</p>
           </div>
-        </section>
-
-        <section class="section dashboard-section" id="menu-list-section">
-          <div class="section-title">
-            <h2>Your Menu</h2>
-          </div>
-          <div id="menu-list" class="grid cards-3"></div>
         </section>
 
         <section class="section dashboard-section" id="orders-section">
@@ -133,9 +78,18 @@
             <h2>Incoming Orders</h2>
           </div>
           <div class="box" style="margin-bottom: 16px;">
-            <p class="note">Move every order through `Preparing` and then `Prepared`. Once prepared, it becomes available for delivery assignment.</p>
+            <p class="note">This stays empty until a student places an order for one of the fixed FoodNest dishes.</p>
           </div>
           <div id="orders-list" class="order-list"></div>
+        </section>
+
+        <section class="section dashboard-section" id="active-section">
+          <div class="section-title">
+            <h2>Active Preparation</h2>
+          </div>
+          <div id="active-box" class="box">
+            <div class="empty-state">No active order yet. Accept one from above.</div>
+          </div>
         </section>
 
         <section class="section dashboard-section" id="history-section">
@@ -153,16 +107,15 @@
     const toast = document.getElementById("toast");
     const walletPill = document.getElementById("wallet-pill");
     const heroTitle = document.getElementById("hero-title");
-    const menuList = document.getElementById("menu-list");
     const ordersList = document.getElementById("orders-list");
     const historyList = document.getElementById("history-list");
-    const cookProfile = document.getElementById("cook-profile");
+    const activeBox = document.getElementById("active-box");
     const sidebar = document.getElementById("sidebar");
     const sidebarOverlay = document.getElementById("sidebar-overlay");
 
-    let menuItems = [];
     let activeOrders = [];
     let orderHistory = [];
+    let currentActiveOrder = null;
 
     function showToast(message) {
       toast.textContent = message;
@@ -177,40 +130,21 @@
       sidebarOverlay.classList.toggle("active", shouldOpen);
     }
 
+    function actionLabel(currentStatus) {
+      if (currentStatus === "Order Placed") return "Accept Order";
+      if (currentStatus === "Preparing") return "Ready for Pickup";
+      return "";
+    }
+
     function nextCookStatus(current) {
       if (current === "Order Placed") return "Preparing";
       if (current === "Preparing") return "Prepared";
       return null;
     }
 
-    function renderMenu() {
-      if (menuItems.length === 0) {
-        menuList.innerHTML = '<div class="empty-state">No menu items yet. Add your first meal above.</div>';
-        return;
-      }
-
-      menuList.innerHTML = menuItems.map((item) => `
-        <article class="card">
-          <img class="card-media" src="${item.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${item.name}">
-          <div class="card-body">
-            <span class="badge">${item.available ? "Available" : "Hidden"}</span>
-            <h3>${item.name}</h3>
-            <p class="meta">${item.description || "No description yet."}</p>
-            <p class="meta">${item.category} • ${item.preparationTimeMins} mins</p>
-            <div class="price">${coinMarkup(item.priceNestCoins)}</div>
-            <div class="row">
-              <button class="secondary-btn" onclick="toggleAvailability('${item.id}', ${item.available ? 0 : 1})">
-                ${item.available ? "Hide Item" : "Make Available"}
-              </button>
-            </div>
-          </div>
-        </article>
-      `).join("");
-    }
-
     function renderOrders() {
       if (activeOrders.length === 0) {
-        ordersList.innerHTML = '<div class="empty-state">No active cook orders right now.</div>';
+        ordersList.innerHTML = '<div class="empty-state">No orders yet. Orders will appear here after a student places one.</div>';
         return;
       }
 
@@ -218,6 +152,7 @@
         const nextStatus = nextCookStatus(order.orderStatus);
         return `
           <article class="order-item">
+            <img class="card-media" src="${order.previewImage || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${order.itemsSummary}" style="margin-bottom: 16px;">
             <div class="row" style="justify-content: space-between;">
               <h3>${order.orderId}</h3>
               <span class="badge">${order.orderStatus}</span>
@@ -233,11 +168,32 @@
               <span style="${["Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Prepared</span>
             </div>
             <div class="row">
-              ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${order.orderId}', '${nextStatus}')">${nextStatus}</button>` : ""}
+              ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${order.orderId}', '${nextStatus}')">${actionLabel(order.orderStatus)}</button>` : ""}
             </div>
           </article>
         `;
       }).join("");
+    }
+
+    function renderActivePreparation() {
+      currentActiveOrder = activeOrders.find((order) => order.orderStatus === "Preparing") || activeOrders[0] || null;
+
+      if (!currentActiveOrder) {
+        activeBox.innerHTML = '<div class="empty-state">No active order yet. Accept one from above.</div>';
+        return;
+      }
+
+      const nextStatus = nextCookStatus(currentActiveOrder.orderStatus);
+      activeBox.innerHTML = `
+        <img class="card-media" src="${currentActiveOrder.previewImage || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${currentActiveOrder.itemsSummary}" style="margin-bottom: 16px;">
+        <h3>${currentActiveOrder.itemsSummary}</h3>
+        <p class="meta"><strong>Student:</strong> ${currentActiveOrder.studentName}</p>
+        <p class="meta"><strong>Status:</strong> ${currentActiveOrder.orderStatus}</p>
+        <p class="meta"><strong>Total:</strong> ${coinMarkup(currentActiveOrder.totalNestCoins)}</p>
+        <div class="row" style="margin-top: 16px;">
+          ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${currentActiveOrder.orderId}', '${nextStatus}')">${actionLabel(currentActiveOrder.orderStatus)}</button>` : ""}
+        </div>
+      `;
     }
 
     function renderHistory() {
@@ -252,6 +208,7 @@
             <h3>${order.orderId}</h3>
             <span class="badge">${order.orderStatus}</span>
           </div>
+          <img class="card-media" src="${order.previewImage || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${order.itemsSummary}" style="margin: 16px 0;">
           <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
           <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
           <p class="meta"><strong>Total:</strong> ${coinMarkup(order.totalNestCoins)}</p>
@@ -260,9 +217,8 @@
     }
 
     async function loadData() {
-      const [meData, menuData, activeData, historyData, dashboardData] = await Promise.all([
+      const [meData, activeData, historyData, dashboardData] = await Promise.all([
         apiFetch("/auth/me"),
-        apiFetch("/menu"),
         apiFetch("/orders/cook"),
         apiFetch("/orders/cook/history"),
         apiFetch("/cook/dashboard")
@@ -277,18 +233,11 @@
       document.getElementById("stat-meals-completed").textContent = dashboardData.mealsCompleted;
       document.getElementById("hero-orders-pill").textContent = `Orders Today: ${dashboardData.ordersToday}`;
       document.getElementById("hero-completed-pill").textContent = `Meals Completed: ${dashboardData.mealsCompleted}`;
-      cookProfile.innerHTML = `
-        <div><strong>Phone:</strong> ${user.profile.phone || "-"}</div>
-        <div><strong>Cuisine:</strong> ${user.profile.cookCuisine || "-"}</div>
-        <div><strong>Experience:</strong> ${user.profile.cookExperienceYears || 0} years</div>
-        <div><strong>Availability:</strong> ${user.profile.cookAvailability || "-"}</div>
-      `;
-      menuItems = menuData.items;
       activeOrders = activeData.orders;
       orderHistory = historyData.orders;
 
-      renderMenu();
       renderOrders();
+      renderActivePreparation();
       renderHistory();
     }
 
@@ -304,43 +253,6 @@
         showToast(error.message);
       }
     }
-
-    async function toggleAvailability(id, available) {
-      try {
-        await apiFetch(`/menu/${id}`, {
-          method: "PUT",
-          body: JSON.stringify({ available: Boolean(available) })
-        });
-        showToast("Menu item updated.");
-        await loadData();
-      } catch (error) {
-        showToast(error.message);
-      }
-    }
-
-    document.getElementById("menu-form").addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      try {
-        await apiFetch("/menu", {
-          method: "POST",
-          body: JSON.stringify({
-            name: document.getElementById("dish-name").value.trim(),
-            category: document.getElementById("dish-category").value,
-            priceNestCoins: Number(document.getElementById("dish-price").value),
-            preparationTimeMins: Number(document.getElementById("dish-time").value),
-            imageUrl: document.getElementById("dish-image").value.trim() || null,
-            description: document.getElementById("dish-description").value.trim() || null
-          })
-        });
-        event.target.reset();
-        document.getElementById("dish-time").value = 20;
-        showToast("Menu item created.");
-        await loadData();
-      } catch (error) {
-        showToast(error.message);
-      }
-    });
 
     document.getElementById("sidebar-toggle").addEventListener("click", () => toggleSidebar(true));
     document.getElementById("sidebar-close").addEventListener("click", () => toggleSidebar(false));

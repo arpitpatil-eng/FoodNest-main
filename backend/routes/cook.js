@@ -261,6 +261,7 @@ router.get("/orders/cook", async (req, res) => {
          u.name AS student_name,
          da.drop_location,
          da.estimated_time_mins,
+         MIN(mi.image_url) AS preview_image,
          LISTAGG(mi.name || ' x' || oi.quantity, ', ')
            WITHIN GROUP (ORDER BY mi.name) AS items_summary
        FROM orders o
@@ -289,6 +290,7 @@ router.get("/orders/cook", async (req, res) => {
         studentName: row.STUDENT_NAME,
         dropLocation: row.DROP_LOCATION,
         estimatedTimeMins: row.ESTIMATED_TIME_MINS,
+        previewImage: row.PREVIEW_IMAGE,
         itemsSummary: row.ITEMS_SUMMARY
       }))
     });
@@ -317,6 +319,7 @@ router.get("/orders/cook/history", async (req, res) => {
          o.total_nest_coins,
          o.created_at,
          u.name AS student_name,
+         MIN(mi.image_url) AS preview_image,
          LISTAGG(mi.name || ' x' || oi.quantity, ', ')
            WITHIN GROUP (ORDER BY mi.name) AS items_summary
        FROM orders o
@@ -337,6 +340,7 @@ router.get("/orders/cook/history", async (req, res) => {
         totalNestCoins: row.TOTAL_NEST_COINS,
         createdAt: row.CREATED_AT,
         studentName: row.STUDENT_NAME,
+        previewImage: row.PREVIEW_IMAGE,
         itemsSummary: row.ITEMS_SUMMARY
       }))
     });

@@ -80,6 +80,7 @@ router.get("/deliveries/open", async (req, res) => {
          da.drop_location,
          da.estimated_time_mins,
          da.distance_km,
+         MIN(mi.image_url) AS preview_image,
          LISTAGG(mi.name || ' x' || oi.quantity, ', ')
            WITHIN GROUP (ORDER BY mi.name) AS items_summary
        FROM delivery_assignments da
@@ -111,6 +112,7 @@ router.get("/deliveries/open", async (req, res) => {
         dropLocation: row.DROP_LOCATION,
         estimatedTimeMins: row.ESTIMATED_TIME_MINS,
         distanceKm: row.DISTANCE_KM,
+        previewImage: row.PREVIEW_IMAGE,
         itemsSummary: row.ITEMS_SUMMARY
       }))
     });
@@ -206,6 +208,7 @@ router.get("/orders/delivery", async (req, res) => {
          da.distance_km,
          da.assigned_at,
          u.name AS student_name,
+         MIN(mi.image_url) AS preview_image,
          LISTAGG(mi.name || ' x' || oi.quantity, ', ')
            WITHIN GROUP (ORDER BY mi.name) AS items_summary
        FROM delivery_assignments da
@@ -240,6 +243,7 @@ router.get("/orders/delivery", async (req, res) => {
         distanceKm: row.DISTANCE_KM,
         assignedAt: row.ASSIGNED_AT,
         studentName: row.STUDENT_NAME,
+        previewImage: row.PREVIEW_IMAGE,
         itemsSummary: row.ITEMS_SUMMARY
       }))
     });
@@ -272,6 +276,7 @@ router.get("/orders/delivery/history", async (req, res) => {
          u.name AS student_name,
          da.delivery_status,
          da.delivered_at,
+         MIN(mi.image_url) AS preview_image,
          LISTAGG(mi.name || ' x' || oi.quantity, ', ')
            WITHIN GROUP (ORDER BY mi.name) AS items_summary
        FROM delivery_assignments da
@@ -297,6 +302,7 @@ router.get("/orders/delivery/history", async (req, res) => {
         studentName: row.STUDENT_NAME,
         deliveryStatus: row.DELIVERY_STATUS,
         deliveredAt: row.DELIVERED_AT,
+        previewImage: row.PREVIEW_IMAGE,
         itemsSummary: row.ITEMS_SUMMARY
       }))
     });

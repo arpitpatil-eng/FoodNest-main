@@ -178,16 +178,16 @@
                 <input id="delivery-phone-confirm" type="text" placeholder="Enter delivery contact number">
               </div>
               <div class="field">
+                <label for="delivery-alt-phone">Alternate Phone Number</label>
+                <input id="delivery-alt-phone" type="text" placeholder="Enter alternate phone number">
+              </div>
+              <div class="field">
                 <label for="delivery-vehicle">Vehicle Type</label>
                 <select id="delivery-vehicle">
                   <option value="">Select vehicle</option>
                   <option value="Bike">Bike</option>
                   <option value="Scooter">Scooter</option>
                 </select>
-              </div>
-              <div class="field">
-                <label for="delivery-hours">Available Hours</label>
-                <input id="delivery-hours" type="text" placeholder="Example: 4:00 PM to 10:00 PM">
               </div>
               <div class="field">
                 <label for="delivery-shift">Available Shift</label>
@@ -198,6 +198,10 @@
                   <option value="Night">Night</option>
                   <option value="All Day">All Day</option>
                 </select>
+              </div>
+              <div class="field">
+                <label for="delivery-hours">Available Hours</label>
+                <input id="delivery-hours" type="text" placeholder="Example: 4:00 PM to 10:00 PM">
               </div>
             </div>
           </div>
@@ -262,6 +266,7 @@
       const cookCuisine = document.getElementById("cook-cuisine").value.trim();
       const cookAvailability = document.getElementById("cook-availability").value;
       const deliveryPhoneConfirm = document.getElementById("delivery-phone-confirm").value.trim();
+      const deliveryAltPhone = document.getElementById("delivery-alt-phone").value.trim();
       const deliveryVehicle = document.getElementById("delivery-vehicle").value;
       const deliveryHours = document.getElementById("delivery-hours").value;
       const deliveryShift = document.getElementById("delivery-shift").value;
@@ -286,7 +291,7 @@
         return;
       }
 
-      if (role === "delivery" && (!deliveryVehicle || !deliveryHours || !deliveryShift)) {
+      if (role === "delivery" && (!deliveryPhoneConfirm || !deliveryAltPhone || !deliveryVehicle || !deliveryHours || !deliveryShift)) {
         showToast("Complete all delivery details.");
         return;
       }
@@ -309,6 +314,7 @@
             cookCuisine,
             cookAvailability,
             deliveryPhoneConfirm,
+            deliveryAltPhone,
             deliveryVehicle,
             deliveryHours,
             deliveryShift

@@ -50,6 +50,7 @@ router.post("/signup", async (req, res) => {
     cookCuisine = null,
     cookAvailability = null,
     deliveryPhoneConfirm = null,
+    deliveryAltPhone = null,
     deliveryVehicle = null,
     deliveryHours = null,
     deliveryShift = null
@@ -75,7 +76,7 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ message: "Home cook details are required." });
   }
 
-  if (role === "delivery" && (!deliveryVehicle || !deliveryHours || !deliveryShift)) {
+  if (role === "delivery" && (!deliveryPhoneConfirm || !deliveryAltPhone || !deliveryVehicle || !deliveryHours || !deliveryShift)) {
     return res.status(400).json({ message: "Delivery details are required." });
   }
 

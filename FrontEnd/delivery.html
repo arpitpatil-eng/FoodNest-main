@@ -50,7 +50,7 @@
       <main class="page-shell">
         <section class="hero dashboard-section" id="hero-section">
           <h2 id="hero-title">Deliver meals. Earn more.</h2>
-          <p>Accept open delivery jobs, update active deliveries from pickup to delivered, and track your growing delivery wallet with real backend data.</p>
+          <p>Prepared orders appear here first. Accept a delivery, move it out for delivery, and then complete it after drop-off.</p>
           <div class="hero-cta">
             <span class="pill" id="hero-open-pill">Open Jobs: 0</span>
             <span class="pill" id="hero-assigned-pill">Assigned: 0</span>
@@ -66,16 +66,10 @@
         </section>
 
         <section class="section dashboard-section">
-          <div class="split-grid">
-            <div class="box profile-box">
-              <div class="section-title"><h2>Your Profile</h2></div>
-              <div id="delivery-profile" class="profile-list muted"></div>
-            </div>
-            <div class="box">
-              <div class="section-title"><h2>Wallet</h2></div>
-              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big"></p>
-              <p class="note">Delivery payouts and 5-star bonuses collect here.</p>
-            </div>
+          <div class="box">
+            <div class="section-title"><h2>Wallet</h2></div>
+            <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big"></p>
+            <p class="note">Delivery earnings start at zero and increase only after completed deliveries and reward sharing.</p>
           </div>
         </section>
 
@@ -114,7 +108,6 @@
     const openDeliveriesList = document.getElementById("open-deliveries-list");
     const deliveriesList = document.getElementById("deliveries-list");
     const historyList = document.getElementById("history-list");
-    const deliveryProfile = document.getElementById("delivery-profile");
     const sidebar = document.getElementById("sidebar");
     const sidebarOverlay = document.getElementById("sidebar-overlay");
 
@@ -149,6 +142,7 @@
 
       openDeliveriesList.innerHTML = openDeliveries.map((order) => `
         <article class="order-item">
+          <img class="card-media" src="${order.previewImage || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${order.itemsSummary}" style="margin-bottom: 16px;">
           <div class="row" style="justify-content: space-between;">
             <h3>${order.orderId}</h3>
             <span class="badge">${order.orderStatus || order.deliveryStatus}</span>
@@ -174,6 +168,7 @@
 
       deliveriesList.innerHTML = deliveries.map((order) => `
         <article class="order-item">
+          <img class="card-media" src="${order.previewImage || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${order.itemsSummary}" style="margin-bottom: 16px;">
           <div class="row" style="justify-content: space-between;">
             <h3>${order.orderId}</h3>
             <span class="badge">${order.orderStatus || order.deliveryStatus}</span>
@@ -206,6 +201,7 @@
 
       historyList.innerHTML = history.map((order) => `
         <article class="order-item">
+          <img class="card-media" src="${order.previewImage || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"}" alt="${order.itemsSummary}" style="margin-bottom: 16px;">
           <div class="row" style="justify-content: space-between;">
             <h3>${order.orderId}</h3>
             <span class="badge">${order.deliveryStatus}</span>
@@ -235,12 +231,6 @@
       document.getElementById("stat-completed").textContent = dashboardData.completed;
       document.getElementById("hero-open-pill").textContent = `Open Jobs: ${openData.orders.length}`;
       document.getElementById("hero-assigned-pill").textContent = `Assigned: ${dashboardData.totalAssigned}`;
-      deliveryProfile.innerHTML = `
-        <div><strong>Phone:</strong> ${user.profile.phone || "-"}</div>
-        <div><strong>Contact Number:</strong> ${user.profile.deliveryContactPhone || user.profile.phone || "-"}</div>
-        <div><strong>Vehicle:</strong> ${user.profile.deliveryVehicle || "-"}</div>
-        <div><strong>Shift:</strong> ${user.profile.deliveryShift || "-"}</div>
-      `;
       openDeliveries = openData.orders;
       deliveries = deliveriesData.orders;
       history = historyData.orders;
