@@ -51,7 +51,7 @@
       <main class="page-shell">
         <section class="hero dashboard-section" id="hero-section">
           <h2 id="hero-title">Fresh hostel meals, powered by home cooks.</h2>
-          <p>Browse the live kitchen menu, place NestCoin orders, choose a payment method label, and track every order from placement to delivery.</p>
+          <p>Browse the live kitchen menu, place orders, choose a payment method label, and track every order from placement to delivery.</p>
           <div class="hero-cta">
             <span class="pill" id="hero-orders-pill">Active Orders: 0</span>
             <span class="pill" id="hero-meals-pill">Meals Today: 0</span>
@@ -86,9 +86,9 @@
           <div class="box">
             <div id="cart-lines" class="stack"></div>
             <div class="payment-options" id="payment-options" style="margin-top: 16px;">
-              <div class="pay-card active" data-method="NestCoins Wallet">
-                <h3>NestCoins Wallet</h3>
-                <p class="meta">Pay directly with your available NestCoins balance.</p>
+              <div class="pay-card active" data-method="Wallet">
+                <h3>Wallet</h3>
+                <p class="meta">Pay directly with your available balance.</p>
               </div>
               <div class="pay-card" data-method="Reward Credits">
                 <h3>Reward Credits</h3>
@@ -119,7 +119,7 @@
             <h2>Pending Reviews</h2>
           </div>
           <div class="box" style="margin-bottom: 16px;">
-            <p class="note">A 5-star review gives an equal NestCoin reward share to the hosteller, home cook, and delivery agent.</p>
+            <p class="note">A 5-star review gives an equal reward share to the hosteller, home cook, and delivery agent.</p>
           </div>
           <div id="reviews-list" class="order-list"></div>
         </section>
@@ -147,7 +147,7 @@
     let menuItems = [];
     let orders = [];
     let cart = [];
-    let selectedPaymentMethod = "NestCoins Wallet";
+    let selectedPaymentMethod = "Wallet";
 
     function showToast(message) {
       toast.textContent = message;
@@ -418,5 +418,6 @@
   </script>
 </body>
 </html>
+
 
 
