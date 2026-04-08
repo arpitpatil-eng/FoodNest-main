@@ -27,6 +27,7 @@ function buildUserResponse(row) {
       cookCuisine: row.COOK_CUISINE,
       cookAvailability: row.COOK_AVAILABILITY,
       deliveryContactPhone: row.DELIVERY_CONTACT_PHONE,
+      deliveryAlternatePhone: row.DELIVERY_ALT_PHONE,
       deliveryVehicle: row.DELIVERY_VEHICLE,
       deliveryHours: row.DELIVERY_HOURS,
       deliveryShift: row.DELIVERY_SHIFT
@@ -118,10 +119,10 @@ router.post("/signup", async (req, res) => {
     await connection.execute(
       `INSERT INTO user_profiles
        (user_id, age, phone, college_name, hostel_address, hostel_name, room_number, cook_experience_years, cook_cuisine,
-        cook_availability, delivery_contact_phone, delivery_vehicle, delivery_hours, delivery_shift)
+        cook_availability, delivery_contact_phone, delivery_alt_phone, delivery_vehicle, delivery_hours, delivery_shift)
        VALUES
        (:user_id, :age, :phone, :college_name, :hostel_address, :hostel_name, :room_number, :cook_experience_years, :cook_cuisine,
-        :cook_availability, :delivery_contact_phone, :delivery_vehicle, :delivery_hours, :delivery_shift)`,
+        :cook_availability, :delivery_contact_phone, :delivery_alt_phone, :delivery_vehicle, :delivery_hours, :delivery_shift)`,
       {
         user_id: userId,
         age: age ? Number(age) : null,
@@ -134,6 +135,7 @@ router.post("/signup", async (req, res) => {
         cook_cuisine: cookCuisine,
         cook_availability: cookAvailability,
         delivery_contact_phone: deliveryPhoneConfirm || phone,
+        delivery_alt_phone: deliveryAltPhone || null,
         delivery_vehicle: deliveryVehicle,
         delivery_hours: deliveryHours,
         delivery_shift: deliveryShift
@@ -160,6 +162,7 @@ router.post("/signup", async (req, res) => {
           cookCuisine,
           cookAvailability,
           deliveryContactPhone: deliveryPhoneConfirm || phone,
+          deliveryAlternatePhone: deliveryAltPhone || null,
           deliveryVehicle,
           deliveryHours,
           deliveryShift
@@ -188,7 +191,7 @@ router.post("/login", async (req, res) => {
       `SELECT
          u.id, u.name, u.username, u.password_hash, u.role, u.nest_coins,
          p.age, p.phone, p.college_name, p.hostel_address, p.hostel_name, p.room_number, p.cook_experience_years,
-         p.cook_cuisine, p.cook_availability, p.delivery_contact_phone,
+         p.cook_cuisine, p.cook_availability, p.delivery_contact_phone, p.delivery_alt_phone,
          p.delivery_vehicle, p.delivery_hours, p.delivery_shift
        FROM users u
        LEFT JOIN user_profiles p ON p.user_id = u.id
@@ -245,7 +248,7 @@ router.get("/me", requireAuth, async (req, res) => {
       `SELECT
          u.id, u.name, u.username, u.role, u.nest_coins,
          p.age, p.phone, p.college_name, p.hostel_address, p.hostel_name, p.room_number, p.cook_experience_years,
-         p.cook_cuisine, p.cook_availability, p.delivery_contact_phone,
+         p.cook_cuisine, p.cook_availability, p.delivery_contact_phone, p.delivery_alt_phone,
          p.delivery_vehicle, p.delivery_hours, p.delivery_shift
        FROM users u
        LEFT JOIN user_profiles p ON p.user_id = u.id

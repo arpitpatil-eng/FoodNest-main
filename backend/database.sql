@@ -28,6 +28,7 @@ CREATE TABLE user_profiles (
   cook_cuisine VARCHAR2(150),
   cook_availability VARCHAR2(100),
   delivery_contact_phone VARCHAR2(30),
+  delivery_alt_phone VARCHAR2(30),
   delivery_vehicle VARCHAR2(50),
   delivery_hours VARCHAR2(100),
   delivery_shift VARCHAR2(50),
