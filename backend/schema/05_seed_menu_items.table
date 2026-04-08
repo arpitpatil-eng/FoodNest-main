@@ -6,21 +6,21 @@ SEED USERS
 - real cook names appear only after actual cook signup and dish assignment
 
 SEED MENU_ITEMS
-| id             | cook | name               | category | price | image                                 |
-|----------------|------|--------------------|----------|-------|---------------------------------------|
-| hostel-meal-01 | -    | Maggie Masala Bowl | Fresh    | 50    | https://i.ibb.co/LdRbXZbv/food-1.jpg  |
-| hostel-meal-02 | -    | Curd Rice          | Veg      | 35    | https://i.ibb.co/c7MPFkf/food-2.jpg   |
-| hostel-meal-03 | -    | Poha               | Fresh    | 40    | https://i.ibb.co/v40TYSJS/food-3.jpg  |
-| hostel-meal-04 | -    | Chole Bhature      | Veg      | 45    | https://i.ibb.co/Z64Mj69g/food-4.jpg  |
-| hostel-meal-05 | -    | Veg Fried Rice     | Fresh    | 65    | https://i.ibb.co/BJpQ05W/food-5.jpg   |
-| hostel-meal-06 | -    | Egg Curry Meal     | Organic  | 55    | https://i.ibb.co/HLycpjG7/food-6.jpg  |
-| hostel-meal-07 | -    | Aloo Paratha       | Fresh    | 48    | https://i.ibb.co/zVtwgyH8/food-7.jpg  |
-| hostel-meal-08 | -    | Rajma Chawal       | Veg      | 52    | https://i.ibb.co/KzccQY4F/food-8.jpg  |
-| hostel-meal-09 | -    | Masala Dosa        | Fresh    | 38    | https://i.ibb.co/cXSYd7Xs/food-9.jpg  |
-| hostel-meal-10 | -    | Healthy Veg Bowl   | Fresh    | 58    | https://i.ibb.co/B2WKYk9L/food-10.jpg |
-| hostel-meal-11 | -    | Chicken Rice Bowl  | Veg      | 46    | https://i.ibb.co/KcRjxfxX/food-11.jpg |
-| hostel-meal-12 | -    | Lemon Rice Combo   | Fresh    | 54    | https://i.ibb.co/R4CvzqjQ/food-12.jpg |
-| hostel-meal-13 | -    | Mini Tiffin Combo  | Organic  | 30    | https://i.ibb.co/HDJNRKC7/food-13.jpg |
-| hostel-meal-14 | -    | Paneer Roll        | Fresh    | 34    | https://i.ibb.co/Jw5kTh8c/food-14.jpg |
-| hostel-meal-15 | -    | Idli Sambar        | Fresh    | 28    | https://i.ibb.co/mCJsHCYF/food-15.jpg |
-| hostel-meal-16 | -    | Veg Thali          | Veg      | 42    | https://i.ibb.co/GQgWYnKP/food-16.jpg |
+| id             | cook | name               | category | price | description                                      | image                                 |
+|----------------|------|--------------------|----------|-------|--------------------------------------------------|---------------------------------------|
+| hostel-meal-01 | -    | Maggie Masala Bowl | Fresh    | 50    | Hostel-style masala noodles bowl with fresh herbs. | https://i.ibb.co/LdRbXZbv/food-1.jpg  |
+| hostel-meal-02 | -    | Curd Rice          | Veg      | 35    | Simple and soothing curd rice meal.             | https://i.ibb.co/c7MPFkf/food-2.jpg   |
+| hostel-meal-03 | -    | Poha               | Fresh    | 40    | Light and filling poha breakfast meal.          | https://i.ibb.co/v40TYSJS/food-3.jpg  |
+| hostel-meal-04 | -    | Chole Bhature      | Veg      | 45    | Punjabi style chole with fluffy bhature.        | https://i.ibb.co/Z64Mj69g/food-4.jpg  |
+| hostel-meal-05 | -    | Veg Fried Rice     | Fresh    | 65    | Wok tossed rice with fresh vegetables.          | https://i.ibb.co/BJpQ05W/food-5.jpg   |
+| hostel-meal-06 | -    | Egg Curry Meal     | Organic  | 55    | Egg curry with rice and salad.                  | https://i.ibb.co/HLycpjG7/food-6.jpg  |
+| hostel-meal-07 | -    | Aloo Paratha       | Fresh    | 48    | Stuffed paratha served with curd.               | https://i.ibb.co/zVtwgyH8/food-7.jpg  |
+| hostel-meal-08 | -    | Rajma Chawal       | Veg      | 52    | Comfort food with rich rajma curry.             | https://i.ibb.co/KzccQY4F/food-8.jpg  |
+| hostel-meal-09 | -    | Masala Dosa        | Fresh    | 38    | Crispy dosa with masala filling.                | https://i.ibb.co/cXSYd7Xs/food-9.jpg  |
+| hostel-meal-10 | -    | Healthy Veg Bowl   | Fresh    | 58    | Wholesome bowl with vegetables, grains, and fresh salad. | https://i.ibb.co/B2WKYk9L/food-10.jpg |
+| hostel-meal-11 | -    | Chicken Rice Bowl  | Veg      | 46    | Grilled chicken with seasoned rice.             | https://i.ibb.co/KcRjxfxX/food-11.jpg |
+| hostel-meal-12 | -    | Lemon Rice Combo   | Fresh    | 54    | Tangy lemon rice with chutney and papad.        | https://i.ibb.co/R4CvzqjQ/food-12.jpg |
+| hostel-meal-13 | -    | Mini Tiffin Combo  | Organic  | 30    | South Indian mini tiffin with chutneys and sides. | https://i.ibb.co/HDJNRKC7/food-13.jpg |
+| hostel-meal-14 | -    | Paneer Roll        | Fresh    | 34    | Soft wrap stuffed with spiced paneer.           | https://i.ibb.co/Jw5kTh8c/food-14.jpg |
+| hostel-meal-15 | -    | Idli Sambar        | Fresh    | 28    | Fluffy idlis with hot homemade sambar.          | https://i.ibb.co/mCJsHCYF/food-15.jpg |
+| hostel-meal-16 | -    | Veg Thali          | Veg      | 42    | Rice, sabzi, chapati and sweet bite.            | https://i.ibb.co/GQgWYnKP/food-16.jpg |

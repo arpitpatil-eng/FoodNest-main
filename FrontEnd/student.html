@@ -53,7 +53,6 @@
           <h2 id="hero-title">Fresh hostel meals, powered by home cooks.</h2>
           <p>Order fresh homemade meals from nearby home cooks, pay with NestCoins, track your order, and review it after delivery.</p>
           <div class="hero-cta">
-            <span class="pill" id="hero-orders-pill">Active Orders: 0</span>
             <span class="pill" id="hero-meals-pill">Meals Today: 0</span>
           </div>
         </section>
@@ -320,11 +319,10 @@
     }
 
     async function loadData() {
-      const [meData, menuData, ordersData, dashboardData] = await Promise.all([
+      const [meData, menuData, ordersData] = await Promise.all([
         apiFetch("/auth/me"),
         apiFetch("/student/menu"),
-        apiFetch("/student/orders"),
-        apiFetch("/student/dashboard")
+        apiFetch("/student/orders")
       ]);
 
       const user = meData.user;
@@ -332,7 +330,6 @@
       orders = ordersData.orders;
       walletPill.innerHTML = coinMarkup(user.nestCoins, { label: "Wallet", compact: true });
       heroTitle.textContent = `Welcome ${user.name}, order from today's live kitchen menu`;
-      document.getElementById("hero-orders-pill").textContent = `Active Orders: ${dashboardData.activeOrders}`;
       document.getElementById("hero-meals-pill").textContent = `Meals Today: ${menuItems.length}`;
 
       renderCookFilter();
