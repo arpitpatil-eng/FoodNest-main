@@ -64,10 +64,10 @@
           <button class="secondary-btn" type="button" onclick="document.getElementById('login-role').value='delivery'">Delivery Agent</button>
         </div>
 
-        <form id="login-form" class="stack">
+        <form id="login-form" class="stack" autocomplete="off">
           <div class="field">
             <label for="login-role">Login As</label>
-            <select id="login-role" required>
+            <select id="login-role" required autocomplete="off">
               <option value="">Select role</option>
               <option value="student">Hosteller</option>
               <option value="cook">Home Cook</option>
@@ -77,12 +77,12 @@
 
           <div class="field">
             <label for="login-identifier">Username or Phone</label>
-            <input id="login-identifier" type="text" placeholder="Enter username or phone" required>
+            <input id="login-identifier" type="text" placeholder="Enter username or phone" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
           </div>
 
           <div class="field">
             <label for="login-password">Password</label>
-            <input id="login-password" type="password" placeholder="Enter password" required>
+            <input id="login-password" type="password" placeholder="Enter password" required autocomplete="new-password">
           </div>
 
           <button class="primary-btn" type="submit">Login</button>
@@ -95,31 +95,31 @@
         </div>
         <p class="note">This version stores the richer profile details from the reference flow directly in the backend.</p>
 
-        <form id="signup-form" class="stack">
+        <form id="signup-form" class="stack" autocomplete="off">
           <div class="form-grid">
             <div class="field">
               <label for="signup-name">Full Name</label>
-              <input id="signup-name" type="text" placeholder="Enter full name" required>
+              <input id="signup-name" type="text" placeholder="Enter full name" required autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false">
             </div>
 
             <div class="field">
               <label for="signup-age">Age</label>
-              <input id="signup-age" type="number" min="16" placeholder="Enter age">
+              <input id="signup-age" type="number" min="16" placeholder="Enter age" autocomplete="off">
             </div>
 
             <div class="field">
               <label for="signup-username">Username</label>
-              <input id="signup-username" type="text" placeholder="Choose a username" required>
+              <input id="signup-username" type="text" placeholder="Choose a username" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
             </div>
 
             <div class="field">
               <label for="signup-phone">Phone Number</label>
-              <input id="signup-phone" type="text" placeholder="Enter phone number" required>
+              <input id="signup-phone" type="text" placeholder="Enter phone number" required autocomplete="off" inputmode="numeric">
             </div>
 
             <div class="field">
               <label for="signup-role">Register As</label>
-              <select id="signup-role" required>
+              <select id="signup-role" required autocomplete="off">
                 <option value="">Select role</option>
                 <option value="student">Hosteller</option>
                 <option value="cook">Home Cook</option>
@@ -128,12 +128,12 @@
             </div>
             <div class="field">
               <label for="signup-password">Password</label>
-              <input id="signup-password" type="password" placeholder="Create password" required>
+              <input id="signup-password" type="password" placeholder="Create password" required autocomplete="new-password">
             </div>
 
             <div class="field">
               <label for="signup-confirm-password">Confirm Password</label>
-              <input id="signup-confirm-password" type="password" placeholder="Confirm password" required>
+              <input id="signup-confirm-password" type="password" placeholder="Confirm password" required autocomplete="new-password">
             </div>
           </div>
 
