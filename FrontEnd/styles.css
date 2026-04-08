@@ -364,22 +364,23 @@ a { color: inherit; text-decoration: none; }
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 24px;
-  padding: 24px;
+  padding: 28px 24px;
   margin-bottom: 28px;
   backdrop-filter: blur(8px);
 }
 .brand-logo-mark {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 22px;
 }
 .brand-logo-mark img {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
   object-fit: contain;
-  background: rgba(255, 255, 255, 0.16);
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
   box-shadow: 0 10px 26px rgba(0,0,0,0.18);
 }
 .brand-logo-label,
@@ -388,12 +389,12 @@ a { color: inherit; text-decoration: none; }
 }
 .brand-logo-label {
   font-family: "Playfair Display", serif;
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
 }
 .brand-logo-sub {
   margin-top: 4px;
-  font-size: 14px;
+  font-size: 15px;
   opacity: 0.88;
   letter-spacing: 0.04em;
 }
@@ -487,5 +488,7 @@ a { color: inherit; text-decoration: none; }
   .hero, .auth-main, .auth-side, .box, .card-body { padding: 22px; }
   .brand-logo-mark {
     align-items: flex-start;
+    flex-direction: column;
   }
+  .brand-logo-mark img { width: 240px; }
 }
