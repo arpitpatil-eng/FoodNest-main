@@ -1,0 +1,10 @@
+TABLE: DELIVERY_TRACKING
+
+| order_id           | delivery_partner_id | delivery_status    | pickup_location | drop_location     | eta_mins | distance_km | assigned_at                | delivered_at               |
+|--------------------|---------------------|--------------------|-----------------|-------------------|----------|-------------|----------------------------|----------------------------|
+| order_42ae17b22351 | user_59d313459245   | Delivered          | Home Cook Hub   | Hosteller Address | 44       | 2.8         | 2026-04-08T15:53:09.244Z   | 2026-04-08T15:53:09.558Z   |
+| order_7fa5ce9afd66 | -                   | Pending Acceptance | Home Cook Hub   | Hosteller Address | 37       | 4.8         | 2026-04-08T15:52:41.652Z   | -                          |
+| order_9524344f63c6 | user_894ab85da13e   | Delivered          | Home Cook Hub   | Hosteller Address | 36       | 3.9         | 2026-04-08T15:52:02.898Z   | 2026-04-08T15:52:03.367Z   |
+| order_e62fd149f610 | -                   | Pending Acceptance | Home Cook Hub   | Hosteller Address | 45       | 2.6         | 2026-04-08T10:02:50.213Z   | -                          |
+| order_4979e60f2175 | -                   | Pending Acceptance | Home Cook Hub   | Hosteller Address | 45       | 4.4         | 2026-04-07T21:47:46.042Z   | -                          |
+| order_2b3b9b157be7 | -                   | Pending Acceptance | Home Cook Hub   | Hosteller Address | 36       | 6.6         | 2026-04-07T21:22:48.619Z   | -                          |

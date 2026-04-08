@@ -1,0 +1,8 @@
+TABLE: HOMECOOK
+
+| id                | name      | username    | coins | age | phone      | experience_years | cuisine       | availability |
+|-------------------|-----------|-------------|-------|-----|------------|------------------|---------------|--------------|
+| user_3e15d0dacece | Cook Test | cook211527  | 0     | 25  | 9100211527 | 3                | North Indian  | All Day      |
+| user_7099b560abe6 | Cook Test | cook212159  | 1033  | 25  | 9100212159 | 3                | North Indian  | All Day      |
+| user_db00b7119f9b | Cook Test | cook212239  | 0     | 25  | 9100212239 | 3                | North Indian  | All Day      |
+| user_43a2207c8128 | Cook Test | cook212307  | 1033  | 25  | 9100212307 | 3                | North Indian  | All Day      |

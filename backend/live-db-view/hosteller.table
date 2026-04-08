@@ -1,0 +1,10 @@
+TABLE: HOSTELLER
+
+| id                | name          | username       | coins | age | phone       | college       | hostel_address | hostel_name  | room_number |
+|-------------------|---------------|----------------|-------|-----|-------------|---------------|----------------|--------------|-------------|
+| user_d2c474168bbe | Rohit Sharma  | Rohit264       | 1000  | -   | temp-rohit264 | -           | -              | -            | -           |
+| user_d1eb58d8a824 | Student Test  | stu211527      | 500   | 19  | 9000211527  | Test College  | Hostel Block A | -            | -           |
+| user_b0f08721e372 | Student Check | stucheck211554 | 500   | 19  | 9300211554  | Test          | Addr           | -            | -           |
+| user_09cedd89f83f | Student Test  | stu212159      | 833   | 19  | 9000212159  | Test College  | Hostel Block A | Alpha Hostel | 101         |
+| user_5156d483070a | Student Test  | stu212239      | 500   | 19  | 9000212239  | Test College  | Hostel Block A | Alpha Hostel | 101         |
+| user_bd88d9827dc9 | Student Test  | stu212307      | 833   | 19  | 9000212307  | Test College  | Hostel Block A | Alpha Hostel | 101         |

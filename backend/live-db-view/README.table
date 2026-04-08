@@ -1,22 +1,18 @@
 LIVE DB VIEW
 
-These files are readable exports of the current FoodNest Oracle tables.
-They are for viewing inside the FoodNest project folder.
+Use these clean files first:
+- hosteller.table
+- homecook.table
+- delivery_agent.table
+- menu_items.table
+- orders.table
+- delivery_tracking.table
+- feedback.table
 
-MAIN TABLES
+Detailed raw exports still exist too:
 - users.table
 - user_profiles.table
 - user_sessions.table
-- menu_items.table
-- orders.table
 - order_items.table
 - delivery_assignments.table
 - order_status_history.table
-- feedback.table
-
-ROLE DATA LOCATION
-- Hosteller accounts: users.table + user_profiles.table
-- Home cook accounts: users.table + user_profiles.table + menu_items.table
-- Delivery agent accounts: users.table + user_profiles.table + delivery_assignments.table
-- Orders: orders.table + order_items.table + order_status_history.table
-- Ratings and reviews: feedback.table

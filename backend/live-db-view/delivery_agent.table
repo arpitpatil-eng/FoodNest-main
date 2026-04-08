@@ -1,0 +1,9 @@
+TABLE: DELIVERY_AGENT
+
+| id                | name          | username   | coins | age | phone      | contact_phone | alternate_phone | vehicle | hours               | shift     |
+|-------------------|---------------|------------|-------|-----|------------|---------------|-----------------|---------|---------------------|-----------|
+| user_9967701f7965 | Delivery Test | del211527  | 0     | 24  | 9200211527 | 9200211527    | -               | Bike    | 4:00 PM to 10:00 PM | Night     |
+| user_894ab85da13e | Delivery Test | del212159  | 633   | 24  | 9200212159 | 9200212159    | -               | Bike    | 4:00 PM to 10:00 PM | Night     |
+| user_9cb09d27e575 | Delivery Test | del212239  | 0     | 24  | 9200212239 | 9200212239    | -               | Bike    | 4:00 PM to 10:00 PM | Night     |
+| user_59d313459245 | Delivery Test | del212307  | 633   | 24  | 9200212307 | 9200212307    | -               | Bike    | 4:00 PM to 10:00 PM | Night     |
+| user_9c164c362d21 | k             | k          | 0     | 18  | 9999999999 | 1234512345    | -               | Bike    | 12pm to 4pm         | Afternoon |
