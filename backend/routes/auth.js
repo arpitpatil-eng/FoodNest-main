@@ -5,6 +5,7 @@ const { getConnection } = require("../config/db");
 const { requireAuth } = require("../middleware/auth");
 const { createId } = require("../utils/ids");
 const { hashPassword, verifyPassword } = require("../utils/passwords");
+const { getStarterMenusForCuisine } = require("../utils/starterMenus");
 
 const router = express.Router();
 const allowedRoles = ["student", "cook", "delivery"];
@@ -139,9 +140,32 @@ router.post("/signup", async (req, res) => {
         delivery_vehicle: deliveryVehicle,
         delivery_hours: deliveryHours,
         delivery_shift: deliveryShift
-      },
-      { autoCommit: true }
+      }
     );
+
+    if (role === "cook") {
+      const starterMenus = getStarterMenusForCuisine(cookCuisine);
+      for (const item of starterMenus) {
+        await connection.execute(
+          `INSERT INTO menu_items
+           (id, cook_id, name, category, price_nest_coins, preparation_time_mins, image_url, description, available)
+           VALUES
+           (:id, :cook_id, :name, :category, :price_nest_coins, :preparation_time_mins, :image_url, :description, 1)`,
+          {
+            id: createId("meal"),
+            cook_id: userId,
+            name: item.name,
+            category: item.category,
+            price_nest_coins: item.priceNestCoins,
+            preparation_time_mins: item.preparationTimeMins,
+            image_url: item.imageUrl,
+            description: item.description
+          }
+        );
+      }
+    }
+
+    await connection.commit();
 
     res.status(201).json({
       message: "User registered successfully.",

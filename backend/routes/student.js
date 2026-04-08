@@ -73,8 +73,10 @@ router.get("/menu", async (_req, res) => {
          GROUP BY oi.menu_item_id
        ) r ON r.menu_item_id = mi.id
        WHERE mi.available = 1
-       AND mi.id LIKE 'hostel-meal-%'
-       ORDER BY mi.id`,
+       ORDER BY
+         CASE WHEN mi.id LIKE 'hostel-meal-%' THEN 0 ELSE 1 END,
+         LOWER(NVL(u.name, 'FoodNest Kitchen')),
+         LOWER(mi.name)`,
       {},
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
