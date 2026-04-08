@@ -1,6 +1,5 @@
 TABLE: FEEDBACK
 
-| id               | order_id           | rating | review_text | reward_distributed | submitted_at               |
-|------------------|--------------------|--------|-------------|--------------------|----------------------------|
-| fb_034561e13d81  | order_9524344f63c6 | 5      | Great meal  | 1                  | 2026-04-08T15:52:03.512Z  |
-| fb_3f6791faa2fb  | order_42ae17b22351 | 5      | Great meal  | 1                  | 2026-04-08T15:53:09.689Z  |
+| id | order_id | rating | review_text | reward_distributed | submitted_at |
+|----|----------|--------|-------------|--------------------|--------------|
+| (no rows) |

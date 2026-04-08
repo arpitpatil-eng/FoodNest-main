@@ -1,27 +1,7 @@
 TABLE: USER_SESSIONS
 
-| id               | user_id           | created_at                |
-|------------------|-------------------|---------------------------|
-| sess_4b3080399e81| user_d2c474168bbe | 2026-04-07T20:34:48.518Z |
-| sess_bbade2f230a7| user_d2c474168bbe | 2026-04-07T21:22:37.216Z |
-| sess_9f85bd27c3ab| user_d2c474168bbe | 2026-04-07T21:22:37.488Z |
-| sess_38af50496ca0| user_d2c474168bbe | 2026-04-08T10:00:25.789Z |
-| sess_058f9fbf7d57| user_d2c474168bbe | 2026-04-08T10:01:49.616Z |
-| sess_bf5031968e4c| user_d2c474168bbe | 2026-04-08T13:45:11.273Z |
-| sess_d79b44a3ee0e| user_d2c474168bbe | 2026-04-08T13:46:09.838Z |
-| sess_4045471a8e84| user_d1eb58d8a824 | 2026-04-08T15:45:29.430Z |
-| sess_9aff12522d70| user_3e15d0dacece | 2026-04-08T15:45:29.637Z |
-| sess_4ed96f1f8e15| user_9967701f7965 | 2026-04-08T15:45:29.833Z |
-| sess_7e9c6a404958| user_b0f08721e372 | 2026-04-08T15:45:55.120Z |
-| sess_8f09eb894cea| user_09cedd89f83f | 2026-04-08T15:52:01.205Z |
-| sess_92b76d69befe| user_7099b560abe6 | 2026-04-08T15:52:01.466Z |
-| sess_47c8f3b79b50| user_894ab85da13e | 2026-04-08T15:52:01.696Z |
-| sess_893ad0cf3570| user_5156d483070a | 2026-04-08T15:52:40.837Z |
-| sess_82125e758a7d| user_db00b7119f9b | 2026-04-08T15:52:41.029Z |
-| sess_f3ad69c41467| user_9cb09d27e575 | 2026-04-08T15:52:41.241Z |
-| sess_fd8fb7ebd826| user_bd88d9827dc9 | 2026-04-08T15:53:08.150Z |
-| sess_740189b6e960| user_43a2207c8128 | 2026-04-08T15:53:08.347Z |
-| sess_168dce5b6d04| user_59d313459245 | 2026-04-08T15:53:08.521Z |
-
-NOTE
-- Session tokens exist in the live DB but are hidden here.
+| id                | user_id           | token                                            | created_at          |
+|-------------------|-------------------|--------------------------------------------------|---------------------|
+| sess_2dcc98e402e3 | user_1c77f8f1cbb0 | 272d8065a810c04e0b696bd5051e097d31b12e9549904278 | 2026-04-09 01:20:55 |
+| sess_75406084d25d | user_6e75b6513b9a | 957bd338c54ba060f4f17bf8708aa1b9299b4ec21e0d5614 | 2026-04-09 01:06:39 |
+| sess_12c2fc777e81 | user_6e75b6513b9a | 78677d97efa51acd63a88c49d48d8c802d28120e43ebb6f5 | 2026-04-09 00:49:48 |

@@ -1,22 +1,8 @@
 TABLE: USERS
 
-| id                | name           | username      | role     | nest_coins | created_at                |
-|-------------------|----------------|---------------|----------|------------|---------------------------|
-| user_d2c474168bbe | Rohit Sharma   | Rohit264      | student  | 1000       | 2026-04-07T20:34:39.781Z |
-| user_d1eb58d8a824 | Student Test   | stu211527     | student  | 500        | 2026-04-08T15:45:28.377Z |
-| user_b0f08721e372 | Student Check  | stucheck211554| student  | 500        | 2026-04-08T15:45:54.724Z |
-| user_09cedd89f83f | Student Test   | stu212159     | student  | 833        | 2026-04-08T15:52:00.191Z |
-| user_5156d483070a | Student Test   | stu212239     | student  | 500        | 2026-04-08T15:52:40.165Z |
-| user_bd88d9827dc9 | Student Test   | stu212307     | student  | 833        | 2026-04-08T15:53:07.640Z |
-| user_3e15d0dacece | Cook Test      | cook211527    | cook     | 0          | 2026-04-08T15:45:28.846Z |
-| user_7099b560abe6 | Cook Test      | cook212159    | cook     | 1033       | 2026-04-08T15:52:00.580Z |
-| user_db00b7119f9b | Cook Test      | cook212239    | cook     | 0          | 2026-04-08T15:52:40.411Z |
-| user_43a2207c8128 | Cook Test      | cook212307    | cook     | 1033       | 2026-04-08T15:53:07.814Z |
-| user_9967701f7965 | Delivery Test  | del211527     | delivery | 0          | 2026-04-08T15:45:29.176Z |
-| user_894ab85da13e | Delivery Test  | del212159     | delivery | 633        | 2026-04-08T15:52:00.909Z |
-| user_9cb09d27e575 | Delivery Test  | del212239     | delivery | 0          | 2026-04-08T15:52:40.645Z |
-| user_59d313459245 | Delivery Test  | del212307     | delivery | 633        | 2026-04-08T15:53:07.986Z |
-| user_9c164c362d21 | k              | k             | delivery | 0          | 2026-04-08T15:58:37.966Z |
-
-NOTE
-- Password hashes exist in the live DB but are hidden here.
+| id                | name         | username | role     | nest_coins | created_at          |
+|-------------------|--------------|----------|----------|------------|---------------------|
+| user_1c77f8f1cbb0 | T Varma      | TVarma20 | cook     | 0          | 2026-04-09 01:20:47 |
+| user_3ad64e5a627c | Mohan K      | MohanK90 | delivery | 14         | 2026-04-09 01:08:16 |
+| user_46237765080f | K Kumar      | KKumar10 | cook     | 34         | 2026-04-09 00:48:50 |
+| user_6e75b6513b9a | Rohit Sharma | Rohit27  | student  | 855        | 2026-04-09 00:41:14 |
