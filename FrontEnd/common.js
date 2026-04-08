@@ -2,21 +2,27 @@ const API_BASE = "/api";
 const TOKEN_KEY = "foodnest.authToken";
 const USER_KEY = "foodnest.user";
 
+function getStorage() {
+  return window.sessionStorage;
+}
+
 function getToken() {
-  return localStorage.getItem(TOKEN_KEY);
+  return getStorage().getItem(TOKEN_KEY);
 }
 
 function getStoredUser() {
-  const raw = localStorage.getItem(USER_KEY);
+  const raw = getStorage().getItem(USER_KEY);
   return raw ? JSON.parse(raw) : null;
 }
 
 function saveSession(token, user) {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  getStorage().setItem(TOKEN_KEY, token);
+  getStorage().setItem(USER_KEY, JSON.stringify(user));
 }
 
 function clearSession() {
+  getStorage().removeItem(TOKEN_KEY);
+  getStorage().removeItem(USER_KEY);
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
 }
@@ -109,7 +115,7 @@ async function requireRole(role) {
       window.location.href = "/Userlogin.html";
       return null;
     }
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+    getStorage().setItem(USER_KEY, JSON.stringify(data.user));
     return data.user;
   } catch (_error) {
     clearSession();
