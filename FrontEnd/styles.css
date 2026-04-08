@@ -339,7 +339,14 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   box-shadow: var(--deep);
 }
-.auth-side { padding: 42px; color: var(--paper); background: linear-gradient(135deg, var(--berry), var(--velvet)); }
+.auth-side {
+  padding: 50px 42px;
+  color: var(--paper);
+  background: linear-gradient(135deg, var(--berry), var(--velvet));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .auth-side h1 { font-size: 44px; }
 .auth-side p { margin-top: 14px; line-height: 1.8; }
 .auth-cards { margin-top: 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -348,6 +355,60 @@ a { color: inherit; text-decoration: none; }
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.brand-logo-box {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(8px);
+}
+.brand-logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand-logo-mark img {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.16);
+  padding: 10px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+}
+.brand-logo-label,
+.brand-logo-sub {
+  display: block;
+}
+.brand-logo-label {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  font-weight: 700;
+}
+.brand-logo-sub {
+  margin-top: 4px;
+  font-size: 14px;
+  opacity: 0.88;
+  letter-spacing: 0.04em;
+}
+.auth-role-preview {
+  margin-top: 34px;
+  gap: 14px;
+}
+.role-preview-card {
+  min-height: 150px;
+}
+.role-preview-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.role-preview-card p {
+  margin-top: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  opacity: 0.94;
 }
 .auth-main { padding: 36px; }
 .role-extra { display: none; margin-top: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: #fcf7fa; }
@@ -420,4 +481,7 @@ a { color: inherit; text-decoration: none; }
   .auth-layout { grid-template-columns: 1fr; }
   .auth-cards { grid-template-columns: 1fr; }
   .hero, .auth-main, .auth-side, .box, .card-body { padding: 22px; }
+  .brand-logo-mark {
+    align-items: flex-start;
+  }
 }
