@@ -186,6 +186,7 @@
               <h3>${item.name}</h3>
               <p class="meta"><strong>Cook:</strong> ${item.cookName}</p>
               <p class="meta">${item.description || "Fresh home-style meal."}</p>
+              <p class="meta"><strong>Rating:</strong> ${item.averageRating > 0 ? `${item.averageRating} / 5` : "No ratings yet"}</p>
               <p class="meta"><strong>Prep:</strong> ${item.preparationTimeMins} mins</p>
               <div class="price">${coinMarkup(item.priceNestCoins)}</div>
               <div class="row">
@@ -252,10 +253,7 @@
           <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins ? `${order.estimatedTimeMins} mins` : "Pending"}</p>
           <p class="meta"><strong>Total:</strong> ${coinMarkup(order.totalNestCoins)}</p>
           <div class="timeline">
-            <span>Order Placed</span>
-            <span>${order.cookName !== "Awaiting cook assignment" ? "Cook Assigned" : "Waiting for Cook"}</span>
-            <span>${order.deliveryPartnerName !== "Awaiting delivery partner" ? "Delivery Accepted" : "Waiting for Delivery"}</span>
-            <span>${order.orderStatus}</span>
+            ${trackingSteps(order).map((step) => `<span style="${step.done ? '' : 'opacity:0.5;'}">${step.label}</span>`).join("")}
           </div>
         </article>
       `).join("");
@@ -294,6 +292,17 @@
 
     function addToCart(id) {
       changeQty(id, 1);
+    }
+
+    function trackingSteps(order) {
+      const currentStatus = order.orderStatus;
+      return [
+        { label: "Order Placed", done: true },
+        { label: "Preparing", done: ["Preparing", "Prepared", "Delivery Agent Assigned", "Out for Delivery", "Delivered"].includes(currentStatus) },
+        { label: "Delivery Agent Assigned", done: ["Delivery Agent Assigned", "Out for Delivery", "Delivered"].includes(currentStatus) || order.deliveryPartnerName !== "Awaiting delivery partner" },
+        { label: "Out for Delivery", done: ["Out for Delivery", "Delivered"].includes(currentStatus) || order.deliveryStatus === "Out for Delivery" },
+        { label: "Order Delivered", done: currentStatus === "Delivered" }
+      ];
     }
 
     function changeQty(id, delta) {
@@ -409,6 +418,7 @@
       const user = await requireRole("student");
       if (!user) return;
       await loadData();
+      setInterval(loadData, 5000);
     });
   </script>
 </body>

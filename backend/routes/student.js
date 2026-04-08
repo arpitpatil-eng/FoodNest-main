@@ -61,9 +61,17 @@ router.get("/menu", async (_req, res) => {
          mi.image_url,
          mi.description,
          mi.available,
-         u.name AS cook_name
+         u.name AS cook_name,
+         NVL(ROUND(r.avg_rating, 1), 0) AS avg_rating
        FROM menu_items mi
        LEFT JOIN users u ON u.id = mi.cook_id
+       LEFT JOIN (
+         SELECT oi.menu_item_id, AVG(f.rating) AS avg_rating
+         FROM feedback f
+         JOIN orders o ON o.id = f.order_id
+         JOIN order_items oi ON oi.order_id = o.id
+         GROUP BY oi.menu_item_id
+       ) r ON r.menu_item_id = mi.id
        WHERE available = 1`,
       {},
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -79,7 +87,8 @@ router.get("/menu", async (_req, res) => {
         imageUrl: row.IMAGE_URL,
         description: row.DESCRIPTION,
         available: row.AVAILABLE,
-        cookName: row.COOK_NAME || "FoodNest Kitchen"
+        cookName: row.COOK_NAME || "FoodNest Kitchen",
+        averageRating: Number(row.AVG_RATING || 0)
       }))
     });
   } catch (error) {

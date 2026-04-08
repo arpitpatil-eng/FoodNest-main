@@ -133,9 +133,8 @@
     }
 
     function nextDeliveryStatuses(current) {
-      if (current === "Assigned") return ["Picked Up", "On the Way"];
-      if (current === "Picked Up") return ["On the Way", "Delivered"];
-      if (current === "On the Way") return ["Delivered"];
+      if (current === "Delivery Agent Assigned") return ["Out for Delivery"];
+      if (current === "Out for Delivery") return ["Delivered"];
       return [];
     }
 
@@ -149,7 +148,7 @@
         <article class="order-item">
           <div class="row" style="justify-content: space-between;">
             <h3>${order.orderId}</h3>
-            <span class="badge">${order.deliveryStatus}</span>
+            <span class="badge">${order.orderStatus || order.deliveryStatus}</span>
           </div>
           <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
           <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
@@ -174,7 +173,7 @@
         <article class="order-item">
           <div class="row" style="justify-content: space-between;">
             <h3>${order.orderId}</h3>
-            <span class="badge">${order.deliveryStatus}</span>
+            <span class="badge">${order.orderStatus || order.deliveryStatus}</span>
           </div>
           <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
           <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
@@ -182,6 +181,11 @@
           <p class="meta"><strong>Pickup:</strong> ${order.pickupLocation}</p>
           <p class="meta"><strong>Drop:</strong> ${order.dropLocation}</p>
           <p class="meta"><strong>Distance:</strong> ${order.distanceKm} km</p>
+          <div class="timeline">
+            <span style="${["Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Delivery Agent Assigned</span>
+            <span style="${["Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Out for Delivery</span>
+            <span style="${order.orderStatus === "Delivered" ? '' : 'opacity:0.5;'}">Delivered</span>
+          </div>
           <div class="row">
             ${nextDeliveryStatuses(order.deliveryStatus).map((status) => `
               <button class="primary-btn" onclick="updateDeliveryStatus('${order.orderId}', '${status}')">${status}</button>
@@ -277,6 +281,7 @@
       const user = await requireRole("delivery");
       if (!user) return;
       await loadData();
+      setInterval(loadData, 5000);
     });
   </script>
 </body>

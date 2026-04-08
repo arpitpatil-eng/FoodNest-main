@@ -175,9 +175,8 @@
     }
 
     function nextCookStatus(current) {
-      if (current === "Order Placed") return "Accepted";
-      if (current === "Accepted") return "Preparing";
-      if (current === "Preparing") return "Ready for Pickup";
+      if (current === "Order Placed") return "Preparing";
+      if (current === "Preparing") return "Prepared";
       return null;
     }
 
@@ -225,6 +224,11 @@
             <p class="meta"><strong>Drop:</strong> ${order.dropLocation || "Hosteller Address"}</p>
             <p class="meta"><strong>Total:</strong> ${coinMarkup(order.totalNestCoins)}</p>
             <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins || "Pending"} mins</p>
+            <div class="timeline">
+              <span style="${["Order Placed","Preparing","Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Order Placed</span>
+              <span style="${["Preparing","Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Preparing</span>
+              <span style="${["Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Prepared</span>
+            </div>
             <div class="row">
               ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${order.orderId}', '${nextStatus}')">${nextStatus}</button>` : ""}
             </div>
@@ -344,6 +348,7 @@
       const user = await requireRole("cook");
       if (!user) return;
       await loadData();
+      setInterval(loadData, 5000);
     });
   </script>
 </body>

@@ -6,7 +6,7 @@ const { requireAuth } = require("../middleware/auth");
 const { computeDeliveryPayout } = require("../utils/coins");
 
 const router = express.Router();
-const allowedStatuses = ["Picked Up", "On the Way", "Delivered"];
+const allowedStatuses = ["Out for Delivery", "Delivered"];
 
 router.use(requireAuth);
 
@@ -89,6 +89,7 @@ router.get("/deliveries/open", async (req, res) => {
        JOIN order_items oi ON oi.order_id = o.id
        JOIN menu_items mi ON mi.id = oi.menu_item_id
        WHERE da.delivery_partner_id IS NULL
+       AND o.status = 'Prepared'
        GROUP BY
          o.id, o.total_nest_coins, o.created_at, c.name, u.name,
          da.delivery_status, da.pickup_location, da.drop_location,
@@ -137,7 +138,8 @@ router.post("/deliveries/:orderId/accept", async (req, res) => {
     const result = await connection.execute(
       `UPDATE delivery_assignments
        SET delivery_partner_id = :delivery_partner_id,
-           delivery_status = 'Assigned'
+           delivery_status = 'Delivery Agent Assigned',
+           assigned_at = CURRENT_TIMESTAMP
        WHERE order_id = :order_id
        AND delivery_partner_id IS NULL`,
       {
@@ -150,6 +152,24 @@ router.post("/deliveries/:orderId/accept", async (req, res) => {
     if (result.rowsAffected === 0) {
       return res.status(409).json({ message: "This delivery is no longer available." });
     }
+
+    await connection.execute(
+      `UPDATE orders
+       SET status = 'Delivery Agent Assigned'
+       WHERE id = :order_id`,
+      { order_id: orderId },
+      { autoCommit: true }
+    );
+
+    await connection.execute(
+      `INSERT INTO order_status_history (id, order_id, stage, simulated)
+       VALUES (:id, :order_id, 'Delivery Agent Assigned', 0)`,
+      {
+        id: createId("osh"),
+        order_id: orderId
+      },
+      { autoCommit: true }
+    );
 
     res.json({ message: "Delivery accepted.", orderId });
   } catch (error) {
@@ -331,10 +351,8 @@ router.put("/order/status", async (req, res, next) => {
     }
 
     let timestampColumnUpdate = "";
-    if (status === "Picked Up") {
-      timestampColumnUpdate = ", picked_up_at = CURRENT_TIMESTAMP";
-    } else if (status === "On the Way") {
-      timestampColumnUpdate = ", on_the_way_at = CURRENT_TIMESTAMP";
+    if (status === "Out for Delivery") {
+      timestampColumnUpdate = ", picked_up_at = CURRENT_TIMESTAMP, on_the_way_at = CURRENT_TIMESTAMP";
     } else if (status === "Delivered") {
       timestampColumnUpdate = ", delivered_at = CURRENT_TIMESTAMP";
     }

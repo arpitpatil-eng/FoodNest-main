@@ -5,7 +5,7 @@ const { createId } = require("../utils/ids");
 const { requireAuth } = require("../middleware/auth");
 
 const router = express.Router();
-const allowedCookStatuses = ["Accepted", "Preparing", "Ready for Pickup"];
+const allowedCookStatuses = ["Preparing", "Prepared"];
 
 router.use(requireAuth);
 
@@ -269,7 +269,7 @@ router.get("/orders/cook", async (req, res) => {
        JOIN order_items oi ON oi.order_id = o.id
        JOIN menu_items mi ON mi.id = oi.menu_item_id
        WHERE o.cook_id = :cook_id
-       AND o.status NOT IN ('Delivered')
+       AND o.status IN ('Order Placed', 'Preparing', 'Prepared')
        GROUP BY
          o.id, o.status, o.total_nest_coins, o.created_at, u.id, u.name,
          da.drop_location, da.estimated_time_mins
@@ -409,11 +409,11 @@ router.put("/order/status", async (req, res, next) => {
       { autoCommit: true }
     );
 
-    if (status === "Ready for Pickup") {
+    if (status === "Prepared") {
       await connection.execute(
         `UPDATE delivery_assignments
          SET delivery_status = CASE
-           WHEN delivery_partner_id IS NULL THEN 'Ready for Pickup'
+           WHEN delivery_partner_id IS NULL THEN 'Prepared'
            ELSE delivery_status
          END
          WHERE order_id = :order_id`,
