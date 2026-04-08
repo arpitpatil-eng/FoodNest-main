@@ -51,24 +51,10 @@
       <main class="page-shell">
         <section class="hero dashboard-section" id="hero-section">
           <h2 id="hero-title">Fresh hostel meals, powered by home cooks.</h2>
-          <p>Browse the live kitchen menu, place orders, choose a payment method label, and track every order from placement to delivery.</p>
+          <p>Order fresh homemade meals from nearby home cooks, pay with NestCoins, track your order, and review it after delivery.</p>
           <div class="hero-cta">
             <span class="pill" id="hero-orders-pill">Active Orders: 0</span>
             <span class="pill" id="hero-meals-pill">Meals Today: 0</span>
-          </div>
-        </section>
-
-        <section class="section dashboard-section">
-          <div class="split-grid">
-            <div class="box profile-box">
-              <div class="section-title"><h2>Hosteller Profile</h2></div>
-              <div id="student-profile" class="profile-list muted"></div>
-            </div>
-            <div class="stats-grid">
-              <div class="stat-card"><h3>Total Orders</h3><p id="stat-total-orders">0</p></div>
-              <div class="stat-card"><h3>Active Orders</h3><p id="stat-active-orders">0</p></div>
-              <div class="stat-card"><h3>Available Meals</h3><p id="stat-available-meals">0</p></div>
-            </div>
           </div>
         </section>
 
@@ -91,23 +77,30 @@
           </div>
           <div class="box">
             <div id="cart-lines" class="stack"></div>
-            <div class="payment-options" id="payment-options" style="margin-top: 16px;">
+          </div>
+        </section>
+
+        <section class="section dashboard-section" id="payment-section">
+          <div class="section-title">
+            <h2>Payment</h2>
+          </div>
+          <div class="box">
+            <div class="payment-options" id="payment-options">
               <div class="pay-card active" data-method="Wallet">
-                <h3>Wallet</h3>
-                <p class="meta">Orders are paid only from the hosteller wallet.</p>
+                <h3>NestCoin Wallet</h3>
+                <p class="meta">FoodNest orders are paid only from your student wallet balance.</p>
               </div>
             </div>
             <div class="row" style="justify-content: space-between; margin-top: 14px;">
               <strong id="cart-total"></strong>
               <button class="primary-btn" id="place-order-btn">Place Order</button>
             </div>
-            <p class="note">This uses the real backend order route, not local demo storage.</p>
           </div>
         </section>
 
         <section class="section dashboard-section" id="orders-section">
           <div class="section-title">
-            <h2>Track & History</h2>
+            <h2>Track Order</h2>
           </div>
           <div id="orders-list" class="order-list"></div>
         </section>
@@ -139,7 +132,6 @@
     const reviewsList = document.getElementById("reviews-list");
     const paymentCards = document.querySelectorAll(".pay-card");
     const cartCountChip = document.getElementById("cart-count-chip");
-    const studentProfile = document.getElementById("student-profile");
     const sidebar = document.getElementById("sidebar");
     const sidebarOverlay = document.getElementById("sidebar-overlay");
 
@@ -191,10 +183,9 @@
             <div class="card-body">
               <span class="badge">${item.category}</span>
               <h3>${item.name}</h3>
-              <p class="meta"><strong>Cook:</strong> ${item.cookName}</p>
+              <p class="meta"><strong>Homecook:</strong> ${item.cookName}</p>
               <p class="meta">${item.description || "Fresh home-style meal."}</p>
-              <p class="meta"><strong>Rating:</strong> ${starsMarkup(item.averageRating)}</p>
-              <p class="meta"><strong>Prep:</strong> ${item.preparationTimeMins} mins</p>
+              ${item.averageRating > 0 ? `<p class="meta"><strong>Rating:</strong> ${starsMarkup(item.averageRating)}</p>` : ""}
               <div class="price">${coinMarkup(item.priceNestCoins)}</div>
               <div class="row">
                 <button class="secondary-btn" onclick="changeQty('${item.id}', -1)">-</button>
@@ -228,7 +219,8 @@
         <div class="cart-line">
           <div>
             <strong>${item.name}</strong>
-            <div class="meta">${item.cookName} • ${item.quantity} x ${coinMarkup(item.priceNestCoins)}</div>
+            <div class="meta">Homecook: ${item.cookName}</div>
+            <div class="meta">${item.quantity} x ${coinMarkup(item.priceNestCoins)}</div>
           </div>
           <div class="row">
             <button class="secondary-btn" onclick="changeQty('${item.id}', -1)">-</button>
@@ -253,11 +245,9 @@
             <h3>Order ${order.orderId}</h3>
             <span class="badge">${order.orderStatus}</span>
           </div>
-          <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
-          <p class="meta"><strong>Cook:</strong> ${order.cookName}</p>
-          <p class="meta"><strong>Delivery:</strong> ${order.deliveryPartnerName} (${order.deliveryStatus})</p>
-          <p class="meta"><strong>Payment:</strong> ${order.paymentMethod}</p>
-          <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins ? `${order.estimatedTimeMins} mins` : "Pending"}</p>
+          <p class="meta"><strong>Meal:</strong> ${order.itemsSummary}</p>
+          <p class="meta"><strong>Homecook:</strong> ${order.cookName}</p>
+          <p class="meta"><strong>Delivery Agent:</strong> ${order.deliveryPartnerName}</p>
           <p class="meta"><strong>Total:</strong> ${coinMarkup(order.totalNestCoins)}</p>
           <div class="timeline">
             ${trackingSteps(order).map((step) => `<span style="${step.done ? '' : 'opacity:0.5;'}">${step.label}</span>`).join("")}
@@ -292,7 +282,6 @@
             </select>
             <button class="primary-btn" onclick="submitFeedback('${order.orderId}')">Submit Rating</button>
           </div>
-          <p class="note">A 5-star review now triggers shared reward distribution in the backend.</p>
         </article>
       `).join("");
     }
@@ -343,16 +332,6 @@
       orders = ordersData.orders;
       walletPill.innerHTML = coinMarkup(user.nestCoins, { label: "Wallet", compact: true });
       heroTitle.textContent = `Welcome ${user.name}, order from today's live kitchen menu`;
-      studentProfile.innerHTML = `
-        <div><strong>Name:</strong> ${user.name}</div>
-        <div><strong>College:</strong> ${user.profile.collegeName || "-"}</div>
-        <div><strong>Hostel:</strong> ${user.profile.hostelName || "-"}</div>
-        <div><strong>Room Number:</strong> ${user.profile.roomNumber || "-"}</div>
-        <div><strong>Address:</strong> ${user.profile.hostelAddress || "-"}</div>
-      `;
-      document.getElementById("stat-total-orders").textContent = dashboardData.totalOrders;
-      document.getElementById("stat-active-orders").textContent = dashboardData.activeOrders;
-      document.getElementById("stat-available-meals").textContent = menuItems.length;
       document.getElementById("hero-orders-pill").textContent = `Active Orders: ${dashboardData.activeOrders}`;
       document.getElementById("hero-meals-pill").textContent = `Meals Today: ${menuItems.length}`;
 
