@@ -3,6 +3,7 @@ const oracledb = require("oracledb");
 const { getConnection } = require("../config/db");
 const { createId } = require("../utils/ids");
 const { requireAuth } = require("../middleware/auth");
+const { queueLiveDbRefresh } = require("../utils/liveDbView");
 
 const router = express.Router();
 const allowedCookStatuses = ["Preparing", "Prepared"];
@@ -136,6 +137,7 @@ router.post("/menu", async (req, res) => {
       },
       { autoCommit: true }
     );
+    await queueLiveDbRefresh();
 
     res.status(201).json({
       message: "Menu item created.",
@@ -198,6 +200,7 @@ router.put("/menu/:id", async (req, res) => {
       },
       { autoCommit: true }
     );
+    await queueLiveDbRefresh();
 
     res.json({ message: "Menu item updated." });
   } catch (error) {
@@ -227,6 +230,7 @@ router.delete("/menu/:id", async (req, res) => {
       { id, cook_id: cookId },
       { autoCommit: true }
     );
+    await queueLiveDbRefresh();
 
     if (result.rowsAffected === 0) {
       return res.status(404).json({ message: "Menu item not found for this cook." });
@@ -425,6 +429,7 @@ router.put("/order/status", async (req, res, next) => {
         { autoCommit: true }
       );
     }
+    await queueLiveDbRefresh();
 
     res.json({ message: "Cook order status updated.", orderId, status });
   } catch (error) {

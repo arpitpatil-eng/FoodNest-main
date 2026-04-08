@@ -4,6 +4,7 @@ const { getConnection } = require("../config/db");
 const { createId } = require("../utils/ids");
 const { requireAuth } = require("../middleware/auth");
 const { computeDeliveryPayout } = require("../utils/coins");
+const { queueLiveDbRefresh } = require("../utils/liveDbView");
 
 const router = express.Router();
 const allowedStatuses = ["Out for Delivery", "Delivered"];
@@ -172,6 +173,7 @@ router.post("/deliveries/:orderId/accept", async (req, res) => {
       },
       { autoCommit: true }
     );
+    await queueLiveDbRefresh();
 
     res.json({ message: "Delivery accepted.", orderId });
   } catch (error) {
@@ -433,6 +435,7 @@ router.put("/order/status", async (req, res, next) => {
     }
 
     await connection.commit();
+    await queueLiveDbRefresh();
     res.json({ message: "Delivery status updated.", orderId, status });
   } catch (error) {
     res.status(500).json({ message: "Failed to update delivery status.", error: error.message });

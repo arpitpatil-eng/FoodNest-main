@@ -6,6 +6,7 @@ const { requireAuth } = require("../middleware/auth");
 const { createId } = require("../utils/ids");
 const { hashPassword, verifyPassword } = require("../utils/passwords");
 const { getStarterMenuIdsForCuisine } = require("../utils/starterMenus");
+const { queueLiveDbRefresh } = require("../utils/liveDbView");
 
 const router = express.Router();
 const allowedRoles = ["student", "cook", "delivery"];
@@ -161,6 +162,7 @@ router.post("/signup", async (req, res) => {
     }
 
     await connection.commit();
+    await queueLiveDbRefresh();
 
     res.status(201).json({
       message: "User registered successfully.",
@@ -242,6 +244,7 @@ router.post("/login", async (req, res) => {
       },
       { autoCommit: true }
     );
+    await queueLiveDbRefresh();
 
     res.json({
       message: "Login successful.",
@@ -298,6 +301,7 @@ router.post("/logout", requireAuth, async (req, res) => {
       { token },
       { autoCommit: true }
     );
+    await queueLiveDbRefresh();
     res.json({ message: "Logged out successfully." });
   } catch (error) {
     res.status(500).json({ message: "Logout failed.", error: error.message });

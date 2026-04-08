@@ -4,6 +4,7 @@ const { getConnection } = require("../config/db");
 const { createId } = require("../utils/ids");
 const { requireAuth } = require("../middleware/auth");
 const { computeFiveStarReward, applyHostellerTopUp } = require("../utils/coins");
+const { queueLiveDbRefresh } = require("../utils/liveDbView");
 
 const router = express.Router();
 
@@ -317,6 +318,7 @@ router.post("/orders", async (req, res) => {
       },
       { autoCommit: true }
     );
+    await queueLiveDbRefresh();
 
     res.status(201).json({
       message: "Order placed successfully.",
@@ -403,6 +405,7 @@ router.post("/orders/:orderId/feedback", async (req, res) => {
     }
 
     await connection.commit();
+    await queueLiveDbRefresh();
 
     res.json({
       message: "Feedback submitted successfully.",
