@@ -187,10 +187,6 @@
             <h3>Delivery Agent Details</h3>
             <div class="form-grid">
               <div class="field">
-                <label for="delivery-phone-confirm">Delivery Contact Number</label>
-                <input id="delivery-phone-confirm" type="text" placeholder="Enter delivery contact number">
-              </div>
-              <div class="field">
                 <label for="delivery-alt-phone">Alternate Phone Number</label>
                 <input id="delivery-alt-phone" type="text" placeholder="Enter alternate phone number">
               </div>
@@ -278,7 +274,6 @@
       const cookExperience = document.getElementById("cook-experience").value;
       const cookCuisine = document.getElementById("cook-cuisine").value.trim();
       const cookAvailability = document.getElementById("cook-availability").value;
-      const deliveryPhoneConfirm = document.getElementById("delivery-phone-confirm").value.trim();
       const deliveryAltPhone = document.getElementById("delivery-alt-phone").value.trim();
       const deliveryVehicle = document.getElementById("delivery-vehicle").value;
       const deliveryHours = document.getElementById("delivery-hours").value;
@@ -304,7 +299,7 @@
         return;
       }
 
-      if (role === "delivery" && (!deliveryPhoneConfirm || !deliveryAltPhone || !deliveryVehicle || !deliveryHours || !deliveryShift)) {
+      if (role === "delivery" && (!deliveryAltPhone || !deliveryVehicle || !deliveryHours || !deliveryShift)) {
         showToast("Complete all delivery details.");
         return;
       }
@@ -326,7 +321,7 @@
             cookExperience,
             cookCuisine,
             cookAvailability,
-            deliveryPhoneConfirm,
+            deliveryPhoneConfirm: phone,
             deliveryAltPhone,
             deliveryVehicle,
             deliveryHours,
