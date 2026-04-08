@@ -110,6 +110,11 @@
             </div>
 
             <div class="field">
+              <label for="signup-hostel-name">Hostel Name</label>
+              <input id="signup-hostel-name" type="text" placeholder="Enter hostel name">
+            </div>
+
+            <div class="field">
               <label for="signup-role">Register As</label>
               <select id="signup-role" required>
                 <option value="">Select role</option>
@@ -122,6 +127,11 @@
             <div class="field" style="grid-column: 1 / -1;">
               <label for="signup-address">Hostel / Address</label>
               <textarea id="signup-address" rows="2" placeholder="Enter hostel address"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="signup-room-number">Room Number</label>
+              <input id="signup-room-number" type="text" placeholder="Enter room number">
             </div>
 
             <div class="field">
@@ -147,13 +157,13 @@
                 <input id="cook-cuisine" type="text" placeholder="Example: South Indian">
               </div>
               <div class="field">
-                <label for="cook-availability">Can you cook daily?</label>
+                <label for="cook-availability">Availability</label>
                 <select id="cook-availability">
                   <option value="">Select option</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                  <option value="Only Weekdays">Only Weekdays</option>
-                  <option value="Only Weekends">Only Weekends</option>
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                  <option value="All Day">All Day</option>
                 </select>
               </div>
             </div>
@@ -172,18 +182,11 @@
                   <option value="">Select vehicle</option>
                   <option value="Bike">Bike</option>
                   <option value="Scooter">Scooter</option>
-                  <option value="Cycle">Cycle</option>
-                  <option value="On Foot">On Foot</option>
                 </select>
               </div>
               <div class="field">
-                <label for="delivery-hours">Can you drive during specific hours?</label>
-                <select id="delivery-hours">
-                  <option value="">Select option</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                  <option value="Only Certain Slots">Only Certain Slots</option>
-                </select>
+                <label for="delivery-hours">Available Hours</label>
+                <input id="delivery-hours" type="text" placeholder="Example: 4:00 PM to 10:00 PM">
               </div>
               <div class="field">
                 <label for="delivery-shift">Available Shift</label>
@@ -191,9 +194,8 @@
                   <option value="">Select shift</option>
                   <option value="Morning">Morning</option>
                   <option value="Afternoon">Afternoon</option>
-                  <option value="Evening">Evening</option>
                   <option value="Night">Night</option>
-                  <option value="Flexible">Flexible</option>
+                  <option value="All Day">All Day</option>
                 </select>
               </div>
             </div>
@@ -248,7 +250,9 @@
       const username = document.getElementById("signup-username").value.trim();
       const phone = document.getElementById("signup-phone").value.trim();
       const college = document.getElementById("signup-college").value.trim();
+      const hostelName = document.getElementById("signup-hostel-name").value.trim();
       const address = document.getElementById("signup-address").value.trim();
+      const roomNumber = document.getElementById("signup-room-number").value.trim();
       const role = document.getElementById("signup-role").value;
       const password = document.getElementById("signup-password").value;
       const confirmPassword = document.getElementById("signup-confirm-password").value;
@@ -265,8 +269,13 @@
         return;
       }
 
-      if (role === "student" && (!age || !college || !address)) {
-        showToast("Hosteller age, college, and address are required.");
+      if (role === "student" && (!age || !college || !address || !hostelName || !roomNumber)) {
+        showToast("Hosteller age, college, address, hostel name, and room number are required.");
+        return;
+      }
+
+      if ((role === "cook" || role === "delivery") && Number(age) < 18) {
+        showToast("Home cooks and delivery agents must be 18+.");
         return;
       }
 
@@ -290,6 +299,8 @@
             phone,
             college,
             address,
+            hostelName,
+            roomNumber,
             role,
             password,
             cookExperience,
@@ -304,6 +315,7 @@
         showToast("Account created. Please log in.");
         document.getElementById("login-identifier").value = phone || username;
         document.getElementById("login-role").value = role;
+        document.getElementById("login-password").value = "";
         switchTab("login");
       } catch (error) {
         showToast(error.message);

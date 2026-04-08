@@ -3,7 +3,7 @@ const oracledb = require("oracledb");
 const { getConnection } = require("../config/db");
 const { createId } = require("../utils/ids");
 const { requireAuth } = require("../middleware/auth");
-const { computeFiveStarReward } = require("../utils/coins");
+const { computeFiveStarReward, applyHostellerTopUp } = require("../utils/coins");
 
 const router = express.Router();
 
@@ -168,7 +168,7 @@ router.get("/orders", async (req, res) => {
 });
 
 router.post("/orders", async (req, res) => {
-  const { items, paymentMethod = "NestCoins" } = req.body;
+  const { items, paymentMethod = "Wallet" } = req.body;
   const role = req.user.ROLE || req.user.role;
   const studentId = req.user.ID || req.user.id;
 
@@ -239,11 +239,14 @@ router.post("/orders", async (req, res) => {
 
     const cookId = cookIds.size === 1 ? Array.from(cookIds)[0] : null;
 
+    const balanceAfterSpend = balance - total;
+    const topUp = applyHostellerTopUp(balanceAfterSpend);
+
     await connection.execute(
       `UPDATE users
-       SET nest_coins = nest_coins - :total
+       SET nest_coins = :final_balance
        WHERE id = :id`,
-      { total, id: studentId }
+      { final_balance: topUp.finalBalance, id: studentId }
     );
 
     await connection.execute(
@@ -305,7 +308,10 @@ router.post("/orders", async (req, res) => {
     res.status(201).json({
       message: "Order placed successfully.",
       orderId,
-      totalNestCoins: total
+      totalNestCoins: total,
+      newBalance: topUp.finalBalance,
+      topUpAdded: topUp.topUpAdded,
+      popupMessage: topUp.topUpAdded > 0 ? "500 NestCoins added" : null
     });
   } catch (error) {
     res.status(500).json({ message: "Order failed.", error: error.message });

@@ -21,6 +21,8 @@ function buildUserResponse(row) {
       phone: row.PHONE,
       collegeName: row.COLLEGE_NAME,
       hostelAddress: row.HOSTEL_ADDRESS,
+      hostelName: row.HOSTEL_NAME,
+      roomNumber: row.ROOM_NUMBER,
       cookExperienceYears: row.COOK_EXPERIENCE_YEARS,
       cookCuisine: row.COOK_CUISINE,
       cookAvailability: row.COOK_AVAILABILITY,
@@ -42,6 +44,8 @@ router.post("/signup", async (req, res) => {
     phone = null,
     college = null,
     address = null,
+    hostelName = null,
+    roomNumber = null,
     cookExperience = null,
     cookCuisine = null,
     cookAvailability = null,
@@ -59,8 +63,12 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ message: "Invalid role." });
   }
 
-  if (role === "student" && (!age || !college || !address)) {
+  if (role === "student" && (!age || !college || !address || !hostelName || !roomNumber)) {
     return res.status(400).json({ message: "Hosteller details are required." });
+  }
+
+  if ((role === "cook" || role === "delivery") && Number(age) < 18) {
+    return res.status(400).json({ message: "Home cooks and delivery agents must be 18 or older." });
   }
 
   if (role === "cook" && (!cookExperience || !cookCuisine || !cookAvailability)) {
@@ -91,7 +99,7 @@ router.post("/signup", async (req, res) => {
 
     const userId = createId("user");
     const passwordHash = hashPassword(password);
-    const nestCoins = role === "student" ? 500 : 0;
+    const nestCoins = role === "student" ? 1000 : 0;
 
     await connection.execute(
       `INSERT INTO users (id, name, username, password_hash, role, nest_coins)
@@ -108,10 +116,10 @@ router.post("/signup", async (req, res) => {
 
     await connection.execute(
       `INSERT INTO user_profiles
-       (user_id, age, phone, college_name, hostel_address, cook_experience_years, cook_cuisine,
+       (user_id, age, phone, college_name, hostel_address, hostel_name, room_number, cook_experience_years, cook_cuisine,
         cook_availability, delivery_contact_phone, delivery_vehicle, delivery_hours, delivery_shift)
        VALUES
-       (:user_id, :age, :phone, :college_name, :hostel_address, :cook_experience_years, :cook_cuisine,
+       (:user_id, :age, :phone, :college_name, :hostel_address, :hostel_name, :room_number, :cook_experience_years, :cook_cuisine,
         :cook_availability, :delivery_contact_phone, :delivery_vehicle, :delivery_hours, :delivery_shift)`,
       {
         user_id: userId,
@@ -119,6 +127,8 @@ router.post("/signup", async (req, res) => {
         phone,
         college_name: college,
         hostel_address: address,
+        hostel_name: hostelName,
+        room_number: roomNumber,
         cook_experience_years: cookExperience ? Number(cookExperience) : null,
         cook_cuisine: cookCuisine,
         cook_availability: cookAvailability,
@@ -143,6 +153,8 @@ router.post("/signup", async (req, res) => {
           phone,
           collegeName: college,
           hostelAddress: address,
+          hostelName,
+          roomNumber,
           cookExperienceYears: cookExperience ? Number(cookExperience) : null,
           cookCuisine,
           cookAvailability,
@@ -174,7 +186,7 @@ router.post("/login", async (req, res) => {
     const result = await connection.execute(
       `SELECT
          u.id, u.name, u.username, u.password_hash, u.role, u.nest_coins,
-         p.age, p.phone, p.college_name, p.hostel_address, p.cook_experience_years,
+         p.age, p.phone, p.college_name, p.hostel_address, p.hostel_name, p.room_number, p.cook_experience_years,
          p.cook_cuisine, p.cook_availability, p.delivery_contact_phone,
          p.delivery_vehicle, p.delivery_hours, p.delivery_shift
        FROM users u
@@ -231,7 +243,7 @@ router.get("/me", requireAuth, async (req, res) => {
     const result = await connection.execute(
       `SELECT
          u.id, u.name, u.username, u.role, u.nest_coins,
-         p.age, p.phone, p.college_name, p.hostel_address, p.cook_experience_years,
+         p.age, p.phone, p.college_name, p.hostel_address, p.hostel_name, p.room_number, p.cook_experience_years,
          p.cook_cuisine, p.cook_availability, p.delivery_contact_phone,
          p.delivery_vehicle, p.delivery_hours, p.delivery_shift
        FROM users u
@@ -244,6 +256,28 @@ router.get("/me", requireAuth, async (req, res) => {
     res.json({ user: buildUserResponse(result.rows[0]) });
   } catch (error) {
     res.status(500).json({ message: "Failed to load profile.", error: error.message });
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+});
+
+router.post("/logout", requireAuth, async (req, res) => {
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  let connection;
+
+  try {
+    connection = await getConnection();
+    await connection.execute(
+      `DELETE FROM user_sessions WHERE token = :token`,
+      { token },
+      { autoCommit: true }
+    );
+    res.json({ message: "Logged out successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Logout failed.", error: error.message });
   } finally {
     if (connection) {
       await connection.close();

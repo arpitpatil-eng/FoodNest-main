@@ -73,9 +73,15 @@ async function apiFetch(path, options = {}) {
   return data;
 }
 
-function logout() {
-  clearSession();
-  window.location.href = "/Userlogin.html";
+async function logout() {
+  try {
+    await apiFetch("/auth/logout", { method: "POST" });
+  } catch (_error) {
+    // Clear the local session even if the backend session is already gone.
+  } finally {
+    clearSession();
+    window.location.href = "/Userlogin.html";
+  }
 }
 
 async function requireRole(role) {

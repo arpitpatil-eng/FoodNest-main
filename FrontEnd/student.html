@@ -88,15 +88,7 @@
             <div class="payment-options" id="payment-options" style="margin-top: 16px;">
               <div class="pay-card active" data-method="Wallet">
                 <h3>Wallet</h3>
-                <p class="meta">Pay directly with your available balance.</p>
-              </div>
-              <div class="pay-card" data-method="Reward Credits">
-                <h3>Reward Credits</h3>
-                <p class="meta">Use reward-based credits as your selected payment method label.</p>
-              </div>
-              <div class="pay-card" data-method="Split Wallet">
-                <h3>Split Wallet</h3>
-                <p class="meta">Store the order with a split-wallet payment choice from the UI.</p>
+                <p class="meta">Orders are paid only from the hosteller wallet.</p>
               </div>
             </div>
             <div class="row" style="justify-content: space-between; margin-top: 14px;">
@@ -378,7 +370,7 @@
       }
 
       try {
-        await apiFetch("/student/orders", {
+        const response = await apiFetch("/student/orders", {
           method: "POST",
           body: JSON.stringify({
             paymentMethod: selectedPaymentMethod,
@@ -390,6 +382,9 @@
         });
         cart = [];
         showToast("Order placed successfully.");
+        if (response.popupMessage) {
+          setTimeout(() => showToast(response.popupMessage), 900);
+        }
         await loadData();
       } catch (error) {
         showToast(error.message);

@@ -22,6 +22,8 @@ CREATE TABLE user_profiles (
   phone VARCHAR2(30) UNIQUE NOT NULL,
   college_name VARCHAR2(150),
   hostel_address VARCHAR2(255),
+  hostel_name VARCHAR2(150),
+  room_number VARCHAR2(30),
   cook_experience_years NUMBER,
   cook_cuisine VARCHAR2(150),
   cook_availability VARCHAR2(100),

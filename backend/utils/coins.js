@@ -18,7 +18,23 @@ function computeFiveStarReward(totalNestCoins) {
   };
 }
 
+function applyHostellerTopUp(balanceAfterSpend) {
+  const numericBalance = Number(balanceAfterSpend || 0);
+  if (numericBalance === 0) {
+    return {
+      finalBalance: 500,
+      topUpAdded: 500
+    };
+  }
+
+  return {
+    finalBalance: numericBalance,
+    topUpAdded: 0
+  };
+}
+
 module.exports = {
   computeDeliveryPayout,
-  computeFiveStarReward
+  computeFiveStarReward,
+  applyHostellerTopUp
 };
