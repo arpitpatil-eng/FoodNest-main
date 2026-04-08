@@ -293,9 +293,9 @@
       const currentStatus = order.orderStatus;
       return [
         { label: "Order Placed", done: true },
-        { label: "Preparing", done: ["Preparing", "Prepared", "Delivery Agent Assigned", "Out for Delivery", "Delivered"].includes(currentStatus) },
-        { label: "Delivery Agent Assigned", done: ["Delivery Agent Assigned", "Out for Delivery", "Delivered"].includes(currentStatus) || order.deliveryPartnerName !== "Awaiting delivery partner" },
-        { label: "Out for Delivery", done: ["Out for Delivery", "Delivered"].includes(currentStatus) || order.deliveryStatus === "Out for Delivery" },
+        { label: "Prepared", done: ["Prepared", "Delivery Agent Assigned", "Out for Delivery", "Delivered"].includes(currentStatus) },
+        { label: "Delivery Agent Assigned", done: ["Delivery Agent Assigned", "Out for Delivery", "Delivered"].includes(currentStatus) },
+        { label: "Out for Delivery", done: ["Out for Delivery", "Delivered"].includes(currentStatus) },
         { label: "Order Delivered", done: currentStatus === "Delivered" }
       ];
     }

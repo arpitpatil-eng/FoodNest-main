@@ -153,6 +153,13 @@
           <p class="meta"><strong>Pickup:</strong> ${order.pickupLocation}</p>
           <p class="meta"><strong>Drop:</strong> ${order.dropLocation}</p>
           <p class="meta"><strong>Distance:</strong> ${order.distanceKm} km</p>
+          <div class="timeline">
+            <span>Order Placed</span>
+            <span>Prepared</span>
+            <span style="${["Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus || order.deliveryStatus) ? '' : 'opacity:0.5;'}">Delivery Agent Assigned</span>
+            <span style="${["Out for Delivery","Delivered"].includes(order.orderStatus || order.deliveryStatus) ? '' : 'opacity:0.5;'}">Out for Delivery</span>
+            <span style="${(order.orderStatus || order.deliveryStatus) === "Delivered" ? '' : 'opacity:0.5;'}">Order Delivered</span>
+          </div>
           <div class="row">
             <button class="primary-btn" onclick="acceptDelivery('${order.orderId}')">Accept Delivery</button>
           </div>
@@ -180,6 +187,8 @@
           <p class="meta"><strong>Drop:</strong> ${order.dropLocation}</p>
           <p class="meta"><strong>Distance:</strong> ${order.distanceKm} km</p>
           <div class="timeline">
+            <span>Order Placed</span>
+            <span>Prepared</span>
             <span style="${["Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Delivery Agent Assigned</span>
             <span style="${["Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Out for Delivery</span>
             <span style="${order.orderStatus === "Delivered" ? '' : 'opacity:0.5;'}">Delivered</span>

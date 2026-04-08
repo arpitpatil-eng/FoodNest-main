@@ -131,8 +131,8 @@
     }
 
     function actionLabel(currentStatus) {
-      if (currentStatus === "Order Placed") return "Accept Order";
-      if (currentStatus === "Preparing") return "Ready for Pickup";
+      if (currentStatus === "Order Placed") return "Preparing Order";
+      if (currentStatus === "Preparing") return "Prepared";
       return "";
     }
 
@@ -164,8 +164,10 @@
             <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins || "Pending"} mins</p>
             <div class="timeline">
               <span style="${["Order Placed","Preparing","Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Order Placed</span>
-              <span style="${["Preparing","Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Preparing</span>
               <span style="${["Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Prepared</span>
+              <span style="${["Delivery Agent Assigned","Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Delivery Agent Assigned</span>
+              <span style="${["Out for Delivery","Delivered"].includes(order.orderStatus) ? '' : 'opacity:0.5;'}">Out for Delivery</span>
+              <span style="${order.orderStatus === "Delivered" ? '' : 'opacity:0.5;'}">Order Delivered</span>
             </div>
             <div class="row">
               ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${order.orderId}', '${nextStatus}')">${actionLabel(order.orderStatus)}</button>` : ""}
@@ -190,6 +192,13 @@
         <p class="meta"><strong>Student:</strong> ${currentActiveOrder.studentName}</p>
         <p class="meta"><strong>Status:</strong> ${currentActiveOrder.orderStatus}</p>
         <p class="meta"><strong>Total:</strong> ${coinMarkup(currentActiveOrder.totalNestCoins)}</p>
+        <div class="timeline">
+          <span style="${["Order Placed","Preparing","Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(currentActiveOrder.orderStatus) ? '' : 'opacity:0.5;'}">Order Placed</span>
+          <span style="${["Prepared","Delivery Agent Assigned","Out for Delivery","Delivered"].includes(currentActiveOrder.orderStatus) ? '' : 'opacity:0.5;'}">Prepared</span>
+          <span style="${["Delivery Agent Assigned","Out for Delivery","Delivered"].includes(currentActiveOrder.orderStatus) ? '' : 'opacity:0.5;'}">Delivery Agent Assigned</span>
+          <span style="${["Out for Delivery","Delivered"].includes(currentActiveOrder.orderStatus) ? '' : 'opacity:0.5;'}">Out for Delivery</span>
+          <span style="${currentActiveOrder.orderStatus === "Delivered" ? '' : 'opacity:0.5;'}">Order Delivered</span>
+        </div>
         <div class="row" style="margin-top: 16px;">
           ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${currentActiveOrder.orderId}', '${nextStatus}')">${actionLabel(currentActiveOrder.orderStatus)}</button>` : ""}
         </div>
