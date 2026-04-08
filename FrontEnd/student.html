@@ -138,6 +138,8 @@
     let orders = [];
     let cart = [];
     let selectedPaymentMethod = "Wallet";
+    let selectedCookFilter = "all";
+    let pendingReviews = {};
 
     function showToast(message) {
       toast.textContent = message;
@@ -200,8 +202,11 @@
 
     function renderCookFilter() {
       const cooks = [...new Set(menuItems.map((item) => item.cookName).filter(Boolean))];
+      const desiredValue = cooks.includes(selectedCookFilter) ? selectedCookFilter : "all";
       cookFilter.innerHTML = '<option value="all">All Home Cooks</option>' +
         cooks.map((cook) => `<option value="${cook}">${cook}</option>`).join("");
+      cookFilter.value = desiredValue;
+      selectedCookFilter = desiredValue;
     }
 
     function renderCart() {
@@ -268,7 +273,7 @@
           <h3>${order.orderId}</h3>
           <p class="meta">${order.itemsSummary}</p>
           <div class="row">
-            <textarea id="review-${order.orderId}" rows="3" placeholder="Share your food experience..."></textarea>
+            <textarea id="review-${order.orderId}" rows="3" placeholder="Share your food experience...">${pendingReviews[order.orderId]?.reviewText || ""}</textarea>
           </div>
           <div class="row">
             <select id="rating-${order.orderId}">
@@ -283,6 +288,33 @@
           </div>
         </article>
       `).join("");
+
+      reviewable.forEach((order) => {
+        const ratingSelect = document.getElementById(`rating-${order.orderId}`);
+        const reviewInput = document.getElementById(`review-${order.orderId}`);
+        const saved = pendingReviews[order.orderId] || {};
+
+        if (ratingSelect) {
+          ratingSelect.value = saved.rating || "";
+          ratingSelect.addEventListener("change", () => {
+            pendingReviews[order.orderId] = {
+              ...(pendingReviews[order.orderId] || {}),
+              rating: ratingSelect.value,
+              reviewText: reviewInput ? reviewInput.value : ""
+            };
+          });
+        }
+
+        if (reviewInput) {
+          reviewInput.addEventListener("input", () => {
+            pendingReviews[order.orderId] = {
+              ...(pendingReviews[order.orderId] || {}),
+              rating: ratingSelect ? ratingSelect.value : "",
+              reviewText: reviewInput.value
+            };
+          });
+        }
+      });
     }
 
     function addToCart(id) {
@@ -355,6 +387,7 @@
             reviewText
           })
         });
+        delete pendingReviews[orderId];
         showToast(Number(select.value) === 5 ? "5-star reward shared successfully." : "Rating submitted.");
         await loadData();
       } catch (error) {
@@ -391,7 +424,10 @@
     });
 
     searchInput.addEventListener("input", renderMenu);
-    cookFilter.addEventListener("change", renderMenu);
+    cookFilter.addEventListener("change", () => {
+      selectedCookFilter = cookFilter.value;
+      renderMenu();
+    });
     paymentCards.forEach((card) => {
       card.addEventListener("click", () => {
         paymentCards.forEach((entry) => entry.classList.remove("active"));
