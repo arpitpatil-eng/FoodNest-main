@@ -106,10 +106,11 @@ async function writeLiveDbViews() {
           { key: "SHIFT", label: "shift" }
         ],
         sql: `SELECT u.id, u.name, u.username, u.nest_coins AS coins, p.age, p.phone,
-                     p.delivery_contact_phone AS contact_phone, p.delivery_alt_phone AS alternate_phone,
-                     p.delivery_vehicle AS vehicle, p.delivery_hours AS hours, p.delivery_shift AS shift
+                     da.phone AS contact_phone, da.alternate_phone, da.vehicle_type AS vehicle,
+                     da.available_hours AS hours, da.shift
               FROM users u
               LEFT JOIN user_profiles p ON p.user_id = u.id
+              LEFT JOIN delivery_agents da ON da.user_id = u.id
               WHERE u.role = 'delivery'
               ORDER BY u.created_at DESC`
       },

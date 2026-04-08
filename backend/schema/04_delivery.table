@@ -1,5 +1,15 @@
 FILE: 04_delivery.sql
 
+TABLE: delivery_agents
+| column          | type          | notes                           |
+|-----------------|---------------|---------------------------------|
+| user_id         | VARCHAR2(50)  | primary key, foreign key        |
+| phone           | VARCHAR2(30)  | not null                        |
+| alternate_phone | VARCHAR2(30)  |                                 |
+| vehicle_type    | VARCHAR2(50)  |                                 |
+| available_hours | VARCHAR2(100) |                                 |
+| shift           | VARCHAR2(50)  |                                 |
+
 TABLE: delivery_assignments
 | column              | type          | notes                           |
 |---------------------|---------------|---------------------------------|

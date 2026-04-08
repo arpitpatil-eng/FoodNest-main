@@ -49,6 +49,16 @@ TABLE orders
 | status            | VARCHAR2(50) | NOT NULL                                 |
 | created_at        | TIMESTAMP    | DEFAULT CURRENT_TIMESTAMP                |
 
+TABLE delivery_agents
+| column          | type          | constraints                              |
+|-----------------|---------------|------------------------------------------|
+| user_id         | VARCHAR2(50)  | PRIMARY KEY, FOREIGN KEY -> users(id)    |
+| phone           | VARCHAR2(30)  | NOT NULL                                 |
+| alternate_phone | VARCHAR2(30)  |                                          |
+| vehicle_type    | VARCHAR2(50)  |                                          |
+| available_hours | VARCHAR2(100) |                                          |
+| shift           | VARCHAR2(50)  |                                          |
+
 TABLE delivery_assignments
 | column              | type          | constraints                                      |
 |---------------------|---------------|--------------------------------------------------|

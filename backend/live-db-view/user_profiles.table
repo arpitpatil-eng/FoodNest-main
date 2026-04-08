@@ -2,7 +2,9 @@ TABLE: USER_PROFILES
 
 | user_id           | age | phone      | college_name | hostel_name        | room_number | cook_cuisine | delivery_vehicle |
 |-------------------|-----|------------|--------------|--------------------|-------------|--------------|------------------|
+| user_1751378baf6b | 28  | 2222244444 | -            | -                  | -           | -            | Bike             |
 | user_1c77f8f1cbb0 | 30  | 1111122222 | -            | -                  | -           | South India  | -                |
 | user_3ad64e5a627c | 26  | 9876543210 | -            | -                  | -           | -            | Bike             |
 | user_46237765080f | 28  | 1112223334 | -            | -                  | -           | North Indian | -                |
+| user_526343789daa | 18  | 5555544444 | ABD College  | ABD College Hostel | A-106       | -            | -                |
 | user_6e75b6513b9a | 18  | 1122334455 | ABC College  | ABC College Hostel | A-105       | -            | -                |

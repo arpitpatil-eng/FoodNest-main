@@ -1,3 +1,13 @@
+CREATE TABLE delivery_agents (
+  user_id VARCHAR2(50) PRIMARY KEY,
+  phone VARCHAR2(30) NOT NULL,
+  alternate_phone VARCHAR2(30),
+  vehicle_type VARCHAR2(50),
+  available_hours VARCHAR2(100),
+  shift VARCHAR2(50),
+  CONSTRAINT fk_delivery_agents_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 CREATE TABLE delivery_assignments (
   id VARCHAR2(50) PRIMARY KEY,
   order_id VARCHAR2(50) UNIQUE NOT NULL,

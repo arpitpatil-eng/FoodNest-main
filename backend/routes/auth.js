@@ -144,6 +144,23 @@ router.post("/signup", async (req, res) => {
       }
     );
 
+    if (role === "delivery") {
+      await connection.execute(
+        `INSERT INTO delivery_agents
+         (user_id, phone, alternate_phone, vehicle_type, available_hours, shift)
+         VALUES
+         (:user_id, :phone, :alternate_phone, :vehicle_type, :available_hours, :shift)`,
+        {
+          user_id: userId,
+          phone: deliveryPhoneConfirm || phone,
+          alternate_phone: deliveryAltPhone || null,
+          vehicle_type: deliveryVehicle,
+          available_hours: deliveryHours,
+          shift: deliveryShift
+        }
+      );
+    }
+
     if (role === "cook") {
       const starterMenuIds = getStarterMenuIdsForCuisine(cookCuisine);
       await connection.execute(
