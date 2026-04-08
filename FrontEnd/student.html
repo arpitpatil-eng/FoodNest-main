@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="top-actions">
-            <span class="pill" id="wallet-pill">NestCoins: 0</span>
+            <span class="pill" id="wallet-pill"></span>
             <button class="ghost-btn" id="logout-btn">Logout</button>
           </div>
         </div>
@@ -100,7 +100,7 @@
               </div>
             </div>
             <div class="row" style="justify-content: space-between; margin-top: 14px;">
-              <strong id="cart-total">Total: 0 NestCoins</strong>
+              <strong id="cart-total"></strong>
               <button class="primary-btn" id="place-order-btn">Place Order</button>
             </div>
             <p class="note">This uses the real backend order route, not local demo storage.</p>
@@ -195,7 +195,7 @@
               <p class="meta"><strong>Cook:</strong> ${item.cookName}</p>
               <p class="meta">${item.description || "Fresh home-style meal."}</p>
               <p class="meta"><strong>Prep:</strong> ${item.preparationTimeMins} mins</p>
-              <div class="price">${item.priceNestCoins} NestCoins</div>
+              <div class="price">${coinMarkup(item.priceNestCoins)}</div>
               <div class="row">
                 <button class="secondary-btn" onclick="changeQty('${item.id}', -1)">-</button>
                 <strong>${quantity}</strong>
@@ -220,7 +220,7 @@
 
       if (cart.length === 0) {
         cartLines.innerHTML = '<div class="empty-state">Your cart is empty.</div>';
-        cartTotal.textContent = "Total: 0 NestCoins";
+        cartTotal.innerHTML = `Total: ${coinMarkup(0)}`;
         return;
       }
 
@@ -228,7 +228,7 @@
         <div class="cart-line">
           <div>
             <strong>${item.name}</strong>
-            <div class="meta">${item.cookName} � ${item.quantity} x ${item.priceNestCoins}</div>
+            <div class="meta">${item.cookName} • ${item.quantity} x ${coinMarkup(item.priceNestCoins)}</div>
           </div>
           <div class="row">
             <button class="secondary-btn" onclick="changeQty('${item.id}', -1)">-</button>
@@ -238,7 +238,7 @@
         </div>
       `).join("");
 
-      cartTotal.textContent = `Total: ${cartSummary()} NestCoins`;
+      cartTotal.innerHTML = `Total: ${coinMarkup(cartSummary())}`;
     }
 
     function renderOrders() {
@@ -258,7 +258,7 @@
           <p class="meta"><strong>Delivery:</strong> ${order.deliveryPartnerName} (${order.deliveryStatus})</p>
           <p class="meta"><strong>Payment:</strong> ${order.paymentMethod}</p>
           <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins ? `${order.estimatedTimeMins} mins` : "Pending"}</p>
-          <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+          <p class="meta"><strong>Total:</strong> ${coinMarkup(order.totalNestCoins)}</p>
           <div class="timeline">
             <span>Order Placed</span>
             <span>${order.cookName !== "Awaiting cook assignment" ? "Cook Assigned" : "Waiting for Cook"}</span>
@@ -333,7 +333,7 @@
       const user = meData.user;
       menuItems = menuData.items;
       orders = ordersData.orders;
-      walletPill.textContent = `NestCoins: ${user.nestCoins}`;
+      walletPill.innerHTML = coinMarkup(user.nestCoins, { label: "Wallet", compact: true });
       heroTitle.textContent = `Welcome ${user.name}, order from today's live kitchen menu`;
       document.getElementById("stat-total-orders").textContent = dashboardData.totalOrders;
       document.getElementById("stat-active-orders").textContent = dashboardData.activeOrders;
@@ -418,4 +418,5 @@
   </script>
 </body>
 </html>
+
 

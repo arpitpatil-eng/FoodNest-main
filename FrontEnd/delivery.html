@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -41,7 +41,7 @@
             </div>
           </div>
           <div class="top-actions">
-            <span class="pill" id="wallet-pill">NestCoins: 0</span>
+            <span class="pill" id="wallet-pill"></span>
             <button class="ghost-btn" id="logout-btn">Logout</button>
           </div>
         </div>
@@ -73,7 +73,7 @@
             </div>
             <div class="box">
               <div class="section-title"><h2>NestCoin Wallet</h2></div>
-              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
+              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big"></p>
               <p class="note">Delivery payouts and 5-star bonuses collect here.</p>
             </div>
           </div>
@@ -220,9 +220,9 @@
       ]);
 
       const user = meData.user;
-      walletPill.textContent = `NestCoins: ${user.nestCoins}`;
+      walletPill.innerHTML = coinMarkup(user.nestCoins, { label: "Wallet", compact: true });
       heroTitle.textContent = `Welcome ${user.name}, manage your delivery shift live`;
-      document.getElementById("wallet-big").textContent = `${user.nestCoins} NestCoins`;
+      document.getElementById("wallet-big").innerHTML = coinMarkup(user.nestCoins);
       document.getElementById("stat-today").textContent = dashboardData.todayDeliveries;
       document.getElementById("stat-assigned").textContent = dashboardData.totalAssigned;
       document.getElementById("stat-completed").textContent = dashboardData.completed;
@@ -281,4 +281,5 @@
   </script>
 </body>
 </html>
+
 

@@ -151,6 +151,33 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px;
   font-weight: 700;
 }
+.coin-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  line-height: 1;
+}
+.coin-value.compact {
+  gap: 6px;
+  font-size: 0.96em;
+}
+.coin-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+.coin-value.compact .coin-icon {
+  width: 18px;
+  height: 18px;
+}
+.coin-label {
+  font-size: 0.84em;
+  font-weight: 700;
+  opacity: 0.88;
+}
 .ghost-btn, .primary-btn, .secondary-btn, .danger-btn {
   border: none;
   border-radius: 14px;
@@ -219,6 +246,9 @@ a { color: inherit; text-decoration: none; }
 .card-body, .box { padding: 20px; }
 .meta { color: #665a64; font-size: 14px; line-height: 1.6; }
 .price { margin: 14px 0; color: var(--velvet); font-weight: 800; font-size: 18px; }
+.price .coin-value {
+  color: var(--velvet);
+}
 .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
 .toolbar input, .toolbar select, .field input, .field select, .field textarea {
   width: 100%;

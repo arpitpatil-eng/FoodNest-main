@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="top-actions">
-            <span class="pill" id="wallet-pill">NestCoins: 0</span>
+            <span class="pill" id="wallet-pill"></span>
             <button class="ghost-btn" id="logout-btn">Logout</button>
           </div>
         </div>
@@ -74,7 +74,7 @@
             </div>
             <div class="box">
               <div class="section-title"><h2>NestCoin Wallet</h2></div>
-              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big">0</p>
+              <p style="font-size:32px; color: var(--velvet); font-weight:800;" id="wallet-big"></p>
               <p class="note">Completed deliveries and 5-star review rewards increase your wallet.</p>
             </div>
           </div>
@@ -194,8 +194,8 @@
             <span class="badge">${item.available ? "Available" : "Hidden"}</span>
             <h3>${item.name}</h3>
             <p class="meta">${item.description || "No description yet."}</p>
-            <p class="meta">${item.category} � ${item.preparationTimeMins} mins</p>
-            <div class="price">${item.priceNestCoins} NestCoins</div>
+            <p class="meta">${item.category} • ${item.preparationTimeMins} mins</p>
+            <div class="price">${coinMarkup(item.priceNestCoins)}</div>
             <div class="row">
               <button class="secondary-btn" onclick="toggleAvailability('${item.id}', ${item.available ? 0 : 1})">
                 ${item.available ? "Hide Item" : "Make Available"}
@@ -223,7 +223,7 @@
             <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
             <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
             <p class="meta"><strong>Drop:</strong> ${order.dropLocation || "Hosteller Address"}</p>
-            <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+            <p class="meta"><strong>Total:</strong> ${coinMarkup(order.totalNestCoins)}</p>
             <p class="meta"><strong>ETA:</strong> ${order.estimatedTimeMins || "Pending"} mins</p>
             <div class="row">
               ${nextStatus ? `<button class="primary-btn" onclick="updateOrderStatus('${order.orderId}', '${nextStatus}')">${nextStatus}</button>` : ""}
@@ -247,7 +247,7 @@
           </div>
           <p class="meta"><strong>Student:</strong> ${order.studentName}</p>
           <p class="meta"><strong>Items:</strong> ${order.itemsSummary}</p>
-          <p class="meta"><strong>Total:</strong> ${order.totalNestCoins} NestCoins</p>
+          <p class="meta"><strong>Total:</strong> ${coinMarkup(order.totalNestCoins)}</p>
         </article>
       `).join("");
     }
@@ -262,9 +262,9 @@
       ]);
 
       const user = meData.user;
-      walletPill.textContent = `NestCoins: ${user.nestCoins}`;
+      walletPill.innerHTML = coinMarkup(user.nestCoins, { label: "Wallet", compact: true });
       heroTitle.textContent = `Welcome ${user.name}, manage your kitchen live`;
-      document.getElementById("wallet-big").textContent = `${user.nestCoins} NestCoins`;
+      document.getElementById("wallet-big").innerHTML = coinMarkup(user.nestCoins);
       document.getElementById("stat-orders-today").textContent = dashboardData.ordersToday;
       document.getElementById("stat-total-orders").textContent = dashboardData.totalOrders;
       document.getElementById("stat-meals-completed").textContent = dashboardData.mealsCompleted;
@@ -348,4 +348,5 @@
   </script>
 </body>
 </html>
+
 

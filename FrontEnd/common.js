@@ -35,6 +35,14 @@ function pageForRole(role) {
   return "/Userlogin.html";
 }
 
+function coinMarkup(value, options = {}) {
+  const label = options.label === undefined ? "" : options.label;
+  const compact = options.compact ? " compact" : "";
+  const safeValue = Number.isFinite(Number(value)) ? Number(value) : value;
+  const labelMarkup = label ? `<span class="coin-label">${label}</span>` : "";
+  return `<span class="coin-value${compact}"><img class="coin-icon" src="/nestcoin.svg" alt="NestCoin">${safeValue}${labelMarkup}</span>`;
+}
+
 async function apiFetch(path, options = {}) {
   const headers = {
     "Content-Type": "application/json",

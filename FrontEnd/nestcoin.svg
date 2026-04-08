@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="NestCoin">
+  <defs>
+    <radialGradient id="coinGlow" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fff7bf"/>
+      <stop offset="55%" stop-color="#f5c84f"/>
+      <stop offset="100%" stop-color="#d89e22"/>
+    </radialGradient>
+  </defs>
+  <circle cx="64" cy="64" r="58" fill="url(#coinGlow)" stroke="#b57b16" stroke-width="6"/>
+  <circle cx="64" cy="64" r="46" fill="none" stroke="#f9e08d" stroke-width="4" opacity="0.9"/>
+  <path fill="#612d53" d="M34 72c18-25 33-34 60-38-9 10-13 18-15 27 8 2 14 6 20 13-17-3-28-1-39 6-6 4-12 7-23 7 6-4 10-9 13-15-8-1-12-3-16-10z"/>
+  <path fill="#853953" d="M58 42c9-8 18-12 28-14-7 6-11 11-13 18-5-1-10-2-15-4z" opacity="0.95"/>
+</svg>
