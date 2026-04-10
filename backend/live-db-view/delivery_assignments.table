@@ -2,6 +2,7 @@ TABLE: DELIVERY_ASSIGNMENTS
 
 | id              | order_id           | delivery_partner_id | delivery_status    | pickup_location | drop_location     |
 |-----------------|--------------------|---------------------|--------------------|-----------------|-------------------|
+| da_5ce0587c091c | order_73e87371ccf0 | -                   | Pending Acceptance | Home Cook Hub   | Hosteller Address |
 | da_f72be1a32485 | order_efcfb3b53bf0 | user_3ad64e5a627c   | Delivered          | Home Cook Hub   | Hosteller Address |
 | da_6dc696831024 | order_f9583899a960 | user_3ad64e5a627c   | Delivered          | Home Cook Hub   | Hosteller Address |
 | da_d82b5a53180d | order_e772ca172c17 | user_3ad64e5a627c   | Delivered          | Home Cook Hub   | Hosteller Address |

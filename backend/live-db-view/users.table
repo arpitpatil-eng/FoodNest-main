@@ -2,7 +2,7 @@ TABLE: USERS
 
 | id                | name          | username  | role     | nest_coins | created_at          |
 |-------------------|---------------|-----------|----------|------------|---------------------|
-| user_51318f268f5d | krishna patil | krishna20 | student  | 1000       | 2026-04-10 23:22:46 |
+| user_51318f268f5d | krishna patil | krishna20 | student  | 955        | 2026-04-10 23:22:46 |
 | user_65e8e702ebb7 | kumar         | kumar10   | student  | 952        | 2026-04-09 10:04:51 |
 | user_1751378baf6b | K Iyer        | KIyer30   | delivery | 0          | 2026-04-09 01:50:07 |
 | user_526343789daa | Sachin T      | Sachin100 | student  | 1000       | 2026-04-09 01:42:05 |
