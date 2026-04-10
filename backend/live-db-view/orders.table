@@ -2,7 +2,7 @@ TABLE: ORDERS
 
 | id                 | student_id        | cook_id           | total | payment_method | payment_status | status       | created_at          |
 |--------------------|-------------------|-------------------|-------|----------------|----------------|--------------|---------------------|
-| order_73e87371ccf0 | user_51318f268f5d | user_46237765080f | 45    | Wallet         | Paid           | Preparing    | 2026-04-10 23:24:51 |
+| order_73e87371ccf0 | user_51318f268f5d | user_46237765080f | 45    | Wallet         | Paid           | Prepared     | 2026-04-10 23:24:51 |
 | order_efcfb3b53bf0 | user_65e8e702ebb7 | user_46237765080f | 48    | Wallet         | Paid           | Delivered    | 2026-04-09 10:06:19 |
 | order_f9583899a960 | user_6e75b6513b9a | user_46237765080f | 48    | Wallet         | Paid           | Delivered    | 2026-04-09 09:37:19 |
 | order_e772ca172c17 | user_6e75b6513b9a | user_46237765080f | 42    | Wallet         | Paid           | Delivered    | 2026-04-09 03:28:44 |
