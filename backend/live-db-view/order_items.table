@@ -6,3 +6,5 @@ TABLE: ORDER_ITEMS
 | oi_589ac147813b | order_4e18c9b6fc43 | hostel-meal-08 | 1        | 52         | 52         |
 | oi_44d4d9bed774 | order_b896d27cc5ca | hostel-meal-07 | 1        | 48         | 48         |
 | oi_66b6ae5b2a32 | order_e772ca172c17 | hostel-meal-16 | 1        | 42         | 42         |
+| oi_dd4a7db59caa | order_efcfb3b53bf0 | hostel-meal-07 | 1        | 48         | 48         |
+| oi_b4b94a25164e | order_f9583899a960 | hostel-meal-07 | 1        | 48         | 48         |

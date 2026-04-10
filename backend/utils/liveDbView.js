@@ -1,9 +1,15 @@
 const fs = require("fs");
 const path = require("path");
+const { execFile } = require("child_process");
+const { promisify } = require("util");
 const oracledb = require("oracledb");
 const { getConnection } = require("../config/db");
 
 const liveDbDir = path.join(__dirname, "..", "live-db-view");
+const repoRootDir = path.join(__dirname, "..", "..");
+const gitPathspec = "backend/live-db-view";
+const autoCommitMessage = "Auto-update live DB view";
+const execFileAsync = promisify(execFile);
 let refreshChain = Promise.resolve();
 
 function dash(value) {
@@ -35,6 +41,37 @@ function formatTable(title, columns, rows) {
   }
 
   return `${lines.join("\n")}\n`;
+}
+
+async function runGit(args) {
+  return execFileAsync("git", args, {
+    cwd: repoRootDir,
+    windowsHide: true
+  });
+}
+
+async function autoCommitLiveDbViews() {
+  try {
+    const { stdout } = await runGit(["status", "--short", "--", gitPathspec]);
+
+    if (!stdout.trim()) {
+      return;
+    }
+
+    await runGit(["add", "--", gitPathspec]);
+    await runGit(["commit", "-m", autoCommitMessage, "--", gitPathspec]);
+    console.log("Auto-committed live DB view changes.");
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.trim() : "";
+    const stdout = error.stdout ? error.stdout.trim() : "";
+    const details = stderr || stdout || error.message;
+
+    if (details.includes("nothing to commit")) {
+      return;
+    }
+
+    console.error("Auto-commit for live DB view failed:", details);
+  }
 }
 
 async function writeLiveDbViews() {
@@ -290,6 +327,7 @@ function queueLiveDbRefresh() {
   refreshChain = refreshChain
     .catch(() => {})
     .then(() => writeLiveDbViews())
+    .then(() => autoCommitLiveDbViews())
     .catch((error) => {
       console.error("Live DB view refresh failed:", error.message);
     });

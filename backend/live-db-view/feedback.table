@@ -1,5 +1,6 @@
 TABLE: FEEDBACK
 
-| id | order_id | rating | review_text | reward_distributed | submitted_at |
-|----|----------|--------|-------------|--------------------|--------------|
-| (no rows) |
+| id              | order_id           | rating | review_text | reward_distributed | submitted_at        |
+|-----------------|--------------------|--------|-------------|--------------------|---------------------|
+| fb_2a155d259a92 | order_efcfb3b53bf0 | 3      | good        | 0                  | 2026-04-09 10:16:45 |
+| fb_bcdaf0ed9c8e | order_f9583899a960 | 4      | good        | 0                  | 2026-04-09 09:44:01 |
