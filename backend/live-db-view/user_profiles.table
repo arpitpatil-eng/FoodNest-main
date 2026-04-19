@@ -2,6 +2,7 @@ TABLE: USER_PROFILES
 
 | user_id           | age | phone      | college_name | hostel_name        | room_number | cook_cuisine | delivery_vehicle |
 |-------------------|-----|------------|--------------|--------------------|-------------|--------------|------------------|
+| user_108f8691fbb5 | 32  | 4455445544 | -            | -                  | -           | Snacks       | -                |
 | user_1751378baf6b | 28  | 2222244444 | -            | -                  | -           | -            | Bike             |
 | user_1c77f8f1cbb0 | 30  | 1111122222 | -            | -                  | -           | South India  | -                |
 | user_3ad64e5a627c | 26  | 9876543210 | -            | -                  | -           | -            | Bike             |
