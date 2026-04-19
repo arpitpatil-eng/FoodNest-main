@@ -4,7 +4,7 @@ TABLE: MENU_ITEMS
 |----------------|--------------------|----------|-------|-----------|-------------------|-----------|----------------------------------------------------------|
 | hostel-meal-01 | Maggie Masala Bowl | Fresh    | 40    | 1         | user_108f8691fbb5 | 20        | Hostel-style masala noodles bowl with fresh herbs.       |
 | hostel-meal-02 | Curd Rice          | Veg      | 35    | 1         | user_1c77f8f1cbb0 | 20        | Simple and soothing curd rice meal.                      |
-| hostel-meal-03 | Poha               | Fresh    | 40    | 1         | user_108f8691fbb5 | 20        | Light and filling poha breakfast meal.                   |
+| hostel-meal-03 | Poha               | Fresh    | 49    | 1         | user_108f8691fbb5 | 20        | Light and filling poha breakfast meal.                   |
 | hostel-meal-04 | Chole Bhature      | Veg      | 45    | 1         | user_46237765080f | 25        | Punjabi style chole with fluffy bhature.                 |
 | hostel-meal-05 | Veg Fried Rice     | Fresh    | 65    | 1         | -                 | 25        | Wok tossed rice with fresh vegetables.                   |
 | hostel-meal-06 | Egg Curry Meal     | Organic  | 55    | 1         | -                 | 25        | Egg curry with rice and salad.                           |
