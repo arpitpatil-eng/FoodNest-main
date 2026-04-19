@@ -2,6 +2,7 @@ TABLE: HOSTELLER
 
 | id                | name          | username  | coins | age | phone      | college     | hostel_address                                      | hostel_name        | room_number |
 |-------------------|---------------|-----------|-------|-----|------------|-------------|-----------------------------------------------------|--------------------|-------------|
+| user_d66dbb8ad4c8 | Surya34       | Surya3410 | 1000  | 20  | 6655665566 | abk college | mumbai, boriwali west                               | abk                | b- 341      |
 | user_51318f268f5d | krishna patil | krishna20 | 955   | 20  | 5555555555 | yo          | mumbai city                                         | yoo                | hello10     |
 | user_65e8e702ebb7 | kumar         | kumar10   | 952   | 18  | 1234567890 | dsa college | mumbai                                              | dsa hostel         | b-324       |
 | user_526343789daa | Sachin T      | Sachin100 | 1000  | 18  | 5555544444 | ABD College | ABD College Hostel, Kandivali W,Mumbai.             | ABD College Hostel | A-106       |
