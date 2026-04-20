@@ -14,7 +14,7 @@ TABLE: MENU_ITEMS
 | hostel-meal-10    | Healthy Veg Bowl   | Fresh    | 58    | 1         | -                 | 20        | Wholesome bowl with vegetables, grains, and fresh salad. |
 | hostel-meal-11    | Chicken Rice Bowl  | Veg      | 46    | 1         | -                 | 20        | Grilled chicken with seasoned rice.                      |
 | hostel-meal-12    | Lemon Rice Combo   | Fresh    | 54    | 1         | user_1c77f8f1cbb0 | 20        | Tangy lemon rice with chutney and papad.                 |
-| hostel-meal-13    | Mini Tiffin Combo  | Organic  | 30    | 1         | user_108f8691fbb5 | 15        | South Indian mini tiffin with chutneys and sides.        |
+| hostel-meal-13    | Mini Tiffin Combo  | Organic  | 30    | 0         | user_108f8691fbb5 | 15        | South Indian mini tiffin with chutneys and sides.        |
 | hostel-meal-14    | Paneer Roll        | Fresh    | 34    | 1         | user_108f8691fbb5 | 20        | Soft wrap stuffed with spiced paneer.                    |
 | hostel-meal-15    | Idli Sambar        | Fresh    | 28    | 1         | user_1c77f8f1cbb0 | 15        | Fluffy idlis with hot homemade sambar.                   |
 | hostel-meal-16    | Veg Thali          | Veg      | 42    | 1         | user_46237765080f | 20        | Rice, sabzi, chapati and sweet bite.                     |
