@@ -19,5 +19,6 @@ TABLE: MENU_ITEMS
 | hostel-meal-15    | Idli Sambar        | Fresh    | 28    | 1         | user_1c77f8f1cbb0 | 15        | Fluffy idlis with hot homemade sambar.                                    |
 | hostel-meal-16    | Veg Thali          | Veg      | 42    | 1         | user_46237765080f | 20        | Rice, sabzi, chapati and sweet bite.                                      |
 | meal_15cfadaa0c25 | Vada Pav           | Veg      | 20    | 1         | user_108f8691fbb5 | 15        | Crispy and spicy potato fritter sandwiched in a soft bun with chutneys.   |
+| meal_38784462bd66 | Shira              | Veg      | 30    | 1         | user_108f8691fbb5 | 15        | sweet and delicious desert                                                |
 | meal_6c54de03f977 | Upma               | Veg      | 40    | 1         | user_108f8691fbb5 | 20        | Soft and comforting semolina dish cooked with mild spices and vegetables. |
 | meal_95d7a872f891 | Samosa             | Veg      | 30    | 1         | user_108f8691fbb5 | 20        | Crunchy and fulfilling indian snacks made with exquisite filling.         |
