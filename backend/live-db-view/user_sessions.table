@@ -2,7 +2,6 @@ TABLE: USER_SESSIONS
 
 | id                | user_id           | token                                            | created_at          |
 |-------------------|-------------------|--------------------------------------------------|---------------------|
-| sess_3126b29faf7f | user_108f8691fbb5 | e9ad0e1e2c7487d9fa664a7b13fb89859c2869e28697d780 | 2026-04-28 21:14:34 |
 | sess_5b52189267be | user_108f8691fbb5 | bc3ce66d1d87b47a19a588a84eccd048e422480952ffe05f | 2026-04-24 14:11:22 |
 | sess_582146cd6cc5 | user_d66dbb8ad4c8 | 4bdad8c433eab1e0af522cab98e470633068536b97d0ff70 | 2026-04-24 14:10:54 |
 | sess_bc46e3cda5a9 | user_d66dbb8ad4c8 | 399eef882a15ab582b17012e580722f6cd96866e111c2e15 | 2026-04-23 09:45:33 |
