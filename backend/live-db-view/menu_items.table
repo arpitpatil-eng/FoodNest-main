@@ -22,5 +22,5 @@ TABLE: MENU_ITEMS
 | meal_17144ff173c2 | sandwich           | Veg      | 20    | 0         | user_108f8691fbb5 | 20        | sandwich                                                                  |
 | meal_38784462bd66 | Shira              | Veg      | 30    | 1         | user_108f8691fbb5 | 15        | sweet and delicious desert                                                |
 | meal_6c54de03f977 | Upma               | Veg      | 40    | 1         | user_108f8691fbb5 | 20        | Soft and comforting semolina dish cooked with mild spices and vegetables. |
-| meal_9430ecdbcfe9 | Sandwich           | Veg      | 30    | 1         | user_108f8691fbb5 | 20        | sandwich                                                                  |
+| meal_9430ecdbcfe9 | Sandwich           | Veg      | 30    | 0         | user_108f8691fbb5 | 20        | sandwich                                                                  |
 | meal_95d7a872f891 | Samosa             | Veg      | 30    | 1         | user_108f8691fbb5 | 20        | Crunchy and fulfilling indian snacks made with exquisite filling.         |
