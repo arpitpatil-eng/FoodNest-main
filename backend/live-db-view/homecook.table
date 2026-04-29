@@ -1,5 +1,5 @@
 TABLE: HOMECOOK
 
-| id | name | username | coins | age | phone | experience_years | cuisine | availability |
-|----|------|----------|-------|-----|-------|------------------|---------|--------------|
-| (no rows) |
+| id                | name  | username | coins | age | phone      | experience_years | cuisine | availability |
+|-------------------|-------|----------|-------|-----|------------|------------------|---------|--------------|
+| user_2bdccaf255a7 | parth | parth    | 0     | 18  | 8888888888 | 1                | snacks  | Breakfast    |

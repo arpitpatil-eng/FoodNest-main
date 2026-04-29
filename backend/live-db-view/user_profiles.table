@@ -3,3 +3,4 @@ TABLE: USER_PROFILES
 | user_id           | age | phone      | college_name | hostel_name | room_number | cook_cuisine | delivery_vehicle |
 |-------------------|-----|------------|--------------|-------------|-------------|--------------|------------------|
 | user_16c05dfe1dfc | 600 | 9999999999 | a            | ab          | abcd1       | -            | -                |
+| user_2bdccaf255a7 | 18  | 8888888888 | -            | -           | -           | snacks       | -                |
