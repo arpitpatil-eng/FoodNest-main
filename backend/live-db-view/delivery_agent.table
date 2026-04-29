@@ -1,7 +1,5 @@
 TABLE: DELIVERY_AGENT
 
-| id                | name           | username   | coins | age | phone      | contact_phone | alternate_phone | vehicle | hours         | shift     |
-|-------------------|----------------|------------|-------|-----|------------|---------------|-----------------|---------|---------------|-----------|
-| user_6aa7a7d786c1 | Delivery Agent | Delivery90 | 0     | 30  | 9090909090 | 9090909090    | 8080808080      | Bike    | 8 am to 11 am | Morning   |
-| user_1751378baf6b | K Iyer         | KIyer30    | 0     | 28  | 2222244444 | 2222244444    | 2222244442      | Bike    | 12 pm to 4 pm | Afternoon |
-| user_3ad64e5a627c | Mohan K        | MohanK90   | 55    | 26  | 9876543210 | 9876543210    | 9876543211      | Bike    | 12 pm to 4 pm | Afternoon |
+| id | name | username | coins | age | phone | contact_phone | alternate_phone | vehicle | hours | shift |
+|----|------|----------|-------|-----|-------|---------------|-----------------|---------|-------|-------|
+| (no rows) |
