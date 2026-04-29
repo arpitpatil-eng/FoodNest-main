@@ -1,5 +1,5 @@
 TABLE: USER_SESSIONS
 
-| id                | user_id           | token                                            | created_at          |
-|-------------------|-------------------|--------------------------------------------------|---------------------|
-| sess_d6f24ed7cfd3 | user_16c05dfe1dfc | 970026cf4fe692d4a90de014a22a0ad4e2454df8af8ff32d | 2026-04-29 21:18:33 |
+| id | user_id | token | created_at |
+|----|---------|-------|------------|
+| (no rows) |
