@@ -2,4 +2,5 @@ TABLE: ORDER_STATUS_HISTORY
 
 | id               | order_id           | stage        | simulated | changed_at          |
 |------------------|--------------------|--------------|-----------|---------------------|
+| osh_db65c442fd27 | order_415dd3e91bc2 | Preparing    | 0         | 2026-04-30 21:56:25 |
 | osh_1f341838ca91 | order_415dd3e91bc2 | Order Placed | 1         | 2026-04-30 21:54:11 |
