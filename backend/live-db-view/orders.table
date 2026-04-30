@@ -1,6 +1,6 @@
 TABLE: ORDERS
 
-| id                 | student_id        | cook_id           | total | payment_method | payment_status | status                  | created_at          |
-|--------------------|-------------------|-------------------|-------|----------------|----------------|-------------------------|---------------------|
-| order_cc4b65c57427 | user_16c05dfe1dfc | user_2bdccaf255a7 | 34    | Wallet         | Paid           | Delivery Agent Assigned | 2026-04-30 22:16:08 |
-| order_415dd3e91bc2 | user_16c05dfe1dfc | user_2bdccaf255a7 | 50    | Wallet         | Paid           | Delivered               | 2026-04-30 21:54:11 |
+| id                 | student_id        | cook_id           | total | payment_method | payment_status | status           | created_at          |
+|--------------------|-------------------|-------------------|-------|----------------|----------------|------------------|---------------------|
+| order_cc4b65c57427 | user_16c05dfe1dfc | user_2bdccaf255a7 | 34    | Wallet         | Paid           | Out for Delivery | 2026-04-30 22:16:08 |
+| order_415dd3e91bc2 | user_16c05dfe1dfc | user_2bdccaf255a7 | 50    | Wallet         | Paid           | Delivered        | 2026-04-30 21:54:11 |
