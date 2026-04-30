@@ -2,6 +2,7 @@ TABLE: ORDER_STATUS_HISTORY
 
 | id               | order_id           | stage                   | simulated | changed_at          |
 |------------------|--------------------|-------------------------|-----------|---------------------|
+| osh_69ac096777e2 | order_b59714f9a852 | Preparing               | 0         | 2026-04-30 22:24:51 |
 | osh_44526322d428 | order_b59714f9a852 | Order Placed            | 1         | 2026-04-30 22:24:40 |
 | osh_9694432e141d | order_cc4b65c57427 | Delivered               | 0         | 2026-04-30 22:16:53 |
 | osh_07898a022fe5 | order_cc4b65c57427 | Out for Delivery        | 0         | 2026-04-30 22:16:42 |
