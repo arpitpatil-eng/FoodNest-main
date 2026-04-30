@@ -1,7 +1,7 @@
 TABLE: DELIVERY_TRACKING
 
-| order_id           | order_status            | delivery_status         | delivery_partner | pickup_location | drop_location     |
-|--------------------|-------------------------|-------------------------|------------------|-----------------|-------------------|
-| order_b59714f9a852 | Delivery Agent Assigned | Delivery Agent Assigned | adil2            | Home Cook Hub   | Hosteller Address |
-| order_cc4b65c57427 | Delivered               | Delivered               | adil2            | Home Cook Hub   | Hosteller Address |
-| order_415dd3e91bc2 | Delivered               | Delivered               | adil2            | Home Cook Hub   | Hosteller Address |
+| order_id           | order_status     | delivery_status  | delivery_partner | pickup_location | drop_location     |
+|--------------------|------------------|------------------|------------------|-----------------|-------------------|
+| order_b59714f9a852 | Out for Delivery | Out for Delivery | adil2            | Home Cook Hub   | Hosteller Address |
+| order_cc4b65c57427 | Delivered        | Delivered        | adil2            | Home Cook Hub   | Hosteller Address |
+| order_415dd3e91bc2 | Delivered        | Delivered        | adil2            | Home Cook Hub   | Hosteller Address |
