@@ -1,5 +1,5 @@
 TABLE: DELIVERY_TRACKING
 
-| order_id           | order_status            | delivery_status         | delivery_partner | pickup_location | drop_location     |
-|--------------------|-------------------------|-------------------------|------------------|-----------------|-------------------|
-| order_415dd3e91bc2 | Delivery Agent Assigned | Delivery Agent Assigned | adil2            | Home Cook Hub   | Hosteller Address |
+| order_id           | order_status     | delivery_status  | delivery_partner | pickup_location | drop_location     |
+|--------------------|------------------|------------------|------------------|-----------------|-------------------|
+| order_415dd3e91bc2 | Out for Delivery | Out for Delivery | adil2            | Home Cook Hub   | Hosteller Address |
