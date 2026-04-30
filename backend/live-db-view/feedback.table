@@ -2,4 +2,5 @@ TABLE: FEEDBACK
 
 | id              | order_id           | rating | review_text | reward_distributed | submitted_at        |
 |-----------------|--------------------|--------|-------------|--------------------|---------------------|
+| fb_283818f41a9a | order_cc4b65c57427 | 3      | tasty       | 0                  | 2026-04-30 22:17:17 |
 | fb_77672aff0b32 | order_415dd3e91bc2 | 5      | -           | 1                  | 2026-04-30 21:56:58 |
