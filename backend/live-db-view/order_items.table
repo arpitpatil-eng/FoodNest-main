@@ -3,3 +3,4 @@ TABLE: ORDER_ITEMS
 | id              | order_id           | menu_item_id   | quantity | unit_price | line_total |
 |-----------------|--------------------|----------------|----------|------------|------------|
 | oi_ba9308115531 | order_415dd3e91bc2 | hostel-meal-01 | 1        | 50         | 50         |
+| oi_6ad71abe4bf9 | order_cc4b65c57427 | hostel-meal-14 | 1        | 34         | 34         |
