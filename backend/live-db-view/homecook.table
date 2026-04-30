@@ -1,5 +1,6 @@
 TABLE: HOMECOOK
 
-| id                | name  | username | coins | age | phone      | experience_years | cuisine | availability |
-|-------------------|-------|----------|-------|-----|------------|------------------|---------|--------------|
-| user_2bdccaf255a7 | parth | parth    | 117   | 18  | 8888888888 | 1                | snacks  | Breakfast    |
+| id                | name        | username | coins | age | phone      | experience_years | cuisine       | availability |
+|-------------------|-------------|----------|-------|-----|------------|------------------|---------------|--------------|
+| user_4f748e5f855e | arpit patil | arpit    | 0     | 20  | 1111111111 | 3                | north indians | Dinner       |
+| user_2bdccaf255a7 | parth       | parth    | 117   | 18  | 8888888888 | 1                | snacks        | Breakfast    |
