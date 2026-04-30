@@ -1,6 +1,6 @@
 TABLE: DELIVERY_TRACKING
 
-| order_id           | order_status | delivery_status    | delivery_partner | pickup_location | drop_location     |
-|--------------------|--------------|--------------------|------------------|-----------------|-------------------|
-| order_cc4b65c57427 | Preparing    | Pending Acceptance | -                | Home Cook Hub   | Hosteller Address |
-| order_415dd3e91bc2 | Delivered    | Delivered          | adil2            | Home Cook Hub   | Hosteller Address |
+| order_id           | order_status | delivery_status | delivery_partner | pickup_location | drop_location     |
+|--------------------|--------------|-----------------|------------------|-----------------|-------------------|
+| order_cc4b65c57427 | Prepared     | Prepared        | -                | Home Cook Hub   | Hosteller Address |
+| order_415dd3e91bc2 | Delivered    | Delivered       | adil2            | Home Cook Hub   | Hosteller Address |
