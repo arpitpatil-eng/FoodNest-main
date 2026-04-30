@@ -3,4 +3,4 @@ TABLE: USERS
 | id                | name  | username | role    | nest_coins | created_at          |
 |-------------------|-------|----------|---------|------------|---------------------|
 | user_2bdccaf255a7 | parth | parth    | cook    | 0          | 2026-04-29 21:35:13 |
-| user_16c05dfe1dfc | adil  | adil     | student | 1000       | 2026-04-29 21:18:22 |
+| user_16c05dfe1dfc | adil  | adil     | student | 950        | 2026-04-29 21:18:22 |

@@ -2,4 +2,4 @@ TABLE: HOSTELLER
 
 | id                | name | username | coins | age | phone      | college | hostel_address | hostel_name | room_number |
 |-------------------|------|----------|-------|-----|------------|---------|----------------|-------------|-------------|
-| user_16c05dfe1dfc | adil | adil     | 1000  | 600 | 9999999999 | a       | abc            | ab          | abcd1       |
+| user_16c05dfe1dfc | adil | adil     | 950   | 600 | 9999999999 | a       | abc            | ab          | abcd1       |
