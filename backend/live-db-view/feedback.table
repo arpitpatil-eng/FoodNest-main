@@ -1,5 +1,5 @@
 TABLE: FEEDBACK
 
-| id | order_id | rating | review_text | reward_distributed | submitted_at |
-|----|----------|--------|-------------|--------------------|--------------|
-| (no rows) |
+| id              | order_id           | rating | review_text | reward_distributed | submitted_at        |
+|-----------------|--------------------|--------|-------------|--------------------|---------------------|
+| fb_77672aff0b32 | order_415dd3e91bc2 | 5      | -           | 1                  | 2026-04-30 21:56:58 |
