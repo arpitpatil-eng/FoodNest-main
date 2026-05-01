@@ -1,5 +1,6 @@
 TABLE: HOSTELLER
 
-| id                | name | username | coins | age | phone      | college | hostel_address | hostel_name | room_number |
-|-------------------|------|----------|-------|-----|------------|---------|----------------|-------------|-------------|
-| user_16c05dfe1dfc | adil | adil     | 872   | 600 | 9999999999 | a       | abc            | ab          | abcd1       |
+| id                | name  | username | coins | age | phone      | college     | hostel_address | hostel_name | room_number |
+|-------------------|-------|----------|-------|-----|------------|-------------|----------------|-------------|-------------|
+| user_570d2581cd9f | rohit | rohit    | 1000  | 20  | 5555555555 | st francisa | abc            | ab          | 103         |
+| user_16c05dfe1dfc | adil  | adil     | 872   | 600 | 9999999999 | a           | abc            | ab          | abcd1       |
