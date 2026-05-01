@@ -1,27 +1,5 @@
 TABLE: ORDER_STATUS_HISTORY
 
-| id               | order_id           | stage                   | simulated | changed_at          |
-|------------------|--------------------|-------------------------|-----------|---------------------|
-| osh_5180e308426a | order_cd345bfa16cb | Prepared                | 0         | 2026-05-01 20:20:14 |
-| osh_b97f825d3acb | order_cd345bfa16cb | Preparing               | 0         | 2026-05-01 20:20:12 |
-| osh_6384cffc3e1e | order_cd345bfa16cb | Order Placed            | 1         | 2026-05-01 20:15:48 |
-| osh_35dcf9823666 | order_68d2e1ddfa80 | Order Placed            | 1         | 2026-05-01 20:12:01 |
-| osh_94ff91472885 | order_83e86a9dfe07 | Order Placed            | 1         | 2026-05-01 20:08:20 |
-| osh_f12473ffc19e | order_b59714f9a852 | Delivered               | 0         | 2026-04-30 22:25:03 |
-| osh_e2b02168a642 | order_b59714f9a852 | Out for Delivery        | 0         | 2026-04-30 22:25:01 |
-| osh_3b48c2cdcd85 | order_b59714f9a852 | Delivery Agent Assigned | 0         | 2026-04-30 22:24:58 |
-| osh_d2e4e47a266f | order_b59714f9a852 | Prepared                | 0         | 2026-04-30 22:24:53 |
-| osh_69ac096777e2 | order_b59714f9a852 | Preparing               | 0         | 2026-04-30 22:24:51 |
-| osh_44526322d428 | order_b59714f9a852 | Order Placed            | 1         | 2026-04-30 22:24:40 |
-| osh_9694432e141d | order_cc4b65c57427 | Delivered               | 0         | 2026-04-30 22:16:53 |
-| osh_07898a022fe5 | order_cc4b65c57427 | Out for Delivery        | 0         | 2026-04-30 22:16:42 |
-| osh_495fc515f886 | order_cc4b65c57427 | Delivery Agent Assigned | 0         | 2026-04-30 22:16:34 |
-| osh_cd1bc241ad7b | order_cc4b65c57427 | Prepared                | 0         | 2026-04-30 22:16:18 |
-| osh_824e24f8a3cd | order_cc4b65c57427 | Preparing               | 0         | 2026-04-30 22:16:15 |
-| osh_dc35c7cdfa69 | order_cc4b65c57427 | Order Placed            | 1         | 2026-04-30 22:16:08 |
-| osh_9eff3dc4235c | order_415dd3e91bc2 | Delivered               | 0         | 2026-04-30 21:56:42 |
-| osh_4b4b45e9ba02 | order_415dd3e91bc2 | Out for Delivery        | 0         | 2026-04-30 21:56:38 |
-| osh_bcf700020a8b | order_415dd3e91bc2 | Delivery Agent Assigned | 0         | 2026-04-30 21:56:36 |
-| osh_1726d4c0ee01 | order_415dd3e91bc2 | Prepared                | 0         | 2026-04-30 21:56:28 |
-| osh_db65c442fd27 | order_415dd3e91bc2 | Preparing               | 0         | 2026-04-30 21:56:25 |
-| osh_1f341838ca91 | order_415dd3e91bc2 | Order Placed            | 1         | 2026-04-30 21:54:11 |
+| id | order_id | stage | simulated | changed_at |
+|----|----------|-------|-----------|------------|
+| (no rows) |

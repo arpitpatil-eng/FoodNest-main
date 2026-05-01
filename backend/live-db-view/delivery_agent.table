@@ -1,7 +1,5 @@
 TABLE: DELIVERY_AGENT
 
-| id                | name  | username | coins | age | phone      | contact_phone | alternate_phone | vehicle | hours             | shift     |
-|-------------------|-------|----------|-------|-----|------------|---------------|-----------------|---------|-------------------|-----------|
-| user_ed878e63622b | Sandy | Sandy    | 0     | 25  | 0123456777 | 0123456777    | 0123456778      | Bike    | -                 | Night     |
-| user_6f0628eced25 | Ram   | Ram      | 0     | 19  | 0123456789 | 0123456789    | 0123456788      | Scooter | -                 | Afternoon |
-| user_e70b1484e7da | adil2 | adil2    | 59    | 19  | 7777777777 | 7777777777    | 4444444444      | Bike    | 4:00 PM to 9:00PM | Morning   |
+| id | name | username | coins | age | phone | contact_phone | alternate_phone | vehicle | hours | shift |
+|----|------|----------|-------|-----|-------|---------------|-----------------|---------|-------|-------|
+| (no rows) |

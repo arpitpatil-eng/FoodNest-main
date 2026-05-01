@@ -1,10 +1,5 @@
 TABLE: ORDER_ITEMS
 
-| id              | order_id           | menu_item_id   | quantity | unit_price | line_total |
-|-----------------|--------------------|----------------|----------|------------|------------|
-| oi_ba9308115531 | order_415dd3e91bc2 | hostel-meal-01 | 1        | 50         | 50         |
-| oi_ca660c2c31c1 | order_68d2e1ddfa80 | hostel-meal-03 | 1        | 30         | 30         |
-| oi_3a9c4c9be7df | order_83e86a9dfe07 | hostel-meal-15 | 1        | 28         | 28         |
-| oi_59b2c69aa245 | order_b59714f9a852 | hostel-meal-13 | 2        | 30         | 60         |
-| oi_6ad71abe4bf9 | order_cc4b65c57427 | hostel-meal-14 | 1        | 34         | 34         |
-| oi_5f9710949219 | order_cd345bfa16cb | hostel-meal-16 | 1        | 42         | 42         |
+| id | order_id | menu_item_id | quantity | unit_price | line_total |
+|----|----------|--------------|----------|------------|------------|
+| (no rows) |

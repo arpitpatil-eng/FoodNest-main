@@ -1,15 +1,5 @@
 TABLE: USERS
 
-| id                | name        | username | role     | nest_coins | created_at          |
-|-------------------|-------------|----------|----------|------------|---------------------|
-| user_174fc09905d8 | Adam        | Adam     | student  | 1000       | 2026-05-01 21:01:35 |
-| user_ed878e63622b | Sandy       | Sandy    | delivery | 0          | 2026-05-01 20:15:01 |
-| user_6b9ff8d26647 | Sam         | Sam      | cook     | 0          | 2026-05-01 20:11:33 |
-| user_6f0628eced25 | Ram         | Ram      | delivery | 0          | 2026-05-01 20:07:10 |
-| user_570d2581cd9f | rohit       | rohit    | student  | 1000       | 2026-05-01 14:29:16 |
-| user_83f7a9a2bcb1 | John        | John     | cook     | 0          | 2026-05-01 12:12:43 |
-| user_89fbc7bccda9 | sean        | sean     | cook     | 0          | 2026-05-01 12:05:41 |
-| user_4f748e5f855e | arpit patil | arpit    | cook     | 0          | 2026-04-30 23:04:26 |
-| user_e70b1484e7da | adil2       | adil2    | delivery | 59         | 2026-04-30 21:55:54 |
-| user_2bdccaf255a7 | parth       | parth    | cook     | 117        | 2026-04-29 21:35:13 |
-| user_16c05dfe1dfc | adil        | adil     | student  | 772        | 2026-04-29 21:18:22 |
+| id | name | username | role | nest_coins | created_at |
+|----|------|----------|------|------------|------------|
+| (no rows) |
