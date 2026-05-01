@@ -114,6 +114,7 @@
     let openDeliveries = [];
     let deliveries = [];
     let history = [];
+    let openDeliveriesMessage = "No open deliveries available right now.";
 
     function showToast(message) {
       toast.textContent = message;
@@ -136,7 +137,7 @@
 
     function renderOpenDeliveries() {
       if (openDeliveries.length === 0) {
-        openDeliveriesList.innerHTML = '<div class="empty-state">No open deliveries available right now.</div>';
+        openDeliveriesList.innerHTML = `<div class="empty-state">${openDeliveriesMessage}</div>`;
         return;
       }
 
@@ -240,6 +241,9 @@
       document.getElementById("stat-completed").textContent = dashboardData.completed;
       document.getElementById("hero-open-pill").textContent = `Open Jobs: ${openData.orders.length}`;
       document.getElementById("hero-assigned-pill").textContent = `Assigned: ${dashboardData.totalAssigned}`;
+      openDeliveriesMessage = openData.shiftActive === false
+        ? (openData.message || "Open deliveries are available only during your selected shift.")
+        : "No open deliveries available right now.";
       openDeliveries = openData.orders;
       deliveries = deliveriesData.orders;
       history = historyData.orders;

@@ -83,9 +83,52 @@
           <div class="field">
             <label for="login-password">Password</label>
             <input id="login-password" type="password" placeholder="Enter password" required autocomplete="new-password">
+            <button class="link-btn" type="button" id="forgot-password-toggle">Forgot password?</button>
           </div>
 
           <button class="primary-btn" type="submit">Login</button>
+        </form>
+
+        <form id="forgot-password-form" class="stack reset-panel" autocomplete="off">
+          <div class="section-title compact-title">
+            <h2>Reset Password</h2>
+          </div>
+          <p class="note">Enter the same role, username or phone, and age used on your account.</p>
+
+          <div class="field">
+            <label for="reset-role">Account Role</label>
+            <select id="reset-role" required autocomplete="off">
+              <option value="">Select role</option>
+              <option value="student">Hosteller</option>
+              <option value="cook">Home Cook</option>
+              <option value="delivery">Delivery Agent</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="reset-identifier">Username or Phone</label>
+            <input id="reset-identifier" type="text" placeholder="Enter username or phone" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+          </div>
+
+          <div class="field">
+            <label for="reset-age">Age</label>
+            <input id="reset-age" type="number" min="1" placeholder="Enter account age" required autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label for="reset-password">New Password</label>
+            <input id="reset-password" type="password" placeholder="Create new password" required autocomplete="new-password">
+          </div>
+
+          <div class="field">
+            <label for="reset-confirm-password">Confirm New Password</label>
+            <input id="reset-confirm-password" type="password" placeholder="Confirm new password" required autocomplete="new-password">
+          </div>
+
+          <div class="row">
+            <button class="primary-btn" type="submit">Reset Password</button>
+            <button class="secondary-btn" type="button" id="forgot-password-cancel">Cancel</button>
+          </div>
         </form>
       </section>
 
@@ -156,6 +199,10 @@
                 <label for="signup-room-number">Room Number</label>
                 <input id="signup-room-number" type="text" placeholder="Enter room number">
               </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="signup-id-card">ID Card Photo</label>
+                <input id="signup-id-card" type="file" accept="image/*">
+              </div>
             </div>
           </div>
 
@@ -179,6 +226,10 @@
                   <option value="Dinner">Dinner</option>
                   <option value="All Day">All Day</option>
                 </select>
+              </div>
+              <div class="field">
+                <label for="cook-distance">Distance from Hostel (km)</label>
+                <input id="cook-distance" type="number" min="0" step="0.1" placeholder="Example: 2.5">
               </div>
             </div>
           </div>
@@ -204,13 +255,10 @@
                   <option value="">Select shift</option>
                   <option value="Morning">Morning</option>
                   <option value="Afternoon">Afternoon</option>
+                  <option value="Evening">Evening</option>
                   <option value="Night">Night</option>
                   <option value="All Day">All Day</option>
                 </select>
-              </div>
-              <div class="field">
-                <label for="delivery-hours">Available Hours</label>
-                <input id="delivery-hours" type="text" placeholder="Example: 4:00 PM to 10:00 PM">
               </div>
             </div>
           </div>
@@ -251,11 +299,60 @@
       document.getElementById("student-extra").classList.toggle("active", role === "student");
       document.getElementById("cook-extra").classList.toggle("active", role === "cook");
       document.getElementById("delivery-extra").classList.toggle("active", role === "delivery");
+      document.getElementById("signup-id-card").required = false;
     }
 
     document.getElementById("signup-role").addEventListener("change", (event) => {
       toggleRoleFields(event.target.value);
     });
+
+    function showForgotPassword(show) {
+      document.getElementById("forgot-password-form").classList.toggle("active", show);
+      if (show) {
+        document.getElementById("reset-role").value = document.getElementById("login-role").value;
+        document.getElementById("reset-identifier").value = document.getElementById("login-identifier").value.trim();
+      }
+    }
+
+    document.getElementById("forgot-password-toggle").addEventListener("click", () => {
+      showForgotPassword(true);
+    });
+
+    document.getElementById("forgot-password-cancel").addEventListener("click", () => {
+      showForgotPassword(false);
+      document.getElementById("forgot-password-form").reset();
+    });
+
+    function readIdCardImage(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) {
+          resolve(null);
+          return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+          reject(new Error("Please upload an image file for the ID card."));
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          reject(new Error("ID card photo must be 5 MB or smaller."));
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || "");
+          resolve({
+            name: file.name,
+            type: file.type,
+            data: result.includes(",") ? result.split(",")[1] : result
+          });
+        };
+        reader.onerror = () => reject(new Error("Could not read the ID card photo."));
+        reader.readAsDataURL(file);
+      });
+    }
 
     document.getElementById("signup-form").addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -274,10 +371,11 @@
       const cookExperience = document.getElementById("cook-experience").value;
       const cookCuisine = document.getElementById("cook-cuisine").value.trim();
       const cookAvailability = document.getElementById("cook-availability").value;
+      const cookDistance = document.getElementById("cook-distance").value;
       const deliveryAltPhone = document.getElementById("delivery-alt-phone").value.trim();
-      const deliveryVehicle = document.getElementById("delivery-vehicle").value;
-      const deliveryHours = document.getElementById("delivery-hours").value;
-      const deliveryShift = document.getElementById("delivery-shift").value;
+      const deliveryVehicle = document.getElementById("delivery-vehicle").value.trim();
+      const deliveryShift = document.getElementById("delivery-shift").value.trim();
+      const idCardFile = document.getElementById("signup-id-card").files[0];
 
       if (password !== confirmPassword) {
         showToast("Passwords do not match.");
@@ -294,17 +392,19 @@
         return;
       }
 
-      if (role === "cook" && (!cookExperience || !cookCuisine || !cookAvailability)) {
+      if (role === "cook" && (!cookExperience || !cookCuisine || !cookAvailability || !cookDistance)) {
         showToast("Complete all home cook details.");
         return;
       }
 
-      if (role === "delivery" && (!deliveryAltPhone || !deliveryVehicle || !deliveryHours || !deliveryShift)) {
+      if (role === "delivery" && (!deliveryVehicle || !deliveryShift)) {
         showToast("Complete all delivery details.");
         return;
       }
 
       try {
+        const idCardPhoto = role === "student" ? await readIdCardImage(idCardFile) : null;
+
         await apiFetch("/auth/signup", {
           method: "POST",
           body: JSON.stringify({
@@ -321,11 +421,12 @@
             cookExperience,
             cookCuisine,
             cookAvailability,
+            cookDistance,
             deliveryPhoneConfirm: phone,
             deliveryAltPhone,
             deliveryVehicle,
-            deliveryHours,
-            deliveryShift
+            deliveryShift,
+            idCardPhoto
           })
         });
         showToast("Account created. Please log in.");
@@ -358,6 +459,37 @@
 
         saveSession(data.token, data.user);
         window.location.href = pageForRole(data.user.role);
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    document.getElementById("forgot-password-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const role = document.getElementById("reset-role").value;
+      const identifier = document.getElementById("reset-identifier").value.trim();
+      const age = document.getElementById("reset-age").value;
+      const password = document.getElementById("reset-password").value;
+      const confirmPassword = document.getElementById("reset-confirm-password").value;
+
+      if (password !== confirmPassword) {
+        showToast("Passwords do not match.");
+        return;
+      }
+
+      try {
+        await apiFetch("/auth/reset-password", {
+          method: "POST",
+          body: JSON.stringify({ role, identifier, age, password })
+        });
+
+        showToast("Password reset. Please log in.");
+        document.getElementById("login-role").value = role;
+        document.getElementById("login-identifier").value = identifier;
+        document.getElementById("login-password").value = "";
+        document.getElementById("forgot-password-form").reset();
+        showForgotPassword(false);
       } catch (error) {
         showToast(error.message);
       }

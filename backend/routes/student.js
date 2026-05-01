@@ -63,9 +63,11 @@ router.get("/menu", async (_req, res) => {
          mi.description,
          mi.available,
          u.name AS cook_name,
+         NVL(up.distance_from_hostel, 0) AS distance_from_hostel,
          NVL(ROUND(r.avg_rating, 1), 0) AS avg_rating
        FROM menu_items mi
        LEFT JOIN users u ON u.id = mi.cook_id
+       LEFT JOIN user_profiles up ON up.user_id = u.id
        LEFT JOIN (
          SELECT oi.menu_item_id, AVG(f.rating) AS avg_rating
          FROM feedback f
@@ -82,19 +84,35 @@ router.get("/menu", async (_req, res) => {
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
+    const cookDistanceMap = {};
+    const getCookDistance = (cookName, savedDistance) => {
+      const normalized = cookName || "FoodNest Kitchen";
+      if (normalized === "FoodNest Kitchen") return 0;
+      if (savedDistance && savedDistance > 0) return Number(savedDistance);
+      if (cookDistanceMap[normalized] !== undefined) return cookDistanceMap[normalized];
+      const seed = [...normalized].reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+      const distance = 1 + (seed % 4);
+      cookDistanceMap[normalized] = distance;
+      return distance;
+    };
+
     res.json({
-      items: result.rows.map((row) => ({
-        id: row.ID,
-        name: row.NAME,
-        category: row.CATEGORY,
-        priceNestCoins: row.PRICE_NEST_COINS,
-        preparationTimeMins: row.PREPARATION_TIME_MINS,
-        imageUrl: row.IMAGE_URL,
-        description: row.DESCRIPTION,
-        available: row.AVAILABLE,
-        cookName: row.COOK_NAME || "FoodNest Kitchen",
-        averageRating: Number(row.AVG_RATING || 0)
-      }))
+      items: result.rows.map((row) => {
+        const cookName = row.COOK_NAME || "FoodNest Kitchen";
+        return {
+          id: row.ID,
+          name: row.NAME,
+          category: row.CATEGORY,
+          priceNestCoins: row.PRICE_NEST_COINS,
+          preparationTimeMins: row.PREPARATION_TIME_MINS,
+          imageUrl: row.IMAGE_URL,
+          description: row.DESCRIPTION,
+          available: row.AVAILABLE,
+          cookName,
+          distanceFromHostel: getCookDistance(cookName, row.DISTANCE_FROM_HOSTEL),
+          averageRating: Number(row.AVG_RATING || 0)
+        };
+      })
     });
   } catch (error) {
     res.status(500).json({ message: "Menu fetch failed.", error: error.message });
