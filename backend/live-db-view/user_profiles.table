@@ -3,6 +3,7 @@ TABLE: USER_PROFILES
 | user_id           | age | phone      | college_name | hostel_name | room_number | cook_cuisine  | delivery_vehicle |
 |-------------------|-----|------------|--------------|-------------|-------------|---------------|------------------|
 | user_16c05dfe1dfc | 600 | 9999999999 | a            | ab          | abcd1       | -             | -                |
+| user_174fc09905d8 | 23  | 4646464646 | aaa          | bbbb        | 112         | -             | -                |
 | user_2bdccaf255a7 | 18  | 8888888888 | -            | -           | -           | snacks        | -                |
 | user_4f748e5f855e | 20  | 1111111111 | -            | -           | -           | north indians | -                |
 | user_570d2581cd9f | 20  | 5555555555 | st francisa  | ab          | 103         | -             | -                |

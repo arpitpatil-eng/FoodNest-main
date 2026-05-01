@@ -2,6 +2,7 @@ TABLE: USERS
 
 | id                | name        | username | role     | nest_coins | created_at          |
 |-------------------|-------------|----------|----------|------------|---------------------|
+| user_174fc09905d8 | Adam        | Adam     | student  | 1000       | 2026-05-01 21:01:35 |
 | user_ed878e63622b | Sandy       | Sandy    | delivery | 0          | 2026-05-01 20:15:01 |
 | user_6b9ff8d26647 | Sam         | Sam      | cook     | 0          | 2026-05-01 20:11:33 |
 | user_6f0628eced25 | Ram         | Ram      | delivery | 0          | 2026-05-01 20:07:10 |
