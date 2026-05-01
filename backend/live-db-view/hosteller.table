@@ -1,5 +1,5 @@
 TABLE: HOSTELLER
 
-| id | name | username | coins | age | phone | college | hostel_address | hostel_name | room_number |
-|----|------|----------|-------|-----|-------|---------|----------------|-------------|-------------|
-| (no rows) |
+| id                | name | username | coins | age | phone      | college | hostel_address | hostel_name | room_number |
+|-------------------|------|----------|-------|-----|------------|---------|----------------|-------------|-------------|
+| user_598210d826a6 | Adil | Adil     | 1000  | 20  | 1111111111 | a       | abc            | ab          | 101         |
