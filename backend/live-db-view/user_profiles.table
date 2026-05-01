@@ -2,4 +2,5 @@ TABLE: USER_PROFILES
 
 | user_id           | age | phone      | college_name | hostel_name | room_number | cook_cuisine | delivery_vehicle |
 |-------------------|-----|------------|--------------|-------------|-------------|--------------|------------------|
+| user_135c2dc5f48d | 19  | 1313131313 | a            | ab          | 104         | -            | -                |
 | user_598210d826a6 | 20  | 1111111111 | a            | ab          | 101         | -            | -                |

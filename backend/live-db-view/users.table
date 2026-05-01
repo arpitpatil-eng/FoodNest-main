@@ -1,5 +1,6 @@
 TABLE: USERS
 
-| id                | name | username | role    | nest_coins | created_at          |
-|-------------------|------|----------|---------|------------|---------------------|
-| user_598210d826a6 | Adil | Adil     | student | 1000       | 2026-05-01 22:10:39 |
+| id                | name  | username | role    | nest_coins | created_at          |
+|-------------------|-------|----------|---------|------------|---------------------|
+| user_135c2dc5f48d | Parth | Parth    | student | 1000       | 2026-05-01 23:46:36 |
+| user_598210d826a6 | Adil  | Adil     | student | 1000       | 2026-05-01 22:10:39 |
