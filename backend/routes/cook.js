@@ -354,7 +354,41 @@ router.get("/orders/cook/history", async (req, res) => {
     if (connection) await connection.close();
   }
 });
+router.put("/cook/profile", async (req, res) => {
+  if (!isCook(req)) {
+    return res.status(403).json({ message: "Only home cooks allowed." });
+  }
 
+  const cookId = req.user.ID || req.user.id;
+  const { distanceFromHostel } = req.body;
+
+  if (distanceFromHostel === undefined || distanceFromHostel < 0) {
+    return res.status(400).json({ message: "Valid distanceFromHostel is required." });
+  }
+
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    await connection.execute(
+      `UPDATE user_profiles
+       SET distance_from_hostel = :distance
+       WHERE user_id = :user_id`,
+      {
+        distance: Number(distanceFromHostel),
+        user_id: cookId
+      },
+      { autoCommit: true }
+    );
+
+    res.json({ message: "Profile updated." });
+  } catch (error) {
+    res.status(500).json({ message: "Profile update failed.", error: error.message });
+  } finally {
+    if (connection) await connection.close();
+  }
+});
 router.put("/order/status", async (req, res, next) => {
   if (!isCook(req)) {
     return next();

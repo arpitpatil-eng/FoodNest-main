@@ -67,6 +67,7 @@
               <option value="all">All Home Cooks</option>
             </select>
           </div>
+          <div id="chef-info" class="cook-info"></div>
           <div class="grid cards-3" id="menu-grid"></div>
         </section>
 
@@ -129,6 +130,7 @@
     const cartTotal = document.getElementById("cart-total");
     const ordersList = document.getElementById("orders-list");
     const reviewsList = document.getElementById("reviews-list");
+    const chefInfo = document.getElementById("chef-info");
     const paymentCards = document.querySelectorAll(".pay-card");
     const cartCountChip = document.getElementById("cart-count-chip");
     const sidebar = document.getElementById("sidebar");
@@ -174,6 +176,11 @@
         menuGrid.innerHTML = '<div class="empty-state">No meals matched your search.</div>';
         return;
       }
+
+      const chefDistance = selectedCook !== "all" ? filtered.find((item) => item.cookName === selectedCook)?.distanceFromHostel : null;
+      chefInfo.innerHTML = selectedCook === "all"
+        ? ""
+        : `<div class="chef-summary"><strong>${selectedCook}</strong>${chefDistance !== null ? ` • ${chefDistance.toFixed(1)} km away` : ""}</div>`;
 
       menuGrid.innerHTML = filtered.map((item) => {
         const cartItem = cart.find((entry) => entry.id === item.id);
@@ -223,7 +230,7 @@
         <div class="cart-line">
           <div>
             <strong>${item.name}</strong>
-            ${item.cookName ? `<div class="meta">Homecook: ${item.cookName}</div>` : ""}
+            ${item.cookName ? `<div class="meta">Homecook: ${item.cookName}${item.distanceFromHostel > 0 ? ` • ${item.distanceFromHostel.toFixed(1)} km away` : ""}</div>` : ""}
             <div class="meta">${item.quantity} x ${coinMarkup(item.priceNestCoins)}</div>
           </div>
           <div class="row">

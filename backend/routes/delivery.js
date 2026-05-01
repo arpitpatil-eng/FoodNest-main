@@ -8,12 +8,60 @@ const { queueLiveDbRefresh } = require("../utils/liveDbView");
 
 const router = express.Router();
 const allowedStatuses = ["Out for Delivery", "Delivered"];
+const shiftWindows = {
+  morning: { start: 6 * 60, end: 12 * 60 },
+  afternoon: { start: 12 * 60, end: 15 * 60 },
+  evening: { start: 15 * 60, end: 18 * 60 },
+  night: { start: 18 * 60, end: 21 * 60 }
+};
+const shiftTimeZone = process.env.APP_TIME_ZONE || "Asia/Kolkata";
 
 router.use(requireAuth);
 
 function ensureDeliveryPartner(req, res) {
   const role = req.user.ROLE || req.user.role;
   return role === "delivery";
+}
+
+function getCurrentMinutes(now, timeZone = shiftTimeZone) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(now);
+
+  const hour = Number(parts.find((part) => part.type === "hour")?.value || 0);
+  const minute = Number(parts.find((part) => part.type === "minute")?.value || 0);
+  return hour * 60 + minute;
+}
+
+function isShiftActive(shift, now = new Date()) {
+  const normalizedShift = String(shift || "").trim().toLowerCase();
+
+  if (normalizedShift === "all day") {
+    return true;
+  }
+
+  const window = shiftWindows[normalizedShift];
+  if (!window) {
+    return false;
+  }
+
+  const currentMinutes = getCurrentMinutes(now);
+  return currentMinutes >= window.start && currentMinutes < window.end;
+}
+
+async function getDeliveryShift(connection, deliveryPartnerId) {
+  const result = await connection.execute(
+    `SELECT shift
+     FROM delivery_agents
+     WHERE user_id = :user_id`,
+    { user_id: deliveryPartnerId },
+    { outFormat: oracledb.OUT_FORMAT_OBJECT }
+  );
+
+  return result.rows[0]?.SHIFT || null;
 }
 
 router.get("/delivery/dashboard", async (req, res) => {
@@ -35,8 +83,8 @@ router.get("/delivery/dashboard", async (req, res) => {
 
     const statsResult = await connection.execute(
       `SELECT
-         COUNT(*) AS TOTAL_ASSIGNED,
-         SUM(CASE WHEN delivery_status = 'Delivered' THEN 1 ELSE 0 END) AS COMPLETED,
+         SUM(CASE WHEN TRIM(UPPER(delivery_status)) IN ('DELIVERY AGENT ASSIGNED', 'OUT FOR DELIVERY') THEN 1 ELSE 0 END) AS TOTAL_ASSIGNED,
+         SUM(CASE WHEN TRIM(UPPER(delivery_status)) = 'DELIVERED' THEN 1 ELSE 0 END) AS COMPLETED,
          SUM(CASE WHEN TRUNC(assigned_at) = TRUNC(SYSDATE) THEN 1 ELSE 0 END) AS TODAY_DELIVERIES
        FROM delivery_assignments
        WHERE delivery_partner_id = :delivery_partner_id`,
@@ -64,10 +112,21 @@ router.get("/deliveries/open", async (req, res) => {
     return res.status(403).json({ message: "Only delivery partners allowed." });
   }
 
+  const deliveryPartnerId = req.user.ID || req.user.id;
   let connection;
 
   try {
     connection = await getConnection();
+
+    const shift = await getDeliveryShift(connection, deliveryPartnerId);
+    if (!isShiftActive(shift)) {
+      return res.json({
+        orders: [],
+        shift,
+        shiftActive: false,
+        message: "Open deliveries are available only during your selected shift."
+      });
+    }
 
     const result = await connection.execute(
       `SELECT
@@ -102,6 +161,8 @@ router.get("/deliveries/open", async (req, res) => {
     );
 
     res.json({
+      shift,
+      shiftActive: true,
       orders: result.rows.map((row) => ({
         orderId: row.ORDER_ID,
         totalNestCoins: row.TOTAL_NEST_COINS,
@@ -137,6 +198,13 @@ router.post("/deliveries/:orderId/accept", async (req, res) => {
 
   try {
     connection = await getConnection();
+
+    const shift = await getDeliveryShift(connection, deliveryPartnerId);
+    if (!isShiftActive(shift)) {
+      return res.status(403).json({
+        message: "You can accept deliveries only during your selected shift."
+      });
+    }
 
     const result = await connection.execute(
       `UPDATE delivery_assignments
@@ -220,7 +288,7 @@ router.get("/orders/delivery", async (req, res) => {
        JOIN order_items oi ON oi.order_id = o.id
        JOIN menu_items mi ON mi.id = oi.menu_item_id
        WHERE da.delivery_partner_id = :delivery_partner_id
-       AND da.delivery_status <> 'Delivered'
+       AND TRIM(UPPER(da.delivery_status)) IN ('DELIVERY AGENT ASSIGNED', 'OUT FOR DELIVERY')
        GROUP BY
          o.id, o.status, o.total_nest_coins, o.created_at,
          c.name, da.delivery_status, da.pickup_location, da.drop_location,

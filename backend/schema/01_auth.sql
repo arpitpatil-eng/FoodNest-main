@@ -27,6 +27,7 @@ CREATE TABLE user_profiles (
   cook_experience_years NUMBER,
   cook_cuisine VARCHAR2(150),
   cook_availability VARCHAR2(100),
+  distance_from_hostel NUMBER,
   delivery_contact_phone VARCHAR2(30),
   delivery_alt_phone VARCHAR2(30),
   delivery_vehicle VARCHAR2(50),
