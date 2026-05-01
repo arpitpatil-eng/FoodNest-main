@@ -2,6 +2,7 @@ TABLE: HOMECOOK
 
 | id                | name        | username | coins | age | phone      | experience_years | cuisine       | availability |
 |-------------------|-------------|----------|-------|-----|------------|------------------|---------------|--------------|
+| user_83f7a9a2bcb1 | John        | John     | 0     | 24  | 3333333333 | 1                | chinese       | All Day      |
 | user_89fbc7bccda9 | sean        | sean     | 0     | 21  | 2222222222 | 2                | western       | Lunch        |
 | user_4f748e5f855e | arpit patil | arpit    | 0     | 20  | 1111111111 | 3                | north indians | Dinner       |
 | user_2bdccaf255a7 | parth       | parth    | 117   | 18  | 8888888888 | 1                | snacks        | Breakfast    |
