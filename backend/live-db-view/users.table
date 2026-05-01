@@ -2,6 +2,7 @@ TABLE: USERS
 
 | id                | name        | username | role     | nest_coins | created_at          |
 |-------------------|-------------|----------|----------|------------|---------------------|
+| user_89fbc7bccda9 | sean        | sean     | cook     | 0          | 2026-05-01 12:05:41 |
 | user_4f748e5f855e | arpit patil | arpit    | cook     | 0          | 2026-04-30 23:04:26 |
 | user_e70b1484e7da | adil2       | adil2    | delivery | 59         | 2026-04-30 21:55:54 |
 | user_2bdccaf255a7 | parth       | parth    | cook     | 117        | 2026-04-29 21:35:13 |
